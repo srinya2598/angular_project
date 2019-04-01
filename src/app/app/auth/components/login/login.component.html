@@ -1,0 +1,23 @@
+<div class="example-container">
+  <mat-form-field>
+    <input matInput placeholder="Enter your email" [formControl]="email" required>
+    <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+
+<br>
+
+  <mat-form-field>
+    <input matInput placeholder="Enter your Password" [formControl]="password" required>
+    <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+      </mat-form-field>
+
+  <br>
+
+      <button class="btn btn-success">Login</button>
+
+  <br><br>
+    <p>Not a registered user?</p>
+    <button class="btn btn-primary" (click)="onSignup()">Register!</button>
+
+  </div>
+<router-outlet></router-outlet>

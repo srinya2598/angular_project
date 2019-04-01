@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup } from "@angular/forms";
+import { Component,OnInit } from '@angular/core';
+import {Router} from '@angular/router';
+import{ AuthRoutingModule} from './app/auth/auth-routing.module';
+import {FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +10,12 @@ import { FormControl, FormGroup } from "@angular/forms";
 })
 export class AppComponent {
   title = 'ecommerce';
-  group:FormGroup;
-  constructor(){
-    this.group = new FormGroup({
-      email:new FormControl()
-    })
+  constructor(private router: Router) {
+
   }
+
+  NgOnInit() {
+
+  }
+
 }
