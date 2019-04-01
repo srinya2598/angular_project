@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup } from "@angular/forms";
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ecommerce';
+  group:FormGroup;
+  constructor(){
+    this.group = new FormGroup({
+      email:new FormControl()
+    })
+  }
 }
