@@ -1,8 +1,8 @@
 <div class="container">
   <mat-card>
-      <div class="header">
-        SIGNUP
-      </div>
+    <div class="header">
+      SIGNUP
+    </div>
     <mat-card-content>
       <form [formGroup]="formGroup" (ngSubmit)="formGroup.valid && signup()">
         <mat-form-field>
@@ -19,6 +19,14 @@
 
         <mat-form-field>
           <input matInput placeholder="Phone number" type="number" formControlName="phoneNo">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select formControlName="country" placeholder="Select a Country">
+            <mat-option *ngFor="let country of countries" [value]="country">
+              {{country}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
 
         <mat-form-field>

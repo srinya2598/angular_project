@@ -1,7 +1,4 @@
-import { Component,OnInit } from '@angular/core';
-import {Router} from '@angular/router';
-import{ AuthRoutingModule} from './auth/auth-routing.module';
-import {FormControl, Validators} from '@angular/forms';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +7,7 @@ import {FormControl, Validators} from '@angular/forms';
 })
 export class AppComponent {
   title = 'ecommerce';
-  constructor(private router: Router) {
+  constructor() {
 
   }
-
-  NgOnInit() {
-
-  }
-
 }
