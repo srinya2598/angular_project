@@ -8,9 +8,9 @@ import { RouterModule } from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
-import { SignupComponent } from './app/auth/components/signup/signup.component';
-import { LoginComponent } from './app/auth/components/login/login.component';
-import {AuthRoutingModule} from './app/auth/auth-routing.module';
+import { SignupComponent } from './auth/components/signup/signup.component';
+import { LoginComponent } from './auth/components/login/login.component';
+import {AuthRoutingModule} from './auth/auth-routing.module';
 
 
 @NgModule({

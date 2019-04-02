@@ -1,6 +1,6 @@
 import { Component,OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import{ AuthRoutingModule} from './app/auth/auth-routing.module';
+import{ AuthRoutingModule} from './auth/auth-routing.module';
 import {FormControl, Validators} from '@angular/forms';
 
 @Component({
