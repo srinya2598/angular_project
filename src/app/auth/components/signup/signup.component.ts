@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonUtils } from '../../../shared/utils/common.utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -11,8 +12,9 @@ export class SignupComponent implements OnInit {
 
   formGroup: FormGroup;
   countries: string[];
+  isLoading = false;
 
-  constructor() {
+  constructor(private router: Router) {
     this.countries = CommonUtils.getCountries();
   }
 
@@ -30,5 +32,11 @@ export class SignupComponent implements OnInit {
 
   signup() {
     console.log(this.formGroup.value);
+    this.isLoading = true;
+    // Added only for testing purpose...
+    setTimeout(() => {
+      this.isLoading = false;
+      this.router.navigate(['login']);
+    }, 3000)
   }
 }

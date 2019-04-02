@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   formGroup: FormGroup;
+  isLoading = false;
 
   constructor(private router: Router) {
 
@@ -24,6 +25,11 @@ export class LoginComponent implements OnInit {
 
   login() {
     console.log(this.formGroup.value);
+    this.isLoading = true;
+    // Added only for testing purpose...
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 4000);
   }
 
   navigateToSignUp() {
