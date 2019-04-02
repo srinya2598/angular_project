@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
-import {AuthRoutingModule} from '../../auth-routing.module';
-import {Router} from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,23 +8,25 @@ import {Router} from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  email = new FormControl('', [Validators.required, Validators.email]);
-password = new FormControl('', [Validators.required]);
-  constructor(private router: Router) { }
 
-  ngOnInit() {
+  formGroup: FormGroup;
+
+  constructor(private router: Router) {
+
   }
-  getErrorMessage() {
-    return this.email.hasError('required') ? 'You must enter a value' :
-      this.email.hasError('email') ? 'Not a valid email' :
-        '';
+
+  ngOnInit(): void {
+    this.formGroup = new FormGroup({
+      'email': new FormControl(null, [Validators.email, Validators.required]),
+      'password': new FormControl(null, [Validators.required])
+    });
   }
-getPasswordErrorMessage()
-{
-  return this.password.hasError('required')? ' you must enter your password':
-  '';
-}
-onSignup(){
+
+  login() {
+    console.log(this.formGroup.value);
+  }
+
+  navigateToSignUp() {
     this.router.navigate(['/signup']);
-}
+  }
 }
