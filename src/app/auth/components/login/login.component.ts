@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log(this.formGroup.value);
     this.isLoading = true;
     this.apiService.login(this.formGroup.value).subscribe(res => {
       this.isLoading = false;

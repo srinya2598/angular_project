@@ -48,7 +48,6 @@ export class SignupComponent implements OnInit {
 
 
   signup() {
-    console.log(this.formGroup.value);
     this.isLoading = true;
     const email = this.formGroup.controls['email'].value;
     const password = this.formGroup.controls['password'].value;

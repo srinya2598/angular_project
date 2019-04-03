@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import {BootstrapGuard} from './core/gaurds/bootstrap.guard';
-import {BootstrapComponent} from './bootstrap/bootstrap.component';
+import { BootstrapGuard } from './core/gaurds/bootstrap.guard';
+import { BootstrapComponent } from './bootstrap/bootstrap.component';
 
 
-export const routes: Routes = [
+export const rootRoutes: Routes = [
   {
     path: '',
     component: BootstrapComponent,

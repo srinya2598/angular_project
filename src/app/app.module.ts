@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { routes } from './app-routing.module';
+import { rootRoutes } from './app-routing';
 import { AppComponent } from './app.component';
 import { BootstrapComponent } from './bootstrap/bootstrap.component';
 import { RouterModule } from '@angular/router';
@@ -16,7 +16,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     BootstrapComponent,
   ],
   imports: [
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(rootRoutes),
     BrowserModule,
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
