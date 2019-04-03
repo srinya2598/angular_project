@@ -19,7 +19,7 @@
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput placeholder="Phone number" type="number" formControlName="phoneNo">
+          <input matInput placeholder="Phone number" maxlength="10" minlength="10" type="number" formControlName="phoneNo">
         </mat-form-field>
 
         <mat-form-field>
@@ -36,6 +36,7 @@
 
         <mat-form-field>
           <input matInput placeholder="Confirm Password" type="password" formControlName="confirmPassword">
+
         </mat-form-field>
         <div class="footer">
           <button class="btn btn-primary" type="submit">Signup</button>

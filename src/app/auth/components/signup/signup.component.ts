@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CommonUtils } from '../../../shared/utils/common.utils';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {CommonUtils} from '../../../shared/utils/common.utils';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -16,6 +16,7 @@ export class SignupComponent implements OnInit {
 
   constructor(private router: Router) {
     this.countries = CommonUtils.getCountries();
+
   }
 
   ngOnInit() {
@@ -23,11 +24,11 @@ export class SignupComponent implements OnInit {
       'firstName': new FormControl(null, [Validators.required]),
       'lastName': new FormControl(null, [Validators.required]),
       'email': new FormControl(null, [Validators.required, Validators.email]),
-      'phoneNo': new FormControl(null, [Validators.required]),
+      'phoneNo': new FormControl(null, [Validators.required, Validators.pattern('[0-9]{10,10}')]),
       'country': new FormControl(null, [Validators.required]),
       'password': new FormControl(null, [Validators.required]),
       'confirmPassword': new FormControl(null, [Validators.required]),
-    });
+    },);
   }
 
   signup() {
@@ -37,6 +38,8 @@ export class SignupComponent implements OnInit {
     setTimeout(() => {
       this.isLoading = false;
       this.router.navigate(['login']);
-    }, 3000)
+    }, 3000);
   }
+
+
 }
