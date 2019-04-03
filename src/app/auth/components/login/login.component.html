@@ -1,0 +1,24 @@
+<ngx-loading [show]="isLoading"></ngx-loading>
+<div class="container">
+  <mat-card>
+    <div class="header">
+      LOGIN
+    </div>
+    <form [formGroup]="formGroup" (ngSubmit)="login()">
+      <mat-form-field>
+        <input matInput type="email" placeholder="Enter your email" formControlName="email" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Enter your Password" formControlName="password" required>
+      </mat-form-field>
+      <div class="footer">
+        <button type="submit" class="btn btn-success">Login</button>
+        <div class="footer__new-user">
+          <p>Not a registered user?</p>
+          <a routerLink="/signup">Click here to Register!</a>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+
+</div>

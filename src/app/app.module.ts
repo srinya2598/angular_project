@@ -1,27 +1,26 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { routes } from "./app-routing.module";
+import { routes } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BootstrapComponent } from './bootstrap/bootstrap.component';
-import { RouterModule } from "@angular/router";
+import { RouterModule } from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MatFormFieldModule, MatInputModule } from "@angular/material";
-import { ReactiveFormsModule } from "@angular/forms";
+import { AngularFireModule } from '@angular/fire';
+import { environment } from '../environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    BootstrapComponent
+    BootstrapComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
-    ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatInputModule,
-    MatFormFieldModule
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]

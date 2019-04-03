@@ -1,0 +1,15 @@
+.container {
+  margin-top: 20px;
+  mat-card {
+    width: 70%;
+    margin: auto;
+    .header,
+    .footer {
+      text-align: center;
+      &__new-user {
+        margin-top: 20px;
+        display: flex;
+      }
+    }
+  }
+}
