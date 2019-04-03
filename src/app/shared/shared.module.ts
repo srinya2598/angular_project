@@ -3,6 +3,9 @@ import { CommonModule} from '@angular/common';
 import { ReactiveFormsModule} from '@angular/forms';
 import { MaterialModule } from '../../material.module';
 import { NgxLoadingModule } from 'ngx-loading';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from '../../environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [],
@@ -16,7 +19,7 @@ import { NgxLoadingModule } from 'ngx-loading';
     ReactiveFormsModule,
     CommonModule,
     MaterialModule,
-    NgxLoadingModule
+    NgxLoadingModule,
   ]
 })
 

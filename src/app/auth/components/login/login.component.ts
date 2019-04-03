@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from '../../../core/services/api.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
   formGroup: FormGroup;
   isLoading = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private apiService: ApiService) {
 
   }
 
@@ -26,10 +27,11 @@ export class LoginComponent implements OnInit {
   login() {
     console.log(this.formGroup.value);
     this.isLoading = true;
-    // Added only for testing purpose...
-    setTimeout(() => {
+    this.apiService.login(this.formGroup.value).subscribe(res => {
       this.isLoading = false;
-    }, 4000);
+      console.log(res);
+      this.router.navigate(['dashboard']);
+    });
   }
 
   navigateToSignUp() {
