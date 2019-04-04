@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
     this.apiService.login(this.formGroup.value).subscribe(res => {
       this.isLoading = false;
       console.log(res);
+      this.apiService.setItem('uid',res.user.uid);
       this.router.navigate(['dashboard']);
     });
   }

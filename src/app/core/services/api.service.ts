@@ -31,7 +31,7 @@ export class ApiService {
   }
 
   getItem(key: string) {
-    localStorage.getItem(key);
+   return localStorage.getItem(key);
   }
 
   removeItem(key: string) {
