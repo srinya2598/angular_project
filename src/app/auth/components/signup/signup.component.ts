@@ -30,7 +30,7 @@ export class SignupComponent implements OnInit {
   ngOnInit() {
     this.firstName = new FormControl(null, [Validators.required]);
     this.lastName = new FormControl(null, [Validators.required]);
-    this.email = new FormControl(null, [Validators.required]);
+    this.email = new FormControl(null, [Validators.required, Validators.email]);
     this.phoneNo = new FormControl(null, [Validators.required, Validators.pattern('[0-9]{10,10}')]);
     this.country = new FormControl(null, [Validators.required]);
     this.password = new FormControl(null, [Validators.required]);
