@@ -7,7 +7,7 @@ import { from } from 'rxjs';
 })
 export class ApiService {
 
-  constructor(private angularFireAuth: AngularFireAuth) {
+  constructor(private angularFireAuth: AngularFireAuth ) {
 
   }
 
@@ -20,7 +20,7 @@ export class ApiService {
   }
 
   login(userData: { email: string, password: string }) {
-    if (!userData.email || !userData.password) {
+    if (!userData) {
       return;
     }
     return from(this.angularFireAuth.auth.signInWithEmailAndPassword(userData.email, userData.password));
@@ -37,5 +37,4 @@ export class ApiService {
   removeItem(key: string) {
     localStorage.removeItem(key);
   }
-
 }
