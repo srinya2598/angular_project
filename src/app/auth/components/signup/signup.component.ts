@@ -3,6 +3,8 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { CommonUtils } from '../../../shared/utils/common.utils';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../core/services/api.service';
+import { switchMap } from 'rxjs/operators';
+import { IUser } from '../../../shared/models/users';
 
 @Component({
   selector: 'app-signup',
@@ -51,11 +53,27 @@ export class SignupComponent implements OnInit {
     this.isLoading = true;
     const email = this.formGroup.controls['email'].value;
     const password = this.formGroup.controls['password'].value;
-    this.apiService.signup(email, password).subscribe(res => {
+    this.apiService.signup(email, password).pipe(
+      switchMap((res) => {
+        const user: IUser = {
+          id: res.user.uid,
+          firstName: this.firstName.value,
+          lastName: this.lastName.value,
+          email: this.email.value,
+          country: this.country.value,
+          phoneNo: this.phoneNo.value.toString()
+        };
+        return this.apiService.setUserDetails(res.user.uid, user);
+      })
+    ).subscribe(res => {
       console.log(res);
       this.isLoading = false;
       this.router.navigate(['login']);
     });
+  }
+
+  signupWithGoogle() {
+    this.apiService.signInWithGoogle().subscribe(res => console.log(res));
   }
 
   private validatePassword(control: AbstractControl): { [key: string]: boolean } {
