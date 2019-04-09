@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonUtils } from '../../../shared/utils/common.utils';
-import { Router } from '@angular/router';
-import { ApiService } from '../../../core/services/api.service';
-import { switchMap } from 'rxjs/operators';
-import { IUser } from '../../../shared/models/users';
+import { AuthController } from '../../../core/controllers/auth-controller';
+import { Constants } from '../../../shared/utils/constants';
 
 @Component({
   selector: 'app-signup',
@@ -24,9 +22,9 @@ export class SignupComponent implements OnInit {
   countries: string[];
   isLoading = false;
 
-  constructor(private router: Router, private apiService: ApiService) {
+  constructor(private authController: AuthController) {
     this.countries = CommonUtils.getCountries();
-
+    this.authController.getIsLoading().subscribe(isLoading => this.isLoading = isLoading);
   }
 
   ngOnInit() {
@@ -50,30 +48,11 @@ export class SignupComponent implements OnInit {
 
 
   signup() {
-    this.isLoading = true;
-    const email = this.formGroup.controls['email'].value;
-    const password = this.formGroup.controls['password'].value;
-    this.apiService.signup(email, password).pipe(
-      switchMap((res) => {
-        const user: IUser = {
-          id: res.user.uid,
-          firstName: this.firstName.value,
-          lastName: this.lastName.value,
-          email: this.email.value,
-          country: this.country.value,
-          phoneNo: this.phoneNo.value.toString()
-        };
-        return this.apiService.setUserDetails(res.user.uid, user);
-      })
-    ).subscribe(res => {
-      console.log(res);
-      this.isLoading = false;
-      this.router.navigate(['login']);
-    });
+    this.authController.signUp(this.formGroup.value);
   }
 
   signupWithGoogle() {
-    this.apiService.signInWithGoogle().subscribe(res => console.log(res));
+    this.authController.googleLogin(Constants.SIGNUP_WITH_GOOGLE);
   }
 
   private validatePassword(control: AbstractControl): { [key: string]: boolean } {

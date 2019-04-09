@@ -7,17 +7,17 @@
     </div>
     <form [formGroup]="formGroup" (ngSubmit)="login()">
       <mat-form-field>
-        <input matInput type="email" placeholder="Enter your email" formControlName="email" required>
+        <input matInput type="email" placeholder="Enter your email" formControlName="email">
       </mat-form-field>
       <mat-form-field>
-        <input matInput type="password" placeholder="Enter your Password" formControlName="password" required>
+        <input matInput type="password" placeholder="Enter your Password" formControlName="password">
       </mat-form-field>
       <div class="footer">
         <button type="submit" class="btn">Login</button>
         <div>OR</div>
-        <div class="google-signup">
+        <div class="google-signup" (click)="loginWithGoogle()">
           <img height="20" width="20" src="/assets/google.png"/>
-          Login with Google
+          Google Login
         </div>
         <div class="footer__new-user">
           <p>Not a registered user?</p>

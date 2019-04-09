@@ -2,6 +2,83 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~bootstrap/dist/css/bootstrap.css";
 
+
+@font-face {
+  font-family: Poppins-Black;
+  src: url('assets/fonts/Poppins-Black.ttf');
+}
+
+@font-face {
+  font-family: Poppins-ExtraBold;
+  src: url('assets/fonts/Poppins-ExtraBold.ttf');
+}
+
+@font-face {
+  font-family: Poppins-Bold;
+  src: url('assets/fonts/Poppins-Bold.ttf');
+}
+
+@font-face {
+  font-family: Poppins-SemiBold;
+  src: url('assets/fonts/Poppins-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: Poppins-Medium;
+  src: url('assets/fonts/Poppins-Medium.ttf');
+}
+
+@font-face {
+  font-family: Poppins-Regular;
+  src: url('assets/fonts/Poppins-Regular.ttf');
+}
+
+@font-face {
+  font-family: Poppins-Light;
+  src: url('assets/fonts/Poppins-Light.ttf');
+}
+
+@font-face {
+  font-family: Poppins-Thin;
+  src: url('assets/fonts/Poppins-Thin.ttf');
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Poppins-Bold;
+}
+
+span, div {
+  font-family: Poppins-Light;
+}
+.poppins-light {
+  font-family: Poppins-Light !important;
+}
+
+.poppins-regular {
+  font-family: Poppins-Regular !important;
+}
+
+.poppins-medium {
+  font-family: Poppins-Medium !important;
+}
+
+.poppins-semibold {
+  font-family: Poppins-SemiBold !important;
+}
+
+.poppins-bold {
+  font-family: Poppins-Bold !important;
+}
+
+
 mat-form-field{
   display: block !important;
+}
+.mat-snack-bar-container {
+  width: 100%;
+  font-size: 16px;
+  padding: 0 !important;
+}
+mat-icon {
+  cursor: pointer;
 }

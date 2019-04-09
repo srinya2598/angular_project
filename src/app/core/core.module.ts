@@ -1,5 +1,4 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { CoreRoutingModule } from './core-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BootstrapComponent } from '../bootstrap/bootstrap.component';
@@ -8,7 +7,6 @@ import { BootstrapComponent } from '../bootstrap/bootstrap.component';
   declarations: [BootstrapComponent],
   imports: [
     SharedModule,
-    CoreRoutingModule,
     HttpClientModule
   ]
 })

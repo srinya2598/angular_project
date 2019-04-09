@@ -1,4 +1,12 @@
-import {_getIsLoading, _getIsLoggedIn, _getLoggedInUser, authReducer, AuthState} from './auth';
+import {
+  _getIsBootstraped,
+  _getIsLoading,
+  _getIsLoggedIn,
+  _getIsLoggedInUserLoaded,
+  _getLoggedInUser,
+  authReducer,
+  AuthState
+} from './auth';
 import {RootState} from '../../root-reducer';
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 
@@ -19,4 +27,6 @@ export const getAuthRootState = createFeatureSelector<State>('auth');
 export const getAuthState = createSelector(getAuthRootState, (state) => state.auth);
 export const getLoggedInUser = createSelector(getAuthState, _getLoggedInUser);
 export const getIsLoading = createSelector(getAuthState, _getIsLoading);
+export const getIsBootstraped = createSelector(getAuthState, _getIsBootstraped);
 export const getIsLoggedIn = createSelector(getAuthState, _getIsLoggedIn);
+export const getIsLoggedInUserLoaded = createSelector(getAuthState, _getIsLoggedInUserLoaded);
