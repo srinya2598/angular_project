@@ -182,4 +182,14 @@ export class CommonUtils {
       'Zambia'
     ];
   }
+  static getCategories(){
+    return[
+      'Uruguay',
+      'Uzbekistan',
+      'Vanuatu',
+      'Vatican City',
+      'Vietnam',
+      'Zambia'
+     ];
+  }
 }
