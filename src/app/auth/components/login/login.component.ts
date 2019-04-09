@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ApiService } from '../../../core/services/api.service';
+import { AuthController } from '../../../core/controllers/auth-controller';
+import { Constants } from '../../../shared/utils/constants';
 
 @Component({
   selector: 'app-login',
@@ -13,8 +13,8 @@ export class LoginComponent implements OnInit {
   formGroup: FormGroup;
   isLoading = false;
 
-  constructor(private router: Router, private apiService: ApiService) {
-
+  constructor(private authController: AuthController) {
+    this.authController.getIsLoading().subscribe(isLoading => this.isLoading = isLoading);
   }
 
   ngOnInit(): void {
@@ -26,16 +26,11 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.isLoading = true;
-    this.apiService.login(this.formGroup.value).subscribe(res => {
-      this.isLoading = false;
-      console.log(res);
-      this.apiService.setItem('uid',res.user.uid);
-      this.router.navigate(['dashboard']);
-    });
+    this.authController.login(this.formGroup.value);
   }
 
-  navigateToSignUp() {
-    this.router.navigate(['/signup']);
+  loginWithGoogle() {
+    this.authController.googleLogin(Constants.LOGIN_WITH_GOOGLE);
   }
+
 }

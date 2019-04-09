@@ -1,14 +1,18 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { rootRoutes } from './app-routing';
 import { AppComponent } from './app.component';
 import { BootstrapComponent } from './bootstrap/bootstrap.component';
 import { RouterModule } from '@angular/router';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireDatabase, AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { rootReducer } from './root-reducer';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -20,12 +24,17 @@ import { AngularFireDatabase, AngularFireDatabaseModule } from '@angular/fire/da
     RouterModule.forRoot(rootRoutes),
     BrowserModule,
     BrowserAnimationsModule,
+    StoreModule.forRoot(rootReducer),
+    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    SharedModule,
 
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule { }
+export class AppModule {
+}

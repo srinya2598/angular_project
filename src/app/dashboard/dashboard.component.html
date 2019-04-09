@@ -1,3 +1,18 @@
-<p>
-  dashboard works!
-</p>
+<div class="navbar navbar-inverse">
+  <div class="container-fluid d-flex justify-content-between">
+    <div class="navbar-header d-flex align-items-center">
+      <img src="/assets/purchase.png" height="100px" width="100px"/>
+      <h2>Dashboard</h2>
+    </div>
+    <div [matMenuTriggerFor]="menu" (click)="toggleMenu()" class="dropdown-container mr-5 d-flex align-items-center">
+      You are logged in as {{email}}
+      <mat-icon *ngIf="!show">keyboard_arrow_down</mat-icon>
+      <mat-icon *ngIf="show">keyboard_arrow_up</mat-icon>
+      <mat-menu [overlapTrigger]="false" xPosition="before" #menu="matMenu">
+        <span class="poppins-regular" mat-menu-item><mat-icon>account_circle</mat-icon>Profile</span>
+        <span class="poppins-regular" mat-menu-item><mat-icon>reply_all</mat-icon>Logout</span>
+      </mat-menu>
+    </div>
+
+  </div>
+</div>

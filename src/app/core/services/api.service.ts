@@ -40,12 +40,18 @@ export class ApiService {
     return from(this.angularFireDb.database.ref(`user/${id}`).set(user));
   }
 
+  getUserDetails(id:string) {
+    return this.angularFireDb.object(`user/${id}`).valueChanges();
+
+  }
+
   setItem(key: string, value: any) {
     localStorage.setItem(key, value);
   }
 
   getItem(key: string) {
     return localStorage.getItem(key);
+
   }
 
   removeItem(key: string) {
