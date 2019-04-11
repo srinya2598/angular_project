@@ -184,12 +184,10 @@ export class CommonUtils {
   }
   static getCategories(){
     return[
-      'Uruguay',
-      'Uzbekistan',
-      'Vanuatu',
-      'Vatican City',
-      'Vietnam',
-      'Zambia'
+      'electronics',
+      'homeappliances',
+      'personalcare',
+      'vehicles'
      ];
   }
 }

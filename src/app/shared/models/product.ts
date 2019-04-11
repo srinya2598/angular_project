@@ -1,9 +1,9 @@
-import {ProductCategory } from './category';
+import {IProductCategory } from './category';
 
-export interface ProductDetails {
+export interface IProduct {
   productName: string;
-  productCategory: ProductCategory;
+  productCategory: IProductCategory;
   productDescription: string;
-  uploadedImage: string;
+  imageUrl: string;
   
 }

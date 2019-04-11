@@ -155,26 +155,26 @@ export class AuthController {
 
   }
 
-  uploadProduct(productData) {
-    if (!productData) {
-      return;
-    }
-    const product: ProductDetails;
-    this.store.dispatch(new uploadProduct());
+ // uploadProduct(productData) {
+   // if (!productData) {
+     // return;
+    // }
+    // const product: ProductDetails;
+    // this.store.dispatch(new uploadProduct());
 
 
 
-    product = {
-      id: res.product.uid,
-      productName: productData.productName,
-      productCategory: productData.productCategory,
-      productDescription: productData.productDescription,
-      uploadedImage: productData.uploadedImage
+  //  product = {
+    //  id: res.product.uid,
+      // productName: productData.productName,
+      // productCategory: productData.productCategory,
+      // productDescription: productData.productDescription,
+      // uploadedImage: productData.uploadedImage
 
-    };
-    return this.apiService.setProductDetails(res.product.uid, product);
-  }
+// };
+  //  return this.apiService.setProductDetails(res.product.uid, product);
+  // }
 
-),
+// ,
 }
-}
+

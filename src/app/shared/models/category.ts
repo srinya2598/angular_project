@@ -1,3 +1,3 @@
-export interface ProductCategory {
+export interface IProductCategory {
   category: string;
 }
