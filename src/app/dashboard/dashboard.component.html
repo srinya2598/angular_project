@@ -11,7 +11,7 @@
       <mat-icon *ngIf="show">keyboard_arrow_up</mat-icon>
       <mat-menu [overlapTrigger]="false" xPosition="before" #menu="matMenu">
         <span class="poppins-regular" mat-menu-item><mat-icon>account_circle</mat-icon>Profile</span>
-        <span class="poppins-regular"  mat-menu-item><mat-icon>account_circle</mat-icon><a md-button [routerLink]="['/productuplaod']" >Product Upload</a></span>
+        <span (click)="uploadProduct()" class="poppins-regular"  mat-menu-item><mat-icon>cloud_upload</mat-icon>Add Product</span>
         <span class="poppins-regular" mat-menu-item><mat-icon>reply_all</mat-icon>Logout</span>
       </mat-menu>
     </div>
@@ -20,6 +20,5 @@
 
 </div>
   <router-outlet></router-outlet>
-
 </div>
 

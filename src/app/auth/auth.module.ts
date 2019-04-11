@@ -10,7 +10,6 @@ import {ProductUploadComponent} from '../dashboard/component/product-upload/prod
   declarations: [
     LoginComponent,
     SignupComponent,
-    ProductUploadComponent,
   ],
   imports: [
     SharedModule,

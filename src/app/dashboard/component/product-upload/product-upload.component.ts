@@ -12,11 +12,7 @@ import {AuthController} from '../../../core/controllers/auth-controller';
 export class ProductUploadComponent implements OnInit {
 
   formGroup: FormGroup;
-  productName: FormControl;
-  category: FormControl;
   categories: string[];
-  productDescription: FormControl;
-  uploadImage: File;
 
 
   constructor( private authController: AuthController ) {
@@ -24,13 +20,11 @@ export class ProductUploadComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.productName = new FormControl(null, [Validators.required]);
-    this.productDescription = new FormControl(null, [Validators.required]);
     this.formGroup = new FormGroup({
       'productName': new FormControl(null),
       'productDescription': new FormControl(null),
       'category': new FormControl(null),
-      'uploadImage': new FormControl(null),
+      'image': new FormControl(null),
     });
 
 }

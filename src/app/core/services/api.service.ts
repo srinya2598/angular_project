@@ -62,7 +62,7 @@ export class ApiService {
     if (!id || !product ) {
       return;
     }
-    return from(this.angularFireDb.database.ref(`product/${id}`).set(product);
+    return from(this.angularFireDb.database.ref(`product/${id}`).set(product));
   }
 }
 
