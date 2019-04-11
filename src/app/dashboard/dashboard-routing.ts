@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { ProductUploadComponent } from './component/product-upload/product-upload.component';
+import {ProfileComponent} from './component/profile/profile.component';
 
 export const dashboardRoutes: Routes = [
   {
@@ -10,6 +11,10 @@ export const dashboardRoutes: Routes = [
       {
         path: 'upload-product',
         component: ProductUploadComponent
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent
       }
     ]
   }

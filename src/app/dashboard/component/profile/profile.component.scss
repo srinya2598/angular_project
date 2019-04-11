@@ -1,6 +1,6 @@
 .parent-container {
 
-  height: 100vh;
+  height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,11 +16,11 @@
         text-align: center;
         button{
           width: 35%;
-          background-color: #8B4513;
+          
           color: white;
           font-size: 18px;
         }
-       }
+      }
     }
   }
 }

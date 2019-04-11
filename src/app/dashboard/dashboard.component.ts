@@ -13,10 +13,11 @@ export class DashboardComponent implements OnInit {
   email: string;
   show = false;
 
-  constructor(private controller: AuthController, private route:Router) {
+  constructor(private controller: AuthController, private route: Router) {
     this.controller.getUser().subscribe(res => {
-      if (res)
+      if (res) {
         this.email = res.email;
+      }
     });
   }
 
@@ -31,6 +32,9 @@ export class DashboardComponent implements OnInit {
     this.route.navigate(["dashboard/upload-product"]);
   }
 
+  viewProfile(){
+    this.route.navigate(["dashboard/profile"]);
+  }
 }
 
 
