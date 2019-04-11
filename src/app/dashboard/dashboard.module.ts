@@ -7,8 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ProductUploadComponent} from './component/product-upload/product-upload.component';
 
 @NgModule({
-  declarations: [DashboardComponent,
-  ProductUploadComponent],
+  declarations: [DashboardComponent],
   imports: [
     CommonModule,
     SharedModule,

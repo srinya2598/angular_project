@@ -7,20 +7,19 @@ import { Constants } from '../../shared/utils/constants';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginGuard implements CanActivate {
+export class AuthGuard implements CanActivate {
   constructor(private router: Router, private apiService: ApiService) {
   }
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    if (!this.apiService.getItem('uid')) {
-      this.router.navigate(['/login']);
+    if (!this.apiService.getItem(Constants.USER_UID)) {
       return true;
     } else {
-      this.router.navigate(['/dashboard']);
-
+      this.router.navigate(['']);
+      return false;
     }
-    return false;
-
+  }
+}
 

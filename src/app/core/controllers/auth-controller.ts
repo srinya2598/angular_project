@@ -9,7 +9,6 @@ import {NotificationService} from '../services/notification.service';
 import {Login, LoginFailed, LoginSuccess, SignUp, SignUpFailed, SignUpSuccess} from '../../auth/actions/auth';
 import {combineLatest, Observable, throwError} from 'rxjs';
 import {Constants} from '../../shared/utils/constants';
-import {ProductDetails} from '../../shared/models/product';
 
 @Injectable({
   providedIn: 'root'
