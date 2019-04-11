@@ -26,6 +26,5 @@ export class DashboardGuard implements CanActivate {
         return res;
       })
     );
-
   }
 }
