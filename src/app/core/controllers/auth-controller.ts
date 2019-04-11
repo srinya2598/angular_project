@@ -1,14 +1,14 @@
-import {Injectable, NgZone} from '@angular/core';
-import {getIsLoading, getIsLoggedIn, getLoggedInUser, State} from '../../auth/reducer';
-import {Store} from '@ngrx/store';
-import {ApiService} from '../services/api.service';
-import {catchError, filter, map, switchMap, take} from 'rxjs/operators';
-import {IUser} from '../../shared/models/users';
-import {Router} from '@angular/router';
-import {NotificationService} from '../services/notification.service';
-import {Login, LoginFailed, LoginSuccess, SignUp, SignUpFailed, SignUpSuccess} from '../../auth/actions/auth';
-import {combineLatest, Observable, throwError} from 'rxjs';
-import {Constants} from '../../shared/utils/constants';
+import { Injectable, NgZone } from '@angular/core';
+import { getIsLoading, getIsLoggedIn, getLoggedInUser, State } from '../../auth/reducer';
+import { Store } from '@ngrx/store';
+import { ApiService } from '../services/api.service';
+import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
+import { IUser } from '../../shared/models/users';
+import { Router } from '@angular/router';
+import { NotificationService } from '../services/notification.service';
+import { Login, LoginFailed, LoginSuccess, SignUp, SignUpFailed, SignUpSuccess } from '../../auth/actions/auth';
+import { combineLatest, Observable, throwError } from 'rxjs';
+import { Constants } from '../../shared/utils/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -77,7 +77,7 @@ export class AuthController {
     ).subscribe(res => {
         console.log('[Auth Controller] Inside login');
         this.notificationService.success('You are logged in successfully!!');
-        //Load the data of the user form database in bootstrap component
+        //  Load the data of the user form database in bootstrap component
         this.store.dispatch(new LoginSuccess());
         this.apiService.setItem(Constants.USER_UID, res.user.uid);
         this.zone.run(() => {
@@ -154,26 +154,27 @@ export class AuthController {
 
   }
 
- // uploadProduct(productData) {
-   // if (!productData) {
-     // return;
-    // }
-    // const product: ProductDetails;
-    // this.store.dispatch(new uploadProduct());
+//   uploadProduct(productData) {
+  // if (!productData) {
+  // return;
+  // }
+  // const product: ProductDetails;
+  // this.store.dispatch(new uploadProduct());
 
 
+  // product = {
+  // id: res.product.uid,
+  // productName: productData.productName,
+  // productCategory: productData.productCategory,
+  // productDescription: productData.productDescription,
+  // uploadedImage: productData.uploadedImage
 
-  //  product = {
-    //  id: res.product.uid,
-      // productName: productData.productName,
-      // productCategory: productData.productCategory,
-      // productDescription: productData.productDescription,
-      // uploadedImage: productData.uploadedImage
-
-// };
-  //  return this.apiService.setProductDetails(res.product.uid, product);
+  // };
+  // return this.apiService.setProductDetails(res.product.uid, product);
   // }
 
-// ,
-}
+// ),
+// }
+// }
 
+}
