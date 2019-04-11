@@ -6,6 +6,7 @@ import { NgxLoadingModule } from 'ngx-loading';
 import { StoreModule } from '@ngrx/store';
 import { authRootReducer } from '../auth/reducer';
 import { NotificationComponent } from './components/notification/notification.component';
+import { AvatarModule } from 'ng2-avatar';
 
 @NgModule({
   declarations: [NotificationComponent],
@@ -14,13 +15,15 @@ import { NotificationComponent } from './components/notification/notification.co
     ReactiveFormsModule,
     MaterialModule,
     StoreModule.forFeature('auth', authRootReducer),
-    NgxLoadingModule.forRoot({ backdropBorderRadius: '3px' })
+    NgxLoadingModule.forRoot({ backdropBorderRadius: '3px' }),
+    AvatarModule.forRoot()
   ],
   exports: [
     ReactiveFormsModule,
     CommonModule,
     MaterialModule,
     NgxLoadingModule,
+    AvatarModule
   ],
   entryComponents: [NotificationComponent]
 })

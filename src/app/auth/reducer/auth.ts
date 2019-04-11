@@ -60,6 +60,23 @@ export function authReducer(state: AuthState = initialAuthState, action: Action)
           isBootsraped: true
         };
 
+      case AuthActions.UPDATE_SENT:
+        return {
+          ...state,
+          isLoading: true
+        };
+      case AuthActions.UPDATE_SUCCESS:
+        return {
+          ...state,
+          isLoading: false,
+          loggedInUser: action.payload
+        };
+      case AuthActions.UPDATE_ERROR:
+        return {
+          ...state,
+          isLoading: false
+        };
+
       default:
         return state;
     }

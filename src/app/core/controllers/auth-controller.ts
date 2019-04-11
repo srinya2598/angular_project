@@ -6,7 +6,17 @@ import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
 import { IUser } from '../../shared/models/users';
 import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
-import { Login, LoginFailed, LoginSuccess, SignUp, SignUpFailed, SignUpSuccess } from '../../auth/actions/auth';
+import {
+  Login,
+  LoginFailed,
+  LoginSuccess,
+  SignUp,
+  SignUpFailed,
+  SignUpSuccess,
+  UpdateFailed,
+  UpdateSent,
+  UpdateSuccess
+} from '../../auth/actions/auth';
 import { combineLatest, Observable, throwError } from 'rxjs';
 import { Constants } from '../../shared/utils/constants';
 
@@ -142,6 +152,25 @@ export class AuthController {
           this.store.dispatch(new SignUpFailed());
         });
     }
+  }
+
+  updateUser(id: string, user: IUser) {
+    this.store.select(getIsLoading).pipe(
+      take(1),
+      filter(res => !res),
+      switchMap(() => {
+        this.store.dispatch(new UpdateSent());
+        return this.apiService.setUserDetails(id, user);
+      }),
+      catchError(error => throwError(error.message))
+    ).subscribe(() => {
+        this.notificationService.success('Profile updated successfully');
+        this.store.dispatch(new UpdateSuccess(user));
+      },
+      (error) => {
+        this.notificationService.error(error);
+        this.store.dispatch(new UpdateFailed());
+      });
   }
 
 

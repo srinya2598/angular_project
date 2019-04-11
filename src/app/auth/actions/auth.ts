@@ -9,6 +9,9 @@ export enum AuthActions {
   SIGNUP_SUCCESS = '[SignUp] success',
   SIGNUP_FAILED = '[SignUp] failed',
   FETCH_USER = '[Login] fetch user',
+  UPDATE_SENT = '[Update] sent',
+  UPDATE_SUCCESS = '[Update] success',
+  UPDATE_ERROR = '[Update] error',
 }
 
 export class Login implements Action {
@@ -29,6 +32,7 @@ export class SignUp implements Action {
 
 export class SignUpSuccess implements Action {
   readonly type = AuthActions.SIGNUP_SUCCESS;
+
   constructor(public payload: IUser) {
   }
 }
@@ -42,4 +46,19 @@ export class FetchUser implements Action {
 
   constructor(public payload: IUser) {
   }
+}
+
+export class UpdateSent implements Action {
+  readonly type = AuthActions.UPDATE_SENT;
+}
+
+export class UpdateSuccess implements Action {
+  readonly type = AuthActions.UPDATE_SUCCESS;
+
+  constructor(public payload: IUser) {
+  }
+}
+
+export class UpdateFailed implements Action {
+  readonly type = AuthActions.UPDATE_ERROR;
 }

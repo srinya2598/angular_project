@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { ProductUploadComponent } from './component/product-upload/product-upload.component';
-import {ProfileComponent} from './component/profile/profile.component';
+import { ProfileContainerComponent } from './component/profile-container/profile-container.component';
 
 export const dashboardRoutes: Routes = [
   {
@@ -14,7 +14,7 @@ export const dashboardRoutes: Routes = [
       },
       {
         path: 'profile',
-        component: ProfileComponent
+        component: ProfileContainerComponent
       }
     ]
   }

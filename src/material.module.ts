@@ -1,11 +1,11 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {
   MatButtonModule,
-  MatCardModule,
+  MatCardModule, MatDialogModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatMenuModule,
+  MatMenuModule, MatProgressSpinnerModule,
   MatSelectModule,
   MatSnackBarModule
 } from '@angular/material';
@@ -19,6 +19,8 @@ const modules = [
   MatSelectModule,
   MatButtonModule,
   MatMenuModule,
+  MatDialogModule,
+  MatProgressSpinnerModule
 ];
 
 @NgModule({

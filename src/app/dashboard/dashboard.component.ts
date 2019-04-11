@@ -15,8 +15,9 @@ export class DashboardComponent implements OnInit {
 
   constructor(private controller: AuthController, private route: Router) {
     this.controller.getUser().subscribe(res => {
+      console.log("fired");
       if (res) {
-        this.email = res.email;
+        this.email = res.firstName;
       }
     });
   }

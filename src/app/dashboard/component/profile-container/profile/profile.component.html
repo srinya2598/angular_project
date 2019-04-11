@@ -1,0 +1,43 @@
+<div class="parent-container">
+  <div class="container">
+    <div class="header">
+      <h3>PROFILE</h3>
+      <avatar [name]="user.firstName" [displayType]="'circle'"></avatar>
+    </div>
+    <form [formGroup]="formGroup" (ngSubmit)="formGroup.valid">
+      <mat-form-field>
+        <input matInput placeholder="First Name" type="text" formControlName="firstName">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Last Name" type="text" formControlName="lastName">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Email" type="email" formControlName="email">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Phone number" maxlength="10" minlength="10" type="number"
+               formControlName="phoneNo">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select formControlName="country" placeholder="Select a Country">
+          <mat-option *ngFor="let country of countries" [value]="country">
+            {{country}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="footer">
+        <button (click)="onSumbit()" class="btn"
+                [ngClass]="{'btn-primary':buttonText == ButtonText.EDIT, 'btn-success':buttonText == ButtonText.SUBMIT}"
+                type="submit">{{buttonText}}
+        </button>
+        <mat-spinner [diameter]="40" *ngIf="isLoading"></mat-spinner>
+      </div>
+    </form>
+
+  </div>
+</div>

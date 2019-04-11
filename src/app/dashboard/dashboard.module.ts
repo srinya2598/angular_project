@@ -4,15 +4,22 @@ import { DashboardComponent } from './dashboard.component';
 import { RouterModule } from '@angular/router';
 import { dashboardRoutes } from './dashboard-routing';
 import { SharedModule } from '../shared/shared.module';
-import { ProductUploadComponent} from './component/product-upload/product-upload.component';
-import { ProfileComponent } from './component/profile/profile.component';
+import { ProductUploadComponent } from './component/product-upload/product-upload.component';
+import { ProfileComponent } from './component/profile-container/profile/profile.component';
+import { ProfileContainerComponent } from './component/profile-container/profile-container.component';
 
 @NgModule({
-  declarations: [DashboardComponent, ProductUploadComponent, ProfileComponent],
+  declarations: [
+    DashboardComponent,
+    ProductUploadComponent,
+    ProfileComponent,
+    ProfileContainerComponent],
   imports: [
     CommonModule,
     SharedModule,
     RouterModule.forChild(dashboardRoutes)
-  ]
+  ],
+  entryComponents: [ProfileComponent]
 })
-export class DashboardModule { }
+export class DashboardModule {
+}

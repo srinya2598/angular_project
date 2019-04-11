@@ -1,0 +1,33 @@
+.parent-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .container {
+    margin: auto;
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 25px;
+      avatar {
+        margin-top: 10px;
+        margin-bottom: 25px;
+      }
+    }
+    .footer {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      button {
+        width: 35%;
+        color: white;
+        font-size: 18px;
+      }
+      mat-spinner {
+        margin-top: 15px;
+      }
+    }
+
+  }
+}
