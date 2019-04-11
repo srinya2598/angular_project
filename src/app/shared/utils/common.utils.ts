@@ -182,4 +182,12 @@ export class CommonUtils {
       'Zambia'
     ];
   }
+  static getCategories(){
+    return[
+      'electronics',
+      'homeappliances',
+      'personalcare',
+      'vehicles'
+     ];
+  }
 }

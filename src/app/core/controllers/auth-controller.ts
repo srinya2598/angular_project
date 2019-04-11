@@ -1,14 +1,14 @@
-import { Injectable, NgZone } from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {getIsLoading, getIsLoggedIn, getLoggedInUser, State} from '../../auth/reducer';
-import { Store } from '@ngrx/store';
-import { ApiService } from '../services/api.service';
-import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
-import { IUser } from '../../shared/models/users';
-import { Router } from '@angular/router';
-import { NotificationService } from '../services/notification.service';
-import { Login, LoginFailed, LoginSuccess, SignUp, SignUpFailed, SignUpSuccess } from '../../auth/actions/auth';
-import { combineLatest, Observable, throwError } from 'rxjs';
-import { Constants } from '../../shared/utils/constants';
+import {Store} from '@ngrx/store';
+import {ApiService} from '../services/api.service';
+import {catchError, filter, map, switchMap, take} from 'rxjs/operators';
+import {IUser} from '../../shared/models/users';
+import {Router} from '@angular/router';
+import {NotificationService} from '../services/notification.service';
+import {Login, LoginFailed, LoginSuccess, SignUp, SignUpFailed, SignUpSuccess} from '../../auth/actions/auth';
+import {combineLatest, Observable, throwError} from 'rxjs';
+import {Constants} from '../../shared/utils/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class AuthController {
               private apiService: ApiService,
               private router: Router,
               private zone: NgZone,
-              private notificationService:NotificationService) {
+              private notificationService: NotificationService) {
   }
 
   signUp(userData) {
@@ -149,8 +149,31 @@ export class AuthController {
     return this.store.select(getIsLoading);
   }
 
-  getUser(){
+  getUser() {
     return this.store.select(getLoggedInUser);
 
   }
+
+ // uploadProduct(productData) {
+   // if (!productData) {
+     // return;
+    // }
+    // const product: ProductDetails;
+    // this.store.dispatch(new uploadProduct());
+
+
+
+  //  product = {
+    //  id: res.product.uid,
+      // productName: productData.productName,
+      // productCategory: productData.productCategory,
+      // productDescription: productData.productDescription,
+      // uploadedImage: productData.uploadedImage
+
+// };
+  //  return this.apiService.setProductDetails(res.product.uid, product);
+  // }
+
+// ,
 }
+

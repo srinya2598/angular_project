@@ -4,9 +4,10 @@ import { from } from 'rxjs';
 import { IUser } from '../../shared/models/users';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { auth } from 'firebase';
+import {IProduct} from '../../shared/models/product';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
 
@@ -40,7 +41,7 @@ export class ApiService {
     return from(this.angularFireDb.database.ref(`user/${id}`).set(user));
   }
 
-  getUserDetails(id:string) {
+  getUserDetails(id: string) {
     return this.angularFireDb.object(`user/${id}`).valueChanges();
 
   }
@@ -57,4 +58,11 @@ export class ApiService {
   removeItem(key: string) {
     localStorage.removeItem(key);
   }
+  setProductDetails(id: string, product: IProduct) {
+    if (!id || !product ) {
+      return;
+    }
+    return from(this.angularFireDb.database.ref(`product/${id}`).set(product));
+  }
 }
+

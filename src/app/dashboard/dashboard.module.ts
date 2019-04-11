@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard.component';
 import { RouterModule } from '@angular/router';
 import { dashboardRoutes } from './dashboard-routing';
 import { SharedModule } from '../shared/shared.module';
+import { ProductUploadComponent} from './component/product-upload/product-upload.component';
 
 @NgModule({
   declarations: [DashboardComponent],
