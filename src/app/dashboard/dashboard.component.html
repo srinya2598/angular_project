@@ -2,21 +2,26 @@
 <div class="navbar navbar-inverse">
   <div class="container-fluid d-flex justify-content-between">
     <div class="navbar-header d-flex align-items-center">
-      <img src="/assets/purchase.png" height="100px" width="100px"/>
+      <img src="/assets/shopping.png" height="100px" width="100px"/>
       <h2>Dashboard</h2>
     </div>
+
     <div [matMenuTriggerFor]="menu" (click)="toggleMenu()" class="dropdown-container mr-5 d-flex align-items-center">
       You are logged in as {{email}}
       <mat-icon *ngIf="!show">keyboard_arrow_down</mat-icon>
       <mat-icon *ngIf="show">keyboard_arrow_up</mat-icon>
       <mat-menu [overlapTrigger]="false" xPosition="before" #menu="matMenu">
-        <span (click)="viewProfile()" class="poppins-regular" mat-menu-item><mat-icon>account_circle</mat-icon>Profile</span>
-        <span (click)="uploadProduct()" class="poppins-regular"  mat-menu-item><mat-icon>cloud_upload</mat-icon>Add Product</span>
+        <span  class="poppins-regular" mat-menu-item [mat-menu-trigger-for]="profile" ><mat-icon>account_circle</mat-icon>Profile</span>
+        <span (click)="uploadProduct()" class="poppins-regular"  mat-menu-item><mat-icon>add_shopping_cart</mat-icon>Add Product</span>
         <span class="poppins-regular" mat-menu-item><mat-icon>reply_all</mat-icon>Logout</span>
       </mat-menu>
-    </div>
 
-  </div>
+      <mat-menu #profile="matMenu">
+        <span mat-menu-item (click)="viewProfile()"><mat-icon>assignment_ind</mat-icon>Update Profile</span>
+        <span mat-menu-item (click)="onLogout()"><mat-icon>backup</mat-icon>Updated Products</span>
+
+      </mat-menu>
+    </div>
 
 </div>
   <router-outlet></router-outlet>

@@ -182,12 +182,23 @@ export class CommonUtils {
       'Zambia'
     ];
   }
-  static getCategories(){
-    return[
+
+  static getCategories() {
+    return [
       'electronics',
       'homeappliances',
       'personalcare',
       'vehicles'
-     ];
+    ];
   }
+
+  static getRandomId() {
+    const random = 'qweryuiopasdfghjklzbnm1234567890';
+    let id = '';
+    for (let i = 0; i < 10; i++) {
+      id += random.charAt(Math.floor(Math.random() * random.length));
+    }
+    return id;
+  }
+
 }

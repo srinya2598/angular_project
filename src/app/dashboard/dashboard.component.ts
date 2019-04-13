@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../core/services/api.service';
 import { AuthController } from '../core/controllers/auth-controller';
 import { Router } from '@angular/router';
+import {Constants} from '../shared/utils/constants';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class DashboardComponent implements OnInit {
   email: string;
   show = false;
 
-  constructor(private controller: AuthController, private route: Router) {
+  constructor(private controller: AuthController, private route: Router,private apiService: ApiService) {
     this.controller.getUser().subscribe(res => {
       console.log("fired");
       if (res) {
@@ -35,6 +36,11 @@ export class DashboardComponent implements OnInit {
 
   viewProfile(){
     this.route.navigate(["dashboard/profile"]);
+  }
+
+  onLogout(){
+    this.apiService.removeItem(Constants.USER_UID);
+    this.route.navigate(['/login']);
   }
 }
 

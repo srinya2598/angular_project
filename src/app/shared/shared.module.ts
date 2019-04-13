@@ -7,6 +7,8 @@ import { StoreModule } from '@ngrx/store';
 import { authRootReducer } from '../auth/reducer';
 import { NotificationComponent } from './components/notification/notification.component';
 import { AvatarModule } from 'ng2-avatar';
+import {productReducer} from '../dashboard/reducers/product';
+import {productRootReducer} from '../dashboard/reducers';
 
 @NgModule({
   declarations: [NotificationComponent],
@@ -15,6 +17,7 @@ import { AvatarModule } from 'ng2-avatar';
     ReactiveFormsModule,
     MaterialModule,
     StoreModule.forFeature('auth', authRootReducer),
+    StoreModule.forFeature('product',productRootReducer),
     NgxLoadingModule.forRoot({ backdropBorderRadius: '3px' }),
     AvatarModule.forRoot()
   ],

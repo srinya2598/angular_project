@@ -1,9 +1,11 @@
 import {IProductCategory } from './category';
 
 export interface IProduct {
-  productName: string;
-  productCategory: IProductCategory;
-  productDescription: string;
+  id: string;
+  userId:string;
+  name: string;
+  category: IProductCategory;
+  description: string;
   imageUrl: string;
   
 }

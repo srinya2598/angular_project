@@ -58,6 +58,7 @@ export class ApiService {
   removeItem(key: string) {
     localStorage.removeItem(key);
   }
+
   setProductDetails(id: string, product: IProduct) {
     if (!id || !product ) {
       return;
