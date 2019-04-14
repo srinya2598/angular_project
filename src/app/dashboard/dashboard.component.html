@@ -13,12 +13,12 @@
       <mat-menu [overlapTrigger]="false" xPosition="before" #menu="matMenu">
         <span  class="poppins-regular" mat-menu-item [mat-menu-trigger-for]="profile" ><mat-icon>account_circle</mat-icon>Profile</span>
         <span (click)="uploadProduct()" class="poppins-regular"  mat-menu-item><mat-icon>add_shopping_cart</mat-icon>Add Product</span>
-        <span class="poppins-regular" mat-menu-item><mat-icon>reply_all</mat-icon>Logout</span>
+        <span class="poppins-regular" mat-menu-item (click)="onLogout()"><mat-icon>reply_all</mat-icon>Logout</span>
       </mat-menu>
 
       <mat-menu #profile="matMenu">
         <span mat-menu-item (click)="viewProfile()"><mat-icon>assignment_ind</mat-icon>Update Profile</span>
-        <span mat-menu-item (click)="onLogout()"><mat-icon>backup</mat-icon>Updated Products</span>
+        <span mat-menu-item ><mat-icon>backup</mat-icon>Updated Products</span>
 
       </mat-menu>
     </div>
