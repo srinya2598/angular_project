@@ -5,13 +5,14 @@ import { IUser } from '../../shared/models/users';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { auth } from 'firebase';
 import {IProduct} from '../../shared/models/product';
+import {AngularFireStorage} from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
 
-  constructor(private angularFireAuth: AngularFireAuth, private angularFireDb: AngularFireDatabase) {
+  constructor(private angularFireAuth: AngularFireAuth, private angularFireDb: AngularFireDatabase, private storage: AngularFireStorage) {
 
   }
 
@@ -64,6 +65,10 @@ export class ApiService {
       return;
     }
     return from(this.angularFireDb.database.ref(`product/${id}`).set(product));
+
   }
+uploadImages(fileName, file){
+this.storage.ref('product-images/${fileName}').put(file);
+}
 }
 

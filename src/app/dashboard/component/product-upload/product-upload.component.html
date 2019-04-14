@@ -22,10 +22,10 @@
           </mat-form-field>
 
 
-            <input placeholder="Upload Image" type="file" formControlName="image">
+            <input placeholder="Upload Image" type="file" (change)="uploadImage($event)" formControlName="image" >
 
           <div class="footer">
-            <button class="btn" type="submit">Upload</button>
+            <button class="btn" type="submit" >Upload</button>
           </div>
 
         </form>
