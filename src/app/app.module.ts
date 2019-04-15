@@ -14,6 +14,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SharedModule } from './shared/shared.module';
 import { AvatarModule } from 'ng2-avatar';
+import {AngularFireStorageModule} from '@angular/fire/storage';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { AvatarModule } from 'ng2-avatar';
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     SharedModule,
+    AngularFireStorageModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

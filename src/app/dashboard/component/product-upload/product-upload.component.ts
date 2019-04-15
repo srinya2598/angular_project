@@ -6,6 +6,8 @@ import {IProduct} from '../../../shared/models/product';
 import {IProductCategory} from '../../../shared/models/category';
 import {AuthController} from '../../../core/controllers/auth-controller';
 import {IUser} from '../../../shared/models/users';
+import {AngularFireStorage} from '@angular/fire/storage';
+import {ApiService} from '../../../core/services/api.service';
 
 @Component({
   selector: 'app-product-upload',
@@ -19,7 +21,7 @@ export class ProductUploadComponent implements OnInit {
   userId;
 
 
-  constructor( private productController:ProductController, private authController:AuthController ) {
+  constructor( private productController: ProductController, private authController: AuthController, private storage: AngularFireStorage, private apiService: ApiService) {
     this.categories = CommonUtils.getCategories();
     this.authController.getUser().subscribe((res:IUser) => {
       if(!res)
@@ -45,13 +47,18 @@ export class ProductUploadComponent implements OnInit {
       name:this.formGroup.controls["productName"].value,
       category:this.formGroup.controls["category"].value,
       description:this.formGroup.controls["productDescription"].value,
-      id:CommonUtils.getRandomId(),
-      userId:this.userId,
+      id: CommonUtils.getRandomId(),
+      userId: this.userId,
       imageUrl:"skdfnkdf"
     };
 
     this.productController.uploadProduct(p)
   }
 
-
+uploadImage(event) {
+    console.log(event);
+const fileName = event.target.files[0].name;
+const file = event.target.files[0];
+this.apiService.uploadImages(fileName, file)
+}
 }
