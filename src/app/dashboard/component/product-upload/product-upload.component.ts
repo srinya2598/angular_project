@@ -26,11 +26,14 @@ export class ProductUploadComponent implements OnInit {
 
 
   constructor(private productController: ProductController,
-              private apiService:ApiService,
+              private authController: AuthController,
+              private apiService: ApiService,
               private storage: AngularFireStorage,
               private notificationService: NotificationService) {
     this.categories = CommonUtils.getCategories();
-    this.userId = this.apiService.getItem(Constants.USER_UID);
+    this.authController.getUser().subscribe((res) => {
+      if (res) this.userId = res.id;
+    });
   }
 
   ngOnInit() {
@@ -62,6 +65,10 @@ export class ProductUploadComponent implements OnInit {
   }
 
   uploadImage(event) {
+    if (!event) {
+      this.notificationService.error('Please select an image');
+      return;
+    }
     let response = this.productController.uploadProductImage(event.target.files[0]);
     response[0].subscribe(percent => this.uploadPercent = percent);
     response[1].subscribe(res => this.downloadUrl = res);

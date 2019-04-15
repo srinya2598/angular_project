@@ -5,7 +5,7 @@ import { State } from '../../dashboard/reducers';
 import { AddProduct } from '../../dashboard/actions/dashboard';
 import { ApiService } from '../services/api.service';
 import { NotificationService } from '../services/notification.service';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 @Injectable({
@@ -15,9 +15,11 @@ export class ProductController {
 
   uploadPercent: BehaviorSubject<number>;
   downloadUrlSubject: BehaviorSubject<string>;
-  downloadUrl: Observable<string>;
 
-  constructor(private  store: Store<State>, private apiService: ApiService, private notificationService: NotificationService) {
+  constructor(private  store: Store<State>,
+              private apiService: ApiService,
+              private notificationService: NotificationService
+  ) {
     this.uploadPercent = new BehaviorSubject<number>(0);
     this.downloadUrlSubject = new BehaviorSubject('null');
   }
@@ -35,12 +37,13 @@ export class ProductController {
 
   uploadProductImage(file: File): BehaviorSubject<any>[] {
     const fileName = file.name;
-    const task = this.apiService.uploadImages(fileName, file);
+    const ref = this.apiService.getProductImageRef(fileName);
+    const task = this.apiService.uploadImages(fileName, file, ref);
     task.percentageChanges().subscribe(percent => this.uploadPercent.next(percent));
-    this.apiService.getProductImageRef(fileName).getDownloadURL().subscribe(url => {
-      if(url) {
-        this.downloadUrlSubject.next(url);
-      }
+    task.snapshotChanges().pipe(
+      finalize(() => ref.getDownloadURL().subscribe(url => this.downloadUrlSubject.next(url)))
+    ).subscribe(null, (error) => {
+      this.notificationService.error(error.message);
     });
     return [this.uploadPercent, this.downloadUrlSubject];
   }

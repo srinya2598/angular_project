@@ -13,7 +13,9 @@ import { tsStructureIsReused } from '@angular/compiler-cli/src/transformers/util
 })
 export class ApiService {
 
-  constructor(private angularFireAuth: AngularFireAuth, private angularFireDb: AngularFireDatabase, private storage: AngularFireStorage) {
+  constructor(private angularFireAuth: AngularFireAuth,
+              private angularFireDb: AngularFireDatabase,
+              private storage: AngularFireStorage) {
 
   }
 
@@ -69,8 +71,8 @@ export class ApiService {
 
   }
 
-  uploadImages(fileName, file): AngularFireUploadTask {
-    return this.getProductImageRef(fileName).put(file);
+  uploadImages(fileName: string, file: File, ref:AngularFireStorageReference): AngularFireUploadTask {
+    return ref.put(file);
   }
 
   getProductImageRef(fileName: string): AngularFireStorageReference {
