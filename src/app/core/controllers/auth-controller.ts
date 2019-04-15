@@ -182,28 +182,4 @@ export class AuthController {
     return this.store.select(getLoggedInUser);
 
   }
-
-//   uploadProduct(productData) {
-  // if (!productData) {
-  // return;
-  // }
-  // const product: ProductDetails;
-  // this.store.dispatch(new uploadProduct());
-
-
-  // product = {
-  // id: res.product.uid,
-  // productName: productData.productName,
-  // productCategory: productData.productCategory,
-  // productDescription: productData.productDescription,
-  // uploadedImage: productData.uploadedImage
-
-  // };
-  // return this.apiService.setProductDetails(res.product.uid, product);
-  // }
-
-// ),
-// }
-// }
-
 }

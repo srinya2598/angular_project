@@ -18,7 +18,7 @@ export const rootRoutes: Routes = [
   {
     path: '',
     loadChildren: './dashboard/dashboard.module#DashboardModule',
-    // canActivate: [DashboardGuard]
+    canActivate: [DashboardGuard]
   }
 ];
 

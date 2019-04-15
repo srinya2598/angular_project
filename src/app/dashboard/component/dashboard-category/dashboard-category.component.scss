@@ -1,13 +1,34 @@
-.category{
+.category {
   height: 400px;
   width: 400px;
   margin-right: 40px;
   margin-left: 40px;
-
+  .category-card {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    p {
+      position: absolute;
+      font-size: 20px;
+      transition: transform .2s;
+      color: #192A56;
+    }
+    .category-image {
+      opacity: 0.3;
+      height: 200px;
+      width: 350px;
+    }
+  }
+  &:hover {
+    p {
+      transform: scale(1.4);
+    }
+  }
 }
 
-
-.img-card {
-  height: 200px;
-  width: 350px;
+.column:focus {
+  outline: none;
 }

@@ -1,31 +1,31 @@
 <div class="container-fluid">
-<div class="navbar navbar-inverse">
-  <div class="container-fluid d-flex justify-content-between">
-    <div class="navbar-header d-flex align-items-center">ng
-      <img src="/assets/shopping.png" height="100px" width="100px"/>
-      <h2>Dashboard</h2>
+  <div class="navbar navbar-inverse">
+    <div class="container-fluid d-flex justify-content-between">
+      <div class="navbar-header d-flex align-items-center">ng
+        <img src="/assets/shopping.png" height="100px" width="100px"/>
+        <h2>Dashboard</h2>
+      </div>
+
+      <div [matMenuTriggerFor]="menu" (click)="toggleMenu()" class="dropdown-container mr-5 d-flex align-items-center">
+        You are logged in as {{email}}
+        <mat-icon *ngIf="!show">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="show">keyboard_arrow_up</mat-icon>
+        <mat-menu [overlapTrigger]="false" xPosition="after" #menu="matMenu">
+          <span class="poppins-regular" mat-menu-item [mat-menu-trigger-for]="profile"><mat-icon>account_circle</mat-icon>Profile</span>
+          <span class="poppins-regular" mat-menu-item (click)="onLogout()"><mat-icon>reply_all</mat-icon>Logout</span>
+        </mat-menu>
+
+        <mat-menu xPosition="after" #profile="matMenu">
+          <span mat-menu-item (click)="viewProfile()"><mat-icon>assignment_ind</mat-icon>View Profile</span>
+          <span mat-menu-item (click)="uploadProduct()"><mat-icon>add_shopping_cart</mat-icon>Add Products</span>
+
+        </mat-menu>
+      </div>
+
     </div>
 
-    <div [matMenuTriggerFor]="menu" (click)="toggleMenu()" class="dropdown-container mr-5 d-flex align-items-center">
-      You are logged in as {{email}}
-      <mat-icon *ngIf="!show">keyboard_arrow_down</mat-icon>
-      <mat-icon *ngIf="show">keyboard_arrow_up</mat-icon>
-      <mat-menu [overlapTrigger]="false" xPosition="before" #menu="matMenu">
-        <span  class="poppins-regular" mat-menu-item [mat-menu-trigger-for]="profile" ><mat-icon>account_circle</mat-icon>Profile</span>
-        <span (click)="uploadProduct()" class="poppins-regular"  mat-menu-item><mat-icon>add_shopping_cart</mat-icon>Add Product</span>
-        <span class="poppins-regular" mat-menu-item (click)="onLogout()"><mat-icon>reply_all</mat-icon>Logout</span>
-      </mat-menu>
-
-      <mat-menu #profile="matMenu">
-        <span mat-menu-item (click)="viewProfile()"><mat-icon>assignment_ind</mat-icon>Update Profile</span>
-        <span mat-menu-item ><mat-icon>backup</mat-icon>Updated Products</span>
-
-      </mat-menu>
-    </div>
-
-</div>
-  <router-outlet></router-outlet>
   </div>
+</div>
 
 
-
+<router-outlet></router-outlet>

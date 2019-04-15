@@ -52,7 +52,6 @@ export function authReducer(state: AuthState = initialAuthState, action: Action)
           isLoading: false
         };
       case AuthActions.FETCH_USER:
-        console.log('Payload', action.payload);
         return {
           ...state,
           loggedInUser: action.payload,

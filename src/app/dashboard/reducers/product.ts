@@ -27,6 +27,6 @@ export function productReducer(state: ProductState = initialState, action: Actio
 
 }
 
-export const _getEntity = (state: ProductState) => state.entities;
+export const _getEntities = (state: ProductState) => state.entities;
 export const _getIds = (state: ProductState) => state.ids;
 

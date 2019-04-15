@@ -13,7 +13,6 @@ import { rootReducer } from './root-reducer';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SharedModule } from './shared/shared.module';
-import { AvatarModule } from 'ng2-avatar';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 
 

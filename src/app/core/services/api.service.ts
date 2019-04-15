@@ -4,8 +4,8 @@ import { from } from 'rxjs';
 import { IUser } from '../../shared/models/users';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { auth } from 'firebase';
-import {IProduct} from '../../shared/models/product';
-import {AngularFireStorage} from '@angular/fire/storage';
+import { IProduct } from '../../shared/models/product';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root',
@@ -61,14 +61,15 @@ export class ApiService {
   }
 
   setProductDetails(id: string, product: IProduct) {
-    if (!id || !product ) {
+    if (!id || !product) {
       return;
     }
     return from(this.angularFireDb.database.ref(`product/${id}`).set(product));
 
   }
-uploadImages(fileName, file){
-this.storage.ref('product-images/${fileName}').put(file);
-}
+
+  uploadImages(fileName, file) {
+    this.storage.ref('product-images/${fileName}').put(file);
+  }
 }
 

@@ -24,7 +24,6 @@ export class BootstrapComponent implements OnInit {
     if (!isLoggedInUserLoaded) {
       const uid = this.apiService.getItem(Constants.USER_UID);
       this.apiService.getUserDetails(uid).pipe(take(1)).subscribe((res:IUser) => {
-        console.log(res);
         this.store.dispatch(new FetchUser(res));
         this.router.navigate(['dashboard']);
       });
