@@ -7,13 +7,15 @@ import { SharedModule } from '../shared/shared.module';
 import { ProductUploadComponent } from './component/product-upload/product-upload.component';
 import { ProfileComponent } from './component/profile-container/profile/profile.component';
 import { ProfileContainerComponent } from './component/profile-container/profile-container.component';
+import { ProductComponent } from './component/product/product.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     ProductUploadComponent,
     ProfileComponent,
-    ProfileContainerComponent],
+    ProfileContainerComponent,
+    ProductComponent],
   imports: [
     CommonModule,
     SharedModule,
