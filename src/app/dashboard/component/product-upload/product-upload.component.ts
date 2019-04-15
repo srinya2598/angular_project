@@ -1,13 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
-import {CommonUtils} from '../../../shared/utils/common.utils';
-import {ProductController} from '../../../core/controllers/product-controller';
-import {IProduct} from '../../../shared/models/product';
-import {IProductCategory} from '../../../shared/models/category';
-import {AuthController} from '../../../core/controllers/auth-controller';
-import {IUser} from '../../../shared/models/users';
-import {AngularFireStorage} from '@angular/fire/storage';
-import {ApiService} from '../../../core/services/api.service';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { CommonUtils } from '../../../shared/utils/common.utils';
+import { ProductController } from '../../../core/controllers/product-controller';
+import { IProduct } from '../../../shared/models/product';
+import { IProductCategory } from '../../../shared/models/category';
+import { AuthController } from '../../../core/controllers/auth-controller';
+import { IUser } from '../../../shared/models/users';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { ApiService } from '../../../core/services/api.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { Constants } from '../../../shared/utils/constants';
 
 @Component({
   selector: 'app-product-upload',
@@ -19,14 +21,16 @@ export class ProductUploadComponent implements OnInit {
   formGroup: FormGroup;
   categories: string[];
   userId;
+  uploadPercent = 0;
+  downloadUrl = null;
 
 
-  constructor( private productController: ProductController, private authController: AuthController, private storage: AngularFireStorage, private apiService: ApiService) {
+  constructor(private productController: ProductController,
+              private apiService:ApiService,
+              private storage: AngularFireStorage,
+              private notificationService: NotificationService) {
     this.categories = CommonUtils.getCategories();
-    this.authController.getUser().subscribe((res:IUser) => {
-      if(!res)
-      this.userId = res.id
-    });
+    this.userId = this.apiService.getItem(Constants.USER_UID);
   }
 
   ngOnInit() {
@@ -38,27 +42,28 @@ export class ProductUploadComponent implements OnInit {
     });
 
 
-
-}
-  uploadProduct() {
-    console.log("called");
-    // this.authController.signUp(this.formGroup.value);
-    const p:IProduct = {
-      name:this.formGroup.controls["productName"].value,
-      category:this.formGroup.controls["category"].value,
-      description:this.formGroup.controls["productDescription"].value,
-      id: CommonUtils.getRandomId(),
-      userId: this.userId,
-      imageUrl:"skdfnkdf"
-    };
-
-    this.productController.uploadProduct(p)
   }
 
-uploadImage(event) {
-    console.log(event);
-const fileName = event.target.files[0].name;
-const file = event.target.files[0];
-this.apiService.uploadImages(fileName, file)
-}
+  uploadProduct() {
+    if (!this.downloadUrl) {
+      this.notificationService.error('Please select an image');
+      return;
+    }
+    const product: IProduct = {
+      name: this.formGroup.controls['productName'].value,
+      category: this.formGroup.controls['category'].value,
+      description: this.formGroup.controls['productDescription'].value,
+      id: CommonUtils.getRandomId(),
+      userId: this.userId,
+      imageUrl: this.downloadUrl
+    };
+
+    this.productController.uploadProduct(product);
+  }
+
+  uploadImage(event) {
+    let response = this.productController.uploadProductImage(event.target.files[0]);
+    response[0].subscribe(percent => this.uploadPercent = percent);
+    response[1].subscribe(res => this.downloadUrl = res);
+  }
 }

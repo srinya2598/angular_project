@@ -5,7 +5,8 @@ import { IUser } from '../../shared/models/users';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { auth } from 'firebase';
 import { IProduct } from '../../shared/models/product';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+import { tsStructureIsReused } from '@angular/compiler-cli/src/transformers/util';
 
 @Injectable({
   providedIn: 'root',
@@ -64,12 +65,16 @@ export class ApiService {
     if (!id || !product) {
       return;
     }
-    return from(this.angularFireDb.database.ref(`product/${id}`).set(product));
+    return from(this.angularFireDb.database.ref(`products/${id}`).set(product));
 
   }
 
-  uploadImages(fileName, file) {
-    this.storage.ref('product-images/${fileName}').put(file);
+  uploadImages(fileName, file): AngularFireUploadTask {
+    return this.getProductImageRef(fileName).put(file);
+  }
+
+  getProductImageRef(fileName: string): AngularFireStorageReference {
+    return this.storage.ref(`product-images/${fileName}`);
   }
 }
 
