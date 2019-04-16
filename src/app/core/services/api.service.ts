@@ -78,5 +78,9 @@ export class ApiService {
   getProductImageRef(fileName: string): AngularFireStorageReference {
     return this.storage.ref(`product-images/${fileName}`);
   }
+
+  fetchProduct(){
+    return this.angularFireDb.object(`product/`).valueChanges();
+  }
 }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { IProduct } from '../../shared/models/product';
 import { Store } from '@ngrx/store';
 import { State } from '../../dashboard/reducers';
-import { AddProduct } from '../../dashboard/actions/dashboard';
+import {AddProduct, FetchSuccess} from '../../dashboard/actions/dashboard';
 import { ApiService } from '../services/api.service';
 import { NotificationService } from '../services/notification.service';
 import { BehaviorSubject } from 'rxjs';
@@ -18,7 +18,8 @@ export class ProductController {
 
   constructor(private  store: Store<State>,
               private apiService: ApiService,
-              private notificationService: NotificationService
+              private notificationService: NotificationService,
+              private productController: ProductController
   ) {
     this.uploadPercent = new BehaviorSubject<number>(0);
     this.downloadUrlSubject = new BehaviorSubject('null');
@@ -46,6 +47,16 @@ export class ProductController {
       this.notificationService.error(error.message);
     });
     return [this.uploadPercent, this.downloadUrlSubject];
+  }
+
+  fetchProduct(){
+    console.log('products fetched ')
+
+    this.apiService.fetchProduct().subscribe((res ) => {this.store.dispatch(new FetchSuccess(res))},
+      (error)=> {
+      this.notificationService.error(error);
+      });
+
   }
 }
 

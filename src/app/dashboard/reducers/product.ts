@@ -21,6 +21,11 @@ export function productReducer(state: ProductState = initialState, action: Actio
     case DashboardActions.ADD_PRODUCT:
       console.log(action.payload);
       return adapter.addOne(action.payload, state);
+
+    case DashboardActions.FETCH_PRODUCT:
+
+    case DashboardActions.FETCH_SUCCESS:
+
     default:
       return state;
   }
