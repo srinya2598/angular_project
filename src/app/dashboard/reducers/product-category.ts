@@ -14,6 +14,7 @@ export interface ProductCategoryState {
   books: string[],
   movies: string[],
   others: string[],
+  loadng: boolean,
 }
 
 export const initialProductCategoryState: ProductCategoryState = {
@@ -29,6 +30,7 @@ export const initialProductCategoryState: ProductCategoryState = {
   books: [],
   movies: [],
   others: [],
+  loadng: false,
 };
 
 
@@ -81,7 +83,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
         } else if (action.payload.category == IProductCategory.BOOKS) {
           tempState = {
             ...state,
-            books:[...state.books,action.payload.id]
+            books: [...state.books, action.payload.id]
           };
         } else if (action.payload.category == IProductCategory.MOVIES_MUSIC_VIDEOS) {
           tempState = {
@@ -93,8 +95,84 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
             ...state,
             others: [...state.others, action.payload.id]
           };
+          return tempState;
         }
-        return tempState;
+        ;
+
+
+      case  DashboardActions.FETCH_PRODUCT:
+        return {
+          ...state,
+          loadng: true
+        }
+    }
+    ;
+  case DashboardActions.FETCH_SUCCESS:
+
+  let i : any;
+  for (i = 0; i <= action.payload; i++) {
+      let categoryState = {...state};
+      if (action.payload.category == IProductCategory.MOBILE_COMPUTER) {
+        categoryState = {
+          ...state,
+          mobileComputer:state.mobileComputer.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.ELECTRONIC_APPLIANCES) {
+        categoryState = {
+          ...state,
+          electronic: state.electronic.concat(action.payload)        };
+      } else if (action.payload.category == IProductCategory.HOME_APPLIANCES) {
+        categoryState = {
+          ...state,
+          home:state.home.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.MEN_CLOTHING) {
+        categoryState = {
+          ...state,
+          men: state.men.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.WOMEN_CLOTHING) {
+        categoryState = {
+          ...state,
+          women: state.women.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.KIDS_CLOTHING) {
+        categoryState = {
+          ...state,
+          kids: state.kids.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.TOYS) {
+        categoryState = {
+          ...state,
+          toys:state.toys.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.VEHICLES) {
+        categoryState = {
+          ...state,
+          vehicles: state.vehicles.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.BOOKS) {
+        categoryState = {
+          ...state,
+          books: state.books.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.MOVIES_MUSIC_VIDEOS) {
+        categoryState = {
+          ...state,
+          movies: state.movies.concat(action.payload)
+        };
+      } else {
+        categoryState = {
+          ...state,
+          others: state.others.concat(action.payload)
+        };
+        return categoryState;
+      }
+    }
+
+  }
+
+
       default:
         return state;
     }

@@ -1,5 +1,7 @@
 import {Action} from './index';
 import {IProduct} from '../../shared/models/product';
+import {adapter} from '../reducers/product';
+import {state} from '@angular/animations';
 
 export enum DashboardActions {
   ADD_PRODUCT = '[dashboard] addproduct',
