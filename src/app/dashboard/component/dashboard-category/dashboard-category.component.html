@@ -1,7 +1,7 @@
 <div class="row">
   <div class="column">
     <button mat-button class="category" (click)="onMobile()">
-      <mat-card class="category-card">
+      <mat-card (click)="setSelectedCategory(Category.MOBILE_COMPUTER)" class="category-card">
         <p class="poppins-medium">Mobile</p>
         <img class="category-image" src="/assets/mobileandcomputers.png">
       </mat-card>
@@ -9,7 +9,7 @@
   </div>
   <div class="column">
     <button mat-button class="category">
-      <mat-card class="category-card">
+      <mat-card (click)="setSelectedCategory(Category.ELECTRONIC_APPLIANCES)" class="category-card">
           <p class="poppins-medium">Electronic Appliances</p>
         <img class="category-image"  src="/assets/electronicappliances.jpg">
       </mat-card>
@@ -17,7 +17,7 @@
   </div>
   <div class="column">
     <button mat-button class="category">
-      <mat-card class="category-card">
+      <mat-card (click)="setSelectedCategory(Category.HOME_APPLIANCES)" class="category-card">
           <p style="align-content: center;">Home Appliances</p>
         <img  class="category-image"  src="/assets/homeappliances.jpg">
       </mat-card>
@@ -28,7 +28,7 @@
 <div class="row">
   <div class="column">
     <button mat-button class="category">
-      <mat-card class="category-card">
+      <mat-card (click)="setSelectedCategory(Category.MEN_CLOTHING)" class="category-card">
           <p class="poppins-medium">Men Clothing</p>
         <img class="category-image"  src="/assets/menclothing.jpg">
       </mat-card>
@@ -36,7 +36,7 @@
   </div>
   <div class="column">
     <button mat-button class="category">
-      <mat-card class="category-card">
+      <mat-card (click)="setSelectedCategory(Category.WOMEN_CLOTHING)" class="category-card">
           <p class="poppins-medium">Women Clothing</p>
         <img class="category-image"  src="/assets/womenclothing.jpg">
       </mat-card>
@@ -44,7 +44,7 @@
   </div>
   <div class="column">
     <button mat-button class="category">
-      <mat-card class="category-card">
+      <mat-card (click)="setSelectedCategory(Category.KIDS_CLOTHING)" class="category-card">
           <p style="align-content: center;">Kids Clothing</p>
         <img  class="category-image"  src="/assets/kidsclothing.jpg">
       </mat-card>
@@ -55,7 +55,7 @@
 <div class="row">
   <div class="column">
     <button mat-button class="category">
-      <mat-card class="category-card">
+      <mat-card (click)="setSelectedCategory(Category.TOYS)" class="category-card">
           <p class="poppins-medium">Toys</p>
         <img class="category-image"  src="/assets/toys.jpg">
       </mat-card>
@@ -63,7 +63,7 @@
   </div>
   <div class="column">
     <button mat-button class="category">
-      <mat-card class="category-card">
+      <mat-card (click)="setSelectedCategory(Category.VEHICLES)" class="category-card">
           <p class="poppins-medium">Vehicles</p>
         <img class="category-image"  src="/assets/vehicles.jpeg">
       </mat-card>
@@ -71,7 +71,7 @@
   </div>
   <div class="column">
     <button mat-button class="category">
-      <mat-card class="category-card">
+      <mat-card (click)="setSelectedCategory(Category.BOOKS)" class="category-card">
           <p style="align-content: center;">Books</p>
         <img  class="category-image"  src="/assets/books.png">
       </mat-card>
@@ -82,7 +82,7 @@
 <div class="row">
   <div class="column">
     <button mat-button class="category">
-      <mat-card class="category-card">
+      <mat-card (click)="setSelectedCategory(Category.MOVIES_MUSIC_VIDEOS)" class="category-card">
           <p class="poppins-medium">Music, Games and Movies</p>
         <img class="category-image"  src="/assets/movies.jpg">
       </mat-card>
@@ -90,7 +90,7 @@
   </div>
   <div class="column">
     <button mat-button class="category">
-      <mat-card class="category-card">
+      <mat-card (click)="setSelectedCategory(Category.OTHERS)" class="category-card">
           <p class="poppins-medium">Miscellaneous</p>
         <img class="category-image"  src="/assets/miscellaneous.jpg">
       </mat-card>

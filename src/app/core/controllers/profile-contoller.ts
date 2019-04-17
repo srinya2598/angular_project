@@ -6,7 +6,6 @@ import {ApiService} from '../services/api.service';
 import {NotificationService} from '../services/notification.service';
 
 @Injectable({
-
   providedIn: 'root'
 })
 export class ProfileContoller {

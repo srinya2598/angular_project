@@ -1,18 +1,22 @@
-<div class="row"  *ngFor="let mobileComputer of mobileComputers">
-  <div class="container">
-    <h3 style="color: white; text-align: center">Mobile and Computers</h3>
-    <div class="list-group">
-      <a
-        href="#"
-        class="list-group-item">
-        <p>
-          <img src="/assets/oneplus.jpg" height="150px" class="rounded-pill">
-          <span style="font-size: xx-large"> One Plus 6T</span>
-          <br><span style="font-size: medium">Unlock your OnePlus 6T with the fastest in-display fingerprint sensor on any smartphone. We are setting a new industry standard with our cutting-edge Screen Unlock technology.</span>
-          <br><span style="color: red; font-size: 25px; font-weight: bold">Rs. 45000</span>
-        </p>
-    </a>
-  </div>
-</div>
+<p *ngIf="products.length==0; else myProducts" style="color: white; text-align: center">No products available for this category</p>
+<ng-template #myProducts>
+  <div class="row" *ngFor="let product of products">
+    <div class="container">
 
-</div>
+      <div class="list-group">
+        <a
+          href="#"
+          class="list-group-item">
+          <p>
+            <img [src]="product.imageUrl" height="150px" width="180px" class="rounded-pill">
+            <span style="font-size: xx-large"> {{product.name}}</span>
+            <br><span style="font-size: medium">{{product.description}}</span>
+            <!--<br><span style="color: red; font-size: 25px; font-weight: bold">{{// product.}}</span>-->
+          </p>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</ng-template>
+

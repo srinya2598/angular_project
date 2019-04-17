@@ -185,10 +185,18 @@ export class CommonUtils {
 
   static getCategories() {
     return [
-      'electronics',
-      'homeappliances',
-      'personalcare',
-      'vehicles'
+      'Mobile and Computer',
+      'Electronic Appliances',
+      'Home Appliances',
+      'Men Clothing',
+      'Women Clothing',
+      'Kids Clothing',
+      'Toys',
+      'Vehicles',
+      'Books',
+      'Movies',
+      'Music and Videos',
+      'Others'
     ];
   }
 

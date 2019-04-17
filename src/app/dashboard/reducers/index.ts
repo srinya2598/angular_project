@@ -1,15 +1,17 @@
 import { RootState } from '../../root-reducer';
-import { _getEntities, _getIds, adapter, productReducer, ProductState } from './product';
+import { _getEntities, _getIds,  productReducer, ProductState } from './product';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   _getBooksids,
   _getElectronicids,
   _getHomeids,
+  _getIsProductLoaded,
   _getKidsids,
   _getMenids,
   _getMobileComputerids,
   _getMoviesids,
   _getOthersids,
+  _getSelectedCategory,
   _getToysids,
   _getVehiclesids,
   _getWomenids,
@@ -94,6 +96,14 @@ export const getMoviesIds = createSelector(
 export const getOthersIds = createSelector(
   getProductCategoryState,
   _getOthersids
+);
+export const getIsProductLoaded = createSelector(
+  getProductCategoryState,
+  _getIsProductLoaded
+);
+export const getSelectedCategory = createSelector(
+  getProductCategoryState,
+  _getSelectedCategory
 );
 
 // Fetching the actual product objects using ids and entities

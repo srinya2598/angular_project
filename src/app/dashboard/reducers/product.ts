@@ -1,8 +1,7 @@
-import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
-import {IProduct} from '../../shared/models/product';
-import {DashboardActions} from '../actions/dashboard';
-import {Action} from '../actions';
-import {state} from '@angular/animations';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { IProduct } from '../../shared/models/product';
+import { DashboardActions } from '../actions/product';
+import { Action } from '../actions';
 
 
 export interface ProductState extends EntityState <IProduct> {
@@ -27,7 +26,7 @@ export function productReducer(state: ProductState = initialState, action: Actio
 
     case DashboardActions.FETCH_SUCCESS:
       console.log('product fetched success');
-      return adapter.addMany(action.payload,state);
+      return adapter.addMany(action.payload, state);
 
 
     default:
