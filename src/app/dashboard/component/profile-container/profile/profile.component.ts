@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
 
   buttonText = ButtonText.EDIT;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data, private authController: AuthController, private profileConntroller: ProfileContoller) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data, private authController: AuthController, private profileController: ProfileContoller) {
     this.user = data.user;
     this.authController.getIsLoading().subscribe(res => this.isLoading = res);
   }
@@ -68,7 +68,7 @@ export class ProfileComponent implements OnInit {
     response[1].subscribe(res => this.downloadUrl = res);
   }
   }
-}
+
 
 export enum ButtonText {
   EDIT = 'Edit',
