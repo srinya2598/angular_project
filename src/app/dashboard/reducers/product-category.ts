@@ -1,6 +1,7 @@
-import {Action} from '../actions';
-import {DashboardActions} from '../actions/dashboard';
-import {IProductCategory} from '../../shared/models/category';
+import { Action } from '../actions';
+import { DashboardActions } from '../actions/dashboard';
+import { IProductCategory } from '../../shared/models/category';
+import { IProduct } from '../../shared/models/product';
 
 export interface ProductCategoryState {
   mobileComputer: string[],
@@ -35,150 +36,156 @@ export const initialProductCategoryState: ProductCategoryState = {
 
 
 export function productCategoryReducer(state: ProductCategoryState = initialProductCategoryState, action: Action) {
-  {
-    switch (action.type) {
-      case DashboardActions.ADD_PRODUCT:
-        console.log("categories");
-        let tempState = {...state};
-        if (action.payload.category == IProductCategory.MOBILE_COMPUTER) {
-          tempState = {
-            ...state,
-            mobileComputer: [...state.mobileComputer, action.payload.id]
-          };
-        } else if (action.payload.category == IProductCategory.ELECTRONIC_APPLIANCES) {
-          tempState = {
-            ...state,
-            electronic: [...state.electronic, action.payload.id]
-          };
-        } else if (action.payload.category == IProductCategory.HOME_APPLIANCES) {
-          tempState = {
-            ...state,
-            home: [...state.home, action.payload.id]
-          };
-        } else if (action.payload.category == IProductCategory.MEN_CLOTHING) {
-          tempState = {
-            ...state,
-            men: [...state.men, action.payload.id]
-          };
-        } else if (action.payload.category == IProductCategory.WOMEN_CLOTHING) {
-          tempState = {
-            ...state,
-            women: [...state.women, action.payload.id]
-          };
-        } else if (action.payload.category == IProductCategory.KIDS_CLOTHING) {
-          tempState = {
-            ...state,
-            kids: [...state.kids, action.payload.id]
-          };
-        } else if (action.payload.category == IProductCategory.TOYS) {
-          tempState = {
-            ...state,
-            toys: [...state.toys, action.payload.id]
-          };
-        } else if (action.payload.category == IProductCategory.VEHICLES) {
-          tempState = {
-            ...state,
-            vehicles: [...state.vehicles, action.payload.id]
-          };
-        } else if (action.payload.category == IProductCategory.BOOKS) {
-          tempState = {
-            ...state,
-            books: [...state.books, action.payload.id]
-          };
-        } else if (action.payload.category == IProductCategory.MOVIES_MUSIC_VIDEOS) {
-          tempState = {
-            ...state,
-            movies: [...state.movies, action.payload.id]
-          };
-        } else {
-          tempState = {
-            ...state,
-            others: [...state.others, action.payload.id]
-          };
-          return tempState;
-        };
 
-      case  DashboardActions.FETCH_PRODUCT:
-        return {
-          ...state,
-          loadng: true
-        };
-
-
-
-
-  case DashboardActions.FETCH_SUCCESS:
-
-  let i : any;
-  for (i = 0; i <= action.payload; i++) {
-      let categoryState = {...state};
+  switch (action.type) {
+    case DashboardActions.ADD_PRODUCT:
+      let tempState = { ...state };
       if (action.payload.category == IProductCategory.MOBILE_COMPUTER) {
-        categoryState = {
+        tempState = {
           ...state,
-          mobileComputer:state.mobileComputer.concat(action.payload)
+          mobileComputer: [...state.mobileComputer, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.ELECTRONIC_APPLIANCES) {
-        categoryState = {
+        tempState = {
           ...state,
-          electronic: state.electronic.concat(action.payload)        };
+          electronic: [...state.electronic, action.payload.id]
+        };
       } else if (action.payload.category == IProductCategory.HOME_APPLIANCES) {
-        categoryState = {
+        tempState = {
           ...state,
-          home:state.home.concat(action.payload)
+          home: [...state.home, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.MEN_CLOTHING) {
-        categoryState = {
+        tempState = {
           ...state,
-          men: state.men.concat(action.payload)
+          men: [...state.men, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.WOMEN_CLOTHING) {
-        categoryState = {
+        tempState = {
           ...state,
-          women: state.women.concat(action.payload)
+          women: [...state.women, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.KIDS_CLOTHING) {
-        categoryState = {
+        tempState = {
           ...state,
-          kids: state.kids.concat(action.payload)
+          kids: [...state.kids, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.TOYS) {
-        categoryState = {
+        tempState = {
           ...state,
-          toys:state.toys.concat(action.payload)
+          toys: [...state.toys, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.VEHICLES) {
-        categoryState = {
+        tempState = {
           ...state,
-          vehicles: state.vehicles.concat(action.payload)
+          vehicles: [...state.vehicles, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.BOOKS) {
-        categoryState = {
+        tempState = {
           ...state,
-          books: state.books.concat(action.payload)
+          books: [...state.books, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.MOVIES_MUSIC_VIDEOS) {
-        categoryState = {
+        tempState = {
           ...state,
-          movies: state.movies.concat(action.payload)
+          movies: [...state.movies, action.payload.id]
         };
       } else {
-        categoryState = {
+        tempState = {
           ...state,
-          others: state.others.concat(action.payload)
+          others: [...state.others, action.payload.id]
         };
-        return categoryState;
       }
-    };
-      default:
-
-        return state;
-    }
+      return tempState;
 
 
-        return state;
-    }
+    case DashboardActions.FETCH_SUCCESS:
+      const products = action.payload;
+      let mobileComputesId: string[] = [];
+      let electronicsId: string[] = [];
+      let homeId: string[] = [];
+      let menId: string[] = [];
+      let womenId: string[] = [];
+      let kidsId: string[] = [];
+      let toysId: string[] = [];
+      let vehiclesId: string[] = [];
+      let booksId: string[] = [];
+      let moviesId: string[] = [];
+      let otherId: string[] = [];
+
+
+      if (products) {
+        products.forEach((product: IProduct) => {
+          switch (product.category) {
+            case IProductCategory.MOBILE_COMPUTER:
+              mobileComputesId.push(product.id);
+              break;
+
+            case IProductCategory.ELECTRONIC_APPLIANCES:
+              electronicsId.push(product.id);
+              break;
+
+            case IProductCategory.HOME_APPLIANCES:
+              homeId.push(product.id);
+              break;
+
+            case IProductCategory.MEN_CLOTHING:
+              menId.push(product.id);
+              break;
+
+            case IProductCategory.WOMEN_CLOTHING:
+              womenId.push(product.id);
+              break;
+
+            case IProductCategory.KIDS_CLOTHING:
+              kidsId.push(product.id);
+              break;
+
+            case IProductCategory.TOYS:
+              toysId.push(product.id);
+              break;
+
+            case IProductCategory.VEHICLES:
+              vehiclesId.push(product.id);
+              break;
+
+            case IProductCategory.BOOKS:
+              vehiclesId.push(product.id);
+              break;
+
+            case IProductCategory.MOVIES_MUSIC_VIDEOS:
+              moviesId.push(product.id);
+              break;
+
+            default:
+              otherId.push(product.id);
+          }
+        });
+      }
+
+      return {
+        ...state,
+        mobileComputer: mobileComputesId,
+        electronic: electronicsId,
+        home: homeId,
+        men: menId,
+        women: womenId,
+        kids: kidsId,
+        toys: toysId,
+        vehicles: vehiclesId,
+        books: booksId,
+        movies: moviesId,
+        others: otherId,
+      }
+        ;
+
+    default:
+
+      return state;
   }
+
 }
+
 
 export const _getMobileComputerids = (state: ProductCategoryState) => state.mobileComputer;
 export const _getElectronicids = (state: ProductCategoryState) => state.electronic;
