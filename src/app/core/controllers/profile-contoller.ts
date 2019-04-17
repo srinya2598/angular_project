@@ -24,7 +24,7 @@ export class ProfileContoller {
   }
   uploadProfileImage(file: File  ): BehaviorSubject<any>[]{
     const fileName = file.name;
-    const task = this.apiService.getProfileImageRef(fileName).getDownloadURL().subscribe({
+    this.apiService.getProfileImageRef(fileName).getDownloadURL().subscribe((url)=>{
       if(url){
         this.downloadUrlProfile.next(url);
 

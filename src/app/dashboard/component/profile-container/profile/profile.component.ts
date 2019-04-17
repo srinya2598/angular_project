@@ -4,7 +4,8 @@ import { IUser } from '../../../../shared/models/users';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { CommonUtils } from '../../../../shared/utils/common.utils';
 import { AuthController } from '../../../../core/controllers/auth-controller';
-import {ProfileContoller} from '../../../../core/controllers/profile-contoller';
+import { ProfileContoller } from '../../../../core/controllers/profile-contoller';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-profile',
@@ -18,10 +19,15 @@ export class ProfileComponent implements OnInit {
   user: IUser;
   ButtonText = ButtonText;
   isLoading = false;
+  downloadUrl:string;
+  uploadPercent = 0;
 
   buttonText = ButtonText.EDIT;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data, private authController: AuthController, private profileController: ProfileContoller) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data,
+              private authController: AuthController,
+              private profileController: ProfileContoller,
+              private notificationService:NotificationService) {
     this.user = data.user;
     this.authController.getIsLoading().subscribe(res => this.isLoading = res);
   }
@@ -47,7 +53,7 @@ export class ProfileComponent implements OnInit {
         console.log(this.user);
         const user: IUser = {
           id: this.user.id,
-          email: "naimishverma50@gmail.com",
+          email: 'naimishverma50@gmail.com',
           firstName: this.formGroup.controls['firstName'].value,
           lastName: this.formGroup.controls['lastName'].value,
           phoneNo: this.formGroup.controls['phoneNo'].value,
@@ -58,17 +64,17 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  profileImage(event){
+  profileImage(event) {
     if (!event) {
       this.notificationService.error('Please select an image');
       return;
     }
-    const response = this.profileController.uploadProductImage(event.target.files[0]);
+    const response = this.profileController.uploadProfileImage(event.target.files[0]);
     response[0].subscribe(percent => this.uploadPercent = percent);
     response[1].subscribe(res => this.downloadUrl = res);
   }
-  }
 
+}
 
 export enum ButtonText {
   EDIT = 'Edit',

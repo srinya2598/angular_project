@@ -5,5 +5,5 @@
   email:string;
   country:string;
   phoneNo:string;
-  profileUrl: string;
+  profileUrl?: string;
  }
