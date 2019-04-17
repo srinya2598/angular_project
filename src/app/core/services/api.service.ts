@@ -73,6 +73,7 @@ export class ApiService {
 
   uploadImages(fileName: string, file: File, ref:AngularFireStorageReference): AngularFireUploadTask {
     return ref.put(file);
+    if (file)
   }
 
   getProductImageRef(fileName: string): AngularFireStorageReference {
