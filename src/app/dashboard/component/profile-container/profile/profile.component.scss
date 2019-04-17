@@ -34,4 +34,15 @@
 .EditProfile{
   margin-left: 300px;
   color: skyblue;
+  text-align: center;
+}
+.profileImage{
+  width:100px ;
+  height:100px;
+  border-radius: 50px;
+
+}
+.profilebutton{
+  justify-content: center;
+  display: flex;
 }

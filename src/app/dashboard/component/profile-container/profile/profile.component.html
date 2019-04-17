@@ -3,9 +3,14 @@
     <div class="header">
       <h3>PROFILE</h3>
 
-      <avatar [name]="user.firstName" [displayType]="'circle'"></avatar>
+
+      <avatar *ngIf="!downloadUrl" [name]="user.firstName" [displayType]="'circle'"></avatar>
+      <img class="profileImage" *ngIf="downloadUrl&&uploadPercent==100" [src]="downloadUrl"/>
+
     </div>
     <span class="EditProfile">Upload Profile Picture
+     <span class="profilebutton"><input type="file" (change)="uploadProfile($event)" ></span>
+
    </span>
      <form [formGroup]="formGroup" (ngSubmit)="formGroup.valid">
       <mat-form-field>

@@ -4,7 +4,7 @@ import { IUser } from '../../../../shared/models/users';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { CommonUtils } from '../../../../shared/utils/common.utils';
 import { AuthController } from '../../../../core/controllers/auth-controller';
-import { ProfileContoller } from '../../../../core/controllers/profile-contoller';
+import { ProfileController } from '../../../../core/controllers/profile-contoller';
 import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data,
               private authController: AuthController,
-              private profileController: ProfileContoller,
+              private profileController: ProfileController,
               private notificationService:NotificationService) {
     this.user = data.user;
     this.authController.getIsLoading().subscribe(res => this.isLoading = res);
@@ -64,7 +64,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  profileImage(event) {
+  uploadProfile(event) {
     if (!event) {
       this.notificationService.error('Please select an image');
       return;
@@ -72,12 +72,11 @@ export class ProfileComponent implements OnInit {
     const response = this.profileController.uploadProfileImage(event.target.files[0]);
     response[0].subscribe(percent => this.uploadPercent = percent);
     response[1].subscribe(res => this.downloadUrl = res);
-  }
 
-}
+  }
 
 export enum ButtonText {
   EDIT = 'Edit',
   SUBMIT = 'Submit'
-}
+
 
