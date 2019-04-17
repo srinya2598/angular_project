@@ -7,7 +7,7 @@
     </div>
     <span class="EditProfile">Upload Profile Picture
     <span >
-      <input type="file" matInput placeholder="upload Profile Picture"(change)="profileImage($event)">
+      <input type="file" (change)="profileImage($event)">
       <img width="100" height="100" *ngIf="downloadUrl && uploadPercent==100 " [src]="downloadUrl"/>
     </span>
    </span>
