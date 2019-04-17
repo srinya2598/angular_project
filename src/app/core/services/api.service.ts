@@ -71,7 +71,7 @@ export class ApiService {
 
   }
 
-  uploadImages(fileName: string, file: File, ref:AngularFireStorageReference): AngularFireUploadTask {
+  uploadImages(fileName: string, file: File, ref: AngularFireStorageReference): AngularFireUploadTask {
 
     return ref.put(file);
   }
@@ -80,19 +80,19 @@ export class ApiService {
     return this.storage.ref(`product-images/${fileName}`);
   }
 
-  fetchProduct(){
+  fetchProduct() {
     return this.angularFireDb.object(`product/`).valueChanges();
   }
-uploadProfileImage(fileName, file): AngularFireUploadTask{
-    return this.getProfileImageRef(fileName.put(file);
+
+  uploadProfileImage(fileName, file): AngularFireUploadTask {
+    return this.getProfileImageRef(fileName).put(file);
 
 
-}
-getProfileImageRef(profileUrl: string): AngularFireStorageReference{
-    return this.storage.ref(`user/${profileUrl)};
+  }
 
+  getProfileImageRef(profileUrl: string): AngularFireStorageReference {
+    return this.storage.ref(`user/${profileUrl}`);
+  }
 
-      `
-}
 }
 
