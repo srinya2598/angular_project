@@ -96,17 +96,17 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
             others: [...state.others, action.payload.id]
           };
           return tempState;
-        }
-        ;
-
+        };
 
       case  DashboardActions.FETCH_PRODUCT:
         return {
           ...state,
           loadng: true
-        }
-    }
-    ;
+        };
+
+
+
+
   case DashboardActions.FETCH_SUCCESS:
 
   let i : any;
@@ -168,12 +168,13 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
         };
         return categoryState;
       }
+    };
+      default:
+
+        return state;
     }
 
-  }
 
-
-      default:
         return state;
     }
   }

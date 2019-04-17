@@ -4,6 +4,7 @@ import { IUser } from '../../../../shared/models/users';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { CommonUtils } from '../../../../shared/utils/common.utils';
 import { AuthController } from '../../../../core/controllers/auth-controller';
+import {ProfileContoller} from '../../../../core/controllers/profile-contoller';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +21,7 @@ export class ProfileComponent implements OnInit {
 
   buttonText = ButtonText.EDIT;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data, private authController: AuthController) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data, private authController: AuthController, private profileConntroller: ProfileContoller) {
     this.user = data.user;
     this.authController.getIsLoading().subscribe(res => this.isLoading = res);
   }
@@ -57,9 +58,20 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  profileImage(event){
+    if (!event) {
+      this.notificationService.error('Please select an image');
+      return;
+    }
+    const response = this.profileController.uploadProductImage(event.target.files[0]);
+    response[0].subscribe(percent => this.uploadPercent = percent);
+    response[1].subscribe(res => this.downloadUrl = res);
+  }
+  }
 }
 
 export enum ButtonText {
   EDIT = 'Edit',
   SUBMIT = 'Submit'
 }
+

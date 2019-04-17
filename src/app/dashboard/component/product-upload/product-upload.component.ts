@@ -69,7 +69,7 @@ export class ProductUploadComponent implements OnInit {
       this.notificationService.error('Please select an image');
       return;
     }
-    let response = this.productController.uploadProductImage(event.target.files[0]);
+    const response = this.productController.uploadProductImage(event.target.files[0]);
     response[0].subscribe(percent => this.uploadPercent = percent);
     response[1].subscribe(res => this.downloadUrl = res);
   }
