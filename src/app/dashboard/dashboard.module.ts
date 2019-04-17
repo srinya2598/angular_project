@@ -9,6 +9,7 @@ import { ProfileComponent } from './component/profile-container/profile/profile.
 import { ProfileContainerComponent } from './component/profile-container/profile-container.component';
 import { DashboardCategoryComponent } from './component/dashboard-category/dashboard-category.component';
 import { CategoryComponent } from './component/category/category.component';
+import { ProductComponent } from './component/product/product.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { CategoryComponent } from './component/category/category.component';
     ProfileComponent,
     ProfileContainerComponent,
     DashboardCategoryComponent,
-    CategoryComponent],
+    CategoryComponent,
+    ProductComponent],
   imports: [
     CommonModule,
     SharedModule,
