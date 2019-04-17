@@ -52,7 +52,7 @@ export class ProductController {
   fetchProduct(){
     console.log('products fetched ')
 
-    this.apiService.fetchProduct().subscribe((res ) => {this.store.dispatch(new FetchSuccess(res))},
+    this.apiService.fetchProduct().subscribe((res: IProduct[] ) => {this.store.dispatch(new FetchSuccess(res))},
       (error)=> {
       this.notificationService.error(error);
       });

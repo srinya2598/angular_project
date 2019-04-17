@@ -11,6 +11,7 @@ import { ApiService } from '../../../core/services/api.service';
 import { NotificationService } from '../../../core/services/notification.service';
 import { Constants } from '../../../shared/utils/constants';
 
+
 @Component({
   selector: 'app-product-upload',
   templateUrl: './product-upload.component.html',
