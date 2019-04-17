@@ -72,8 +72,8 @@ export class ApiService {
   }
 
   uploadImages(fileName: string, file: File, ref:AngularFireStorageReference): AngularFireUploadTask {
+
     return ref.put(file);
-    if (file)
   }
 
   getProductImageRef(fileName: string): AngularFireStorageReference {
@@ -83,5 +83,16 @@ export class ApiService {
   fetchProduct(){
     return this.angularFireDb.object(`product/`).valueChanges();
   }
+uploadProfileImage(fileName, file): AngularFireUploadTask{
+    return this.getProfileImageRef(fileName.put(file);
+
+
+}
+getProfileImageRef(profileUrl: string): AngularFireStorageReference{
+    return this.storage.ref(`user/${profileUrl)};
+
+
+      `
+}
 }
 

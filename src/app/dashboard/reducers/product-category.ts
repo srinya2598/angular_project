@@ -1,8 +1,6 @@
 import {Action} from '../actions';
 import {DashboardActions} from '../actions/dashboard';
 import {IProductCategory} from '../../shared/models/category';
-import {CategoryComponent} from '../component/category/category.component';
-import {IProduct} from '../../shared/models/product';
 
 export interface ProductCategoryState {
   mobileComputer: string[],
@@ -16,7 +14,7 @@ export interface ProductCategoryState {
   books: string[],
   movies: string[],
   others: string[],
-  loading: boolean,
+  loadng: boolean,
 }
 
 export const initialProductCategoryState: ProductCategoryState = {
@@ -32,16 +30,15 @@ export const initialProductCategoryState: ProductCategoryState = {
   books: [],
   movies: [],
   others: [],
-  loading: false,
+  loadng: false,
 };
-
 
 
 export function productCategoryReducer(state: ProductCategoryState = initialProductCategoryState, action: Action) {
   {
     switch (action.type) {
       case DashboardActions.ADD_PRODUCT:
-        console.log("IProductCategory");
+        console.log("categories");
         let tempState = {...state};
         if (action.payload.category == IProductCategory.MOBILE_COMPUTER) {
           tempState = {
@@ -99,99 +96,88 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
             others: [...state.others, action.payload.id]
           };
           return tempState;
-        }
-
+        };
 
       case  DashboardActions.FETCH_PRODUCT:
         return {
           ...state,
-          loading: true
+          loadng: true
         };
-      case
-      DashboardActions.FETCH_SUCCESS:
-      {
-        const products = action.payload;
-        let mobileComputesId: string[] = [];
-        let electronicsId: string[] = [];
-        let homeId: string[] = [];
-        let menId: string[] = [];
-        let womenId: string[] = [];
-        let kidsId: string[] = [];
-        let toysId: string[] = [];
-        let vehiclesId: string[] = [];
-        let booksId: string[] = [];
-        let moviesId: string[] = [];
-        let otherId: string[] = [];
 
 
-        if (products) {
-          products.forEach((product: IProduct) => {
-            switch (product.category) {
-              case IProductCategory.MOBILE_COMPUTER:
-                mobileComputesId.push(product.id);
-                break;
 
-              case IProductCategory.ELECTRONIC_APPLIANCES:
-                electronicsId.push(product.id);
-                break;
 
-              case IProductCategory.HOME_APPLIANCES:
-                homeId.push(product.id);
-                break;
+  case DashboardActions.FETCH_SUCCESS:
 
-              case IProductCategory.MEN_CLOTHING:
-                menId.push(product.id);
-                break;
-
-              case IProductCategory.WOMEN_CLOTHING:
-                womenId.push(product.id);
-                break;
-
-              case IProductCategory.KIDS_CLOTHING:
-                kidsId.push(product.id);
-                break;
-
-              case IProductCategory.TOYS:
-                toysId.push(product.id);
-                break;
-
-              case IProductCategory.VEHICLES:
-                vehiclesId.push(product.id);
-                break;
-
-              case IProductCategory.BOOKS:
-                vehiclesId.push(product.id);
-                break;
-
-              case IProductCategory.MOVIES_MUSIC_VIDEOS:
-                moviesId.push(product.id);
-                break;
-
-              default:
-                otherId.push(product.id);
-            }
-          });
-        }
-
-        return {
+  let i : any;
+  for (i = 0; i <= action.payload; i++) {
+      let categoryState = {...state};
+      if (action.payload.category == IProductCategory.MOBILE_COMPUTER) {
+        categoryState = {
           ...state,
-          mobileComputer: mobileComputesId,
-          electronic: electronicsId,
-          home: homeId,
-          men: menId,
-          women: womenId,
-          kids: kidsId,
-          toys: toysId,
-          vehicles: vehiclesId,
-          books: booksId,
-          movies: moviesId,
-          others: otherId,
+          mobileComputer:state.mobileComputer.concat(action.payload)
         };
-      };
-
-    };
-
+      } else if (action.payload.category == IProductCategory.ELECTRONIC_APPLIANCES) {
+        categoryState = {
+          ...state,
+          electronic: state.electronic.concat(action.payload)        };
+      } else if (action.payload.category == IProductCategory.HOME_APPLIANCES) {
+        categoryState = {
+          ...state,
+          home:state.home.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.MEN_CLOTHING) {
+        categoryState = {
+          ...state,
+          men: state.men.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.WOMEN_CLOTHING) {
+        categoryState = {
+          ...state,
+          women: state.women.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.KIDS_CLOTHING) {
+        categoryState = {
+          ...state,
+          kids: state.kids.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.TOYS) {
+        categoryState = {
+          ...state,
+          toys:state.toys.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.VEHICLES) {
+        categoryState = {
+          ...state,
+          vehicles: state.vehicles.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.BOOKS) {
+        categoryState = {
+          ...state,
+          books: state.books.concat(action.payload)
+        };
+      } else if (action.payload.category == IProductCategory.MOVIES_MUSIC_VIDEOS) {
+        categoryState = {
+          ...state,
+          movies: state.movies.concat(action.payload)
+        };
+      } else {
+        categoryState = {
+          ...state,
+          others: state.others.concat(action.payload)
+        };
+        return categoryState;
       }
+    };
+      default:
+
+        return state;
+    }
+
+
+        return state;
+    }
+  }
 }
 
 export const _getMobileComputerids = (state: ProductCategoryState) => state.mobileComputer;
@@ -205,3 +191,6 @@ export const _getVehiclesids = (state: ProductCategoryState) => state.vehicles;
 export const _getBooksids = (state: ProductCategoryState) => state.books;
 export const _getMoviesids = (state: ProductCategoryState) => state.movies;
 export const _getOthersids = (state: ProductCategoryState) => state.others;
+
+
+

@@ -49,7 +49,7 @@ export class ProductController {
     return [this.uploadPercent, this.downloadUrlSubject];
   }
 
-  fetchProduct(){
+  fetchProduct() {
     console.log('products fetched ')
 
     this.apiService.fetchProduct().subscribe((res: IProduct[] ) => {this.store.dispatch(new FetchSuccess(res))},
