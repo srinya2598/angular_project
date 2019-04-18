@@ -7,7 +7,7 @@ import {
   getHomeAppliances,
   getIsProductLoaded, getKidCloathings, getMenCloathings,
   getMobileAndComputers, getMovies, getOtherItems,
-  getSelectedCategory, getToys, getVehicles, getWomenCloathings,
+  getSelectedCategory, getSelectedProduct, getToys, getVehicles, getWomenCloathings,
   State
 } from '../../dashboard/reducers';
 import { AddProduct, FetchSuccess, SelectCategory } from '../../dashboard/actions/product';
@@ -118,7 +118,7 @@ export class ProductController {
   }
 
   getSingleProduct(id) {
-      this.store.select((state => this.getSingleProduct(id)));
+    return this.store.select((state) => getSelectedProduct(state, id));
   }
 }
 

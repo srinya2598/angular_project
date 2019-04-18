@@ -1,5 +1,5 @@
 import { RootState } from '../../root-reducer';
-import { _getEntities, _getIds,  productReducer, ProductState } from './product';
+import {_getEntities, _getIds, _getSelectedProduct, productReducer, ProductState} from './product';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   _getBooksids,
@@ -184,3 +184,4 @@ export const getOtherItems = createSelector(
   (ids, entities) => {
     return ids.map(id => entities[id]);
   });
+export const getSelectedProduct = (state: State, id: string) => _getSelectedProduct(getProductState(state), id);
