@@ -66,8 +66,17 @@ export class ProductUploadComponent implements OnInit {
   }
 
   uploadImage(event) {
+    if (!event) {
+      this.notificationService.error('Please select an image');
+      return;
+    }
+    if (!CommonUtils.isImage(event.target.files[0].type)) {
+      this.notificationService.error('File type not supported');
+      return;
+    }
+
     const response = this.productController.uploadProductImage(event.target.files[0]);
-        response[0].subscribe(percent => this.uploadPercent = percent);
-        response[1].subscribe(res => this.downloadUrl = res);
-        }
+    response[0].subscribe(percent => this.uploadPercent = percent);
+    response[1].subscribe(res => this.downloadUrl = res);
+  }
 }

@@ -1,4 +1,5 @@
 export class CommonUtils {
+  static imagesExtensions = ["jpeg", "jpg", "gif", "png", "bmp", "svg"];
   static getCountries() {
     return [
       'Afghanistan',
@@ -199,6 +200,11 @@ export class CommonUtils {
       id += random.charAt(Math.floor(Math.random() * random.length));
     }
     return id;
+  }
+
+  static isImage(fileType: string): boolean {
+    const type = fileType.substr(fileType.indexOf("/")+1);
+    return this.imagesExtensions.indexOf(type.toLowerCase()) !== -1;
   }
 
 }

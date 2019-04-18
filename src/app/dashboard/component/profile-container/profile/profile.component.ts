@@ -76,6 +76,11 @@ export class ProfileComponent implements OnInit {
       this.notificationService.error('Please select an image');
       return;
     }
+    if(!CommonUtils.isImage(event.target.files[0].type)){
+      this.notificationService.error("File type not supported");
+      return;
+    }
+
     const response = this.profileController.uploadProfileImage(event.target.files[0]);
     response[0].subscribe(percent => {
       console.log(percent);

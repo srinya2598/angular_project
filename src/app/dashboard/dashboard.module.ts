@@ -19,7 +19,8 @@ import { ProductComponent } from './component/product/product.component';
     ProfileContainerComponent,
     DashboardCategoryComponent,
     CategoryComponent,
-    ProductComponent],
+    ProductComponent
+  ],
   imports: [
     CommonModule,
     SharedModule,

@@ -17,8 +17,7 @@ export class ProfileController {
 
   constructor(private  store: Store<State>,
               private apiService: ApiService,
-              private notificationService: NotificationService,
-              private profileController: ProfileController
+              private notificationService: NotificationService
   ) {
     this.uploadPercent = new BehaviorSubject<number>(0);
     this.downloadUrlProfile = new BehaviorSubject('null');
