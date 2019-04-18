@@ -2,17 +2,17 @@
   <div class="container">
     <div class="header">
       <h3>PROFILE</h3>
-
-
-      <avatar *ngIf="!downloadUrl" [name]="user.firstName" [displayType]="'circle'"></avatar>
+      <avatar *ngIf="uploadPercent<100" [name]="user.firstName" [displayType]="'circle'"></avatar>
       <img class="profileImage" *ngIf="downloadUrl&&uploadPercent==100" [src]="downloadUrl"/>
-
     </div>
-    <span class="EditProfile">Upload Profile Picture
-     <span class="profilebutton"><input type="file" (change)="uploadProfile($event)" ></span>
+    <div class="image-container" *ngIf="buttonText == ButtonText.SUBMIT">
+      <label> Upload an image
+        <input type="file" (change)="uploadProfile($event)">
+      </label>
+    </div>
 
-   </span>
-     <form [formGroup]="formGroup" (ngSubmit)="formGroup.valid">
+
+    <form [formGroup]="formGroup" (ngSubmit)="formGroup.valid">
       <mat-form-field>
         <input matInput placeholder="First Name" type="text" formControlName="firstName">
       </mat-form-field>
