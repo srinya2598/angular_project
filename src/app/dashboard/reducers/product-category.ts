@@ -1,9 +1,11 @@
 import { Action } from '../actions';
-import { DashboardActions } from '../actions/dashboard';
+import { DashboardActions } from '../actions/product';
 import { IProductCategory } from '../../shared/models/category';
 import { IProduct } from '../../shared/models/product';
 
 export interface ProductCategoryState {
+  productsLoaded: boolean;
+  selectedCategory: IProductCategory;
   mobileComputer: string[],
   electronic: string[],
   home: string[],
@@ -19,7 +21,8 @@ export interface ProductCategoryState {
 }
 
 export const initialProductCategoryState: ProductCategoryState = {
-
+  productsLoaded: false,
+  selectedCategory: null,
   mobileComputer: [],
   electronic: [],
   home: [],
@@ -150,7 +153,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
               break;
 
             case IProductCategory.BOOKS:
-              vehiclesId.push(product.id);
+              booksId.push(product.id);
               break;
 
             case IProductCategory.MOVIES_MUSIC_VIDEOS:
@@ -165,6 +168,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
 
       return {
         ...state,
+        productsLoaded: true,
         mobileComputer: mobileComputesId,
         electronic: electronicsId,
         home: homeId,
@@ -176,17 +180,21 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
         books: booksId,
         movies: moviesId,
         others: otherId,
-      }
-        ;
+      };
+
+    case DashboardActions.SELECT_CATEGORY:
+      return {
+        ...state,
+        selectedCategory: action.payload
+      };
 
     default:
-
       return state;
   }
 
 }
 
-
+export const _getIsProductLoaded = (state: ProductCategoryState) => state.productsLoaded;
 export const _getMobileComputerids = (state: ProductCategoryState) => state.mobileComputer;
 export const _getElectronicids = (state: ProductCategoryState) => state.electronic;
 export const _getHomeids = (state: ProductCategoryState) => state.home;
@@ -198,6 +206,7 @@ export const _getVehiclesids = (state: ProductCategoryState) => state.vehicles;
 export const _getBooksids = (state: ProductCategoryState) => state.books;
 export const _getMoviesids = (state: ProductCategoryState) => state.movies;
 export const _getOthersids = (state: ProductCategoryState) => state.others;
+export const _getSelectedCategory = (state: ProductCategoryState) => state.selectedCategory;
 
 
 

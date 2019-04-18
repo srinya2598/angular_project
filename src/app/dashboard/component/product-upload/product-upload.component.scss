@@ -1,6 +1,5 @@
 .parent-container {
 
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,19 +14,19 @@
         text-align: center;
         font-size: 25px;
       }
-      mat-progress-bar{
-        border-radius: 2px;
-
-      }
       .footer {
         text-align: center;
-        button{
+        button {
           width: 35%;
           background-color: slategray;
           color: white;
           font-size: 18px;
         }
-       }
+      }
+      .image-data {
+        margin: 20px 0;
+      }
     }
   }
 }
+

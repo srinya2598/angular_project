@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
+import { ProductController } from '../../../core/controllers/product-controller';
+import { IProductCategory } from '../../../shared/models/category';
+import { CommonUtils} from '../../../shared/utils/common.utils';
 
 @Component({
   selector: 'app-dashboard-category',
@@ -8,12 +11,18 @@ import {Router} from '@angular/router';
 })
 export class DashboardCategoryComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  Category = IProductCategory;
+
+  constructor(private productController: ProductController, private router: Router , ) {
+  }
 
   ngOnInit() {
+    this.productController.fetchProduct();
   }
 
-  onMobile(){
-    this.router.navigate(['dashboard/category']);
+  setSelectedCategory(category: IProductCategory) {
+    this.productController.setSelectedCategory(category);
+    this.router.navigate(['dashboard/category', CommonUtils.getRoutePath(category) ]);
   }
+
 }

@@ -7,7 +7,6 @@ import {NotificationService} from '../services/notification.service';
 import {finalize} from 'rxjs/operators';
 
 @Injectable({
-
   providedIn: 'root'
 })
 export class ProfileController {

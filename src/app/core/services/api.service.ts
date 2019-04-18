@@ -81,7 +81,7 @@ export class ApiService {
   }
 
   fetchProduct() {
-    return this.angularFireDb.object(`product/`).valueChanges();
+    return this.angularFireDb.object(`products`).valueChanges();
   }
 
   uploadProfileImage(fileName: string, file: File, ref: AngularFireStorageReference): AngularFireUploadTask {

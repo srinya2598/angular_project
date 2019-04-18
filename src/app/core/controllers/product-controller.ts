@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
 import { IProduct } from '../../shared/models/product';
 import { Store } from '@ngrx/store';
-import { State } from '../../dashboard/reducers';
-import {AddProduct, FetchSuccess} from '../../dashboard/actions/dashboard';
+import {
+  getBooks,
+  getElectronicAppliances,
+  getHomeAppliances,
+  getIsProductLoaded, getKidCloathings, getMenCloathings,
+  getMobileAndComputers, getMovies, getOtherItems,
+  getSelectedCategory, getToys, getVehicles, getWomenCloathings,
+  State
+} from '../../dashboard/reducers';
+import { AddProduct, FetchSuccess, SelectCategory } from '../../dashboard/actions/product';
 import { ApiService } from '../services/api.service';
 import { NotificationService } from '../services/notification.service';
-import { BehaviorSubject } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { finalize, take } from 'rxjs/operators';
+import { IProductCategory } from '../../shared/models/category';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +27,8 @@ export class ProductController {
 
   constructor(private  store: Store<State>,
               private apiService: ApiService,
-              private notificationService: NotificationService,
-              private productController: ProductController
-  ) {
+              private notificationService: NotificationService) {
+
     this.uploadPercent = new BehaviorSubject<number>(0);
     this.downloadUrlSubject = new BehaviorSubject('null');
   }
@@ -33,7 +41,6 @@ export class ProductController {
         this.notificationService.error('Something went wrong, Please try Again');
       }
     );
-    this.store.dispatch(new AddProduct(product));
   }
 
   uploadProductImage(file: File): BehaviorSubject<any>[] {
@@ -49,14 +56,65 @@ export class ProductController {
     return [this.uploadPercent, this.downloadUrlSubject];
   }
 
+  setSelectedCategory(category: IProductCategory) {
+    this.store.dispatch(new SelectCategory(category));
+  }
+
+  getSelectedCategoryProducts():Observable<IProduct[]> {
+    let category:IProductCategory;
+    this.store.select(getSelectedCategory).subscribe(res => category = res);
+    switch (category) {
+      case IProductCategory.MOBILE_COMPUTER:
+        return this.store.select(getMobileAndComputers);
+
+      case IProductCategory.ELECTRONIC_APPLIANCES:
+        return this.store.select(getElectronicAppliances);
+
+      case IProductCategory.HOME_APPLIANCES:
+        return this.store.select(getHomeAppliances);
+
+      case IProductCategory.MEN_CLOTHING:
+        return this.store.select(getMenCloathings);
+
+      case IProductCategory.WOMEN_CLOTHING:
+        return this.store.select(getWomenCloathings);
+
+      case IProductCategory.KIDS_CLOTHING:
+        return this.store.select(getKidCloathings);
+
+      case IProductCategory.TOYS:
+        return this.store.select(getToys);
+
+      case IProductCategory.VEHICLES:
+        return this.store.select(getVehicles);
+
+      case IProductCategory.BOOKS:
+        return this.store.select(getBooks);
+
+      case IProductCategory.MOVIES_MUSIC_VIDEOS:
+        return this.store.select(getMovies);
+
+      default:
+        return this.store.select(getOtherItems);
+
+    }
+  }
+
   fetchProduct() {
-    console.log('products fetched ')
-
-    this.apiService.fetchProduct().subscribe((res: IProduct[] ) => {this.store.dispatch(new FetchSuccess(res))},
-      (error)=> {
-      this.notificationService.error(error);
-      });
-
+    this.store.select(getIsProductLoaded).pipe(take(1)).subscribe(isLoaded => {
+      if (!isLoaded) {
+        this.apiService.fetchProduct().pipe(take(1)).subscribe((res) => {
+            let products: IProduct[] = [];
+            if (res) {
+              Object.keys(res).forEach(key => products.push(res[key]));
+              this.store.dispatch(new FetchSuccess(products));
+            }
+          },
+          (error) => {
+            this.notificationService.error(error);
+          });
+      }
+    });
   }
 }
 

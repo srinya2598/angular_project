@@ -15,7 +15,9 @@ import { IUser } from '../shared/models/users';
 })
 export class BootstrapComponent implements OnInit {
 
-  constructor(private store: Store<State>, private apiService: ApiService, private router: Router) {
+  constructor(private store: Store<State>,
+              private apiService: ApiService,
+              private router: Router) {
   }
 
   ngOnInit() {

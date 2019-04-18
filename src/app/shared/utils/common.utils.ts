@@ -1,3 +1,5 @@
+
+
 export class CommonUtils {
   static imagesExtensions = ["jpeg", "jpg", "gif", "png", "bmp", "svg"];
   static getCountries() {
@@ -186,10 +188,18 @@ export class CommonUtils {
 
   static getCategories() {
     return [
-      'electronics',
-      'homeappliances',
-      'personalcare',
-      'vehicles'
+      'Mobile and Computer',
+      'Electronic Appliances',
+      'Home Appliances',
+      'Men Clothing',
+      'Women Clothing',
+      'Kids Clothing',
+      'Toys',
+      'Vehicles',
+      'Books',
+      'Movies',
+      'Music and Videos',
+      'Others'
     ];
   }
 
@@ -207,4 +217,15 @@ export class CommonUtils {
     return this.imagesExtensions.indexOf(type.toLowerCase()) !== -1;
   }
 
+  static getRoutePath(name: string): string {
+    let path = '';
+    const arr = name.toLowerCase().split(' ');
+    arr.forEach((text, index) => {
+      path += text;
+      if (index !== arr.length - 1) {
+        path += '-';
+      }
+    });
+    return path;
+  }
 }
