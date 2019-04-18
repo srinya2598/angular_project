@@ -1,3 +1,5 @@
+
+
 export class CommonUtils {
   static getCountries() {
     return [
@@ -209,4 +211,15 @@ export class CommonUtils {
     return id;
   }
 
+  static getRoutePath(name: string): string {
+    let path = '';
+    const arr = name.toLowerCase().split(' ');
+    arr.forEach((text, index) => {
+      path += text;
+      if (index !== arr.length - 1) {
+        path += '-';
+      }
+    });
+    return path;
+  }
 }
