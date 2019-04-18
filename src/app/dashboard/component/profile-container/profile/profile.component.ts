@@ -4,7 +4,7 @@ import { IUser } from '../../../../shared/models/users';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { CommonUtils } from '../../../../shared/utils/common.utils';
 import { AuthController } from '../../../../core/controllers/auth-controller';
-import { ProfileContoller } from '../../../../core/controllers/profile-contoller';
+import { ProfileController } from '../../../../core/controllers/profile-contoller';
 import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
@@ -19,21 +19,25 @@ export class ProfileComponent implements OnInit {
   user: IUser;
   ButtonText = ButtonText;
   isLoading = false;
-  downloadUrl:string;
+  downloadUrl: string;
   uploadPercent = 0;
 
   buttonText = ButtonText.EDIT;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data,
               private authController: AuthController,
-              private profileController: ProfileContoller,
-              private notificationService:NotificationService) {
+              private profileController: ProfileController,
+              private notificationService: NotificationService) {
     this.user = data.user;
     this.authController.getIsLoading().subscribe(res => this.isLoading = res);
   }
 
   ngOnInit() {
     this.countries = CommonUtils.getCountries();
+    if (this.user.profileUrl) {
+      this.downloadUrl = this.user.profileUrl;
+      this.uploadPercent = 100;
+    }
     this.formGroup = new FormGroup({
       'firstName': new FormControl({ value: this.user.firstName, disabled: true }, [Validators.required]),
       'lastName': new FormControl({ value: this.user.lastName, disabled: true }, [Validators.required]),
@@ -49,31 +53,37 @@ export class ProfileComponent implements OnInit {
       this.formGroup.enable();
       this.formGroup.controls['email'].disable();
     } else {
-      if (!this.formGroup.pristine && this.formGroup.valid) {
+      if ((!this.formGroup.pristine && this.formGroup.valid) || (this.downloadUrl != this.user.profileUrl)) {
         console.log(this.user);
         const user: IUser = {
           id: this.user.id,
-          email: 'naimishverma50@gmail.com',
+          email: this.user.email,
           firstName: this.formGroup.controls['firstName'].value,
           lastName: this.formGroup.controls['lastName'].value,
           phoneNo: this.formGroup.controls['phoneNo'].value,
-          country: this.formGroup.controls['country'].value
+          country: this.formGroup.controls['country'].value,
+          profileUrl: this.downloadUrl ? this.downloadUrl : ''
         };
         this.authController.updateUser(this.user.id, user);
+        this.formGroup.disable();
+        this.buttonText = ButtonText.EDIT;
       }
     }
   }
 
-  profileImage(event) {
+  uploadProfile(event) {
     if (!event) {
       this.notificationService.error('Please select an image');
       return;
     }
     const response = this.profileController.uploadProfileImage(event.target.files[0]);
-    response[0].subscribe(percent => this.uploadPercent = percent);
+    response[0].subscribe(percent => {
+      console.log(percent);
+      this.uploadPercent = percent;
+    });
     response[1].subscribe(res => this.downloadUrl = res);
-  }
 
+  }
 }
 
 export enum ButtonText {
