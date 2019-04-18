@@ -22,7 +22,7 @@ export class DashboardCategoryComponent implements OnInit {
 
   setSelectedCategory(category: IProductCategory) {
     this.productController.setSelectedCategory(category);
-    this.router.navigate(['dashboard/category', CommonUtils.getRoutePath(category) ]);
+    this.router.navigate(['dashboard/categories', CommonUtils.getRoutePath(category) ]);
   }
 
 }

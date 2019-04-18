@@ -24,11 +24,11 @@ export const dashboardRoutes: Routes = [
         component: ProfileContainerComponent
       },
       {
-        path: 'category/:id',
+        path: 'categories/:id',
         component: CategoryComponent
       },
       {
-        path: 'product',
+        path: 'category/:id',
         component: ProductComponent
       }
     ]

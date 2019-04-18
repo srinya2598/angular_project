@@ -1,6 +1,6 @@
 <p *ngIf="products.length==0; else myProducts" style="color: white; text-align: center">No products available for this category</p>
 <ng-template #myProducts>
-  <div class="row" *ngFor="let product of products">
+  <div class="row" *ngFor="let product of products" (click)="getSingleProduct(product)">
     <div class="container">
 
       <div class="list-group">

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductController } from '../../../core/controllers/product-controller';
 import { IProduct } from '../../../shared/models/product';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-category',
@@ -10,7 +11,7 @@ import { IProduct } from '../../../shared/models/product';
 export class CategoryComponent implements OnInit {
   products: IProduct[];
 
-  constructor(private productController: ProductController) {
+  constructor(private productController: ProductController , private router: Router) {
   }
 
   ngOnInit() {
@@ -21,5 +22,9 @@ export class CategoryComponent implements OnInit {
       }
     });
   }
+   getSingleProduct(product: IProduct){
+    let id = product.id;
+this.router.navigate(['dashboard/category', id]);
+   }
 
 }

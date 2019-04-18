@@ -116,6 +116,10 @@ export class ProductController {
       }
     });
   }
+
+  getSingleProduct(id) {
+      this.store.select((state => this.getSingleProduct(id)));
+  }
 }
 
 
