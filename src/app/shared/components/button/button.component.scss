@@ -1,0 +1,44 @@
+@import "~src/variables";
+
+:host{
+  -webkit-appearance: none;
+}
+
+button {
+  width: 200px;
+  height: 40px;
+  font-size: 16px;
+  padding: 6px 24px 8px;
+  color: $color-white;
+  background-color: $color-primary;
+  border: 2px solid transparent;
+  border-radius: 20px;
+}
+
+.btn-xs{
+  width: 100px;
+  height: 26px;
+  font-size: 12px;
+  padding: 2px;
+}
+
+.btn-md{
+  width: 160px;
+  height: 34px;
+  font-size: 14px;
+  padding: 4px;
+}
+
+.button-outline {
+  background-color: $color-white;
+  color: $color-primary;
+  border-color: $color-primary;
+}
+
+.button-success {
+  background-color: $color-secondary;
+}
+.button-error {
+  background-color: $color-danger;
+}
+

@@ -3,3 +3,9 @@ export enum Constants {
   SIGNUP_WITH_GOOGLE = 'signup_with_google',
   USER_UID = 'user_uid'
 }
+
+export enum ButtonType {
+  SUCCESS = 'success',
+  ERROR = 'error',
+  PRIMARY = 'primary'
+}

@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~bootstrap/dist/css/bootstrap.css";
+@import "variables";
 
 
 @font-face {
@@ -44,7 +45,7 @@
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: Poppins-Bold;
+  font-family: Poppins-Bold !important;
 }
 
 span, div {
@@ -82,10 +83,6 @@ mat-form-field{
 mat-icon {
   cursor: pointer;
 }
-
-body{
-  background-image: url("/assets/bg.jpg");
-  background-attachment: fixed;
-  background-size: cover;
-
+.mat-card {
+  box-shadow: 1px 1px 2px 1px lighten($color-primary,0.9) !important;
 }

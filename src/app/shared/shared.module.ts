@@ -9,13 +9,16 @@ import { NotificationComponent } from './components/notification/notification.co
 import { AvatarModule } from 'ng2-avatar';
 import {productReducer} from '../dashboard/reducers/product';
 import {productRootReducer} from '../dashboard/reducers';
+import { ButtonComponent } from './components/button/button.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
-  declarations: [NotificationComponent],
+  declarations: [NotificationComponent, ButtonComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,
+    FlexLayoutModule,
     StoreModule.forFeature('auth', authRootReducer),
     StoreModule.forFeature('product',productRootReducer),
     NgxLoadingModule.forRoot({ backdropBorderRadius: '3px' }),
@@ -24,9 +27,11 @@ import {productRootReducer} from '../dashboard/reducers';
   exports: [
     ReactiveFormsModule,
     CommonModule,
+    FlexLayoutModule,
     MaterialModule,
     NgxLoadingModule,
-    AvatarModule
+    AvatarModule,
+    ButtonComponent
   ],
   entryComponents: [NotificationComponent]
 })

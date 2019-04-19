@@ -1,43 +1,50 @@
-.parent-container{
+@import "~src/variables";
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-.container {
+.header {
+  margin: 30px 50px;
+  color: $color-primary;
+  .img {
+    width: 100px;
+    height: 100px;
 
-  margin-top: 20px;
-  mat-card {
-    width: 50%;
-    margin: auto;
-    .header{
-      text-align: center;
-      font-size: 25px;
+    &-md {
+      width: 90px;
+      height: 90px;
     }
-    .footer {
-      text-align: center;
-      &__new-user {
-        margin-top: 20px;
-        display: flex;
-      }
-      button{
-        width: 35%;
-        background-color: slategray;
-        color: white;
-        font-size: 18px;
-      }
-      .google-signup {
-        margin: auto;
-        width: 35%;
-        height: 32px;
-        font-size: 18px;
-        text-align: center;
-        border: 1px solid #039be5;
-        border-radius: 4px;
-        color: #039be5;
-        cursor: pointer;
-      }
+    &-sm {
+      width: 80px;
+      height: 80px;
+    }
+    &-xs {
+      width: 60px;
+      height: 60px;
     }
   }
 }
+
+.container {
+  margin-top: 20px;
+  h3 {
+    color: $color-primary;
+  }
+  mat-card {
+    margin: 10px 0;
+    .google-btn {
+      cursor: pointer;
+    }
+  }
+}
+
+.footer {
+  background-image: url("../../../../assets/wave.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 400px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+}
+
+
