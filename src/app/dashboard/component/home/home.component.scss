@@ -1,34 +1,20 @@
-.category {
-  height: 400px;
-  width: 400px;
-  margin-right: 40px;
-  margin-left: 40px;
-  .category-card {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 8px;
-    cursor: pointer;
+@import "~src/variables";
+
+.home-container {
+  position: relative;
+  height: 100vh;
+  background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), lighten($color-primary,0.9)),
+  url("../../../../assets/home-bg.jpg");
+  &__content {
+    position: absolute;
+    color: $color-white;
+    left: 40%;
+    top: 30%;
+    h3 {
+      font-size: 40px;
+    }
     p {
-      position: absolute;
-      font-size: 20px;
-      transition: transform .2s;
-      color: #192A56;
-    }
-    .category-image {
-      opacity: 0.3;
-      height: 200px;
-      width: 350px;
-    }
-    &:hover {
-      p {
-        transform: scale(1.4);
-      }
+      font-size: 26px;
     }
   }
-}
-
-.column:focus {
-  outline: none;
 }
