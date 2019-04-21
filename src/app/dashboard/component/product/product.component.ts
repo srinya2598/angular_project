@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ProductController} from '../../../core/controllers/product-controller';
-import {SharedModule} from '../../../shared/shared.module';
-import {ISingleproduct} from '../../../shared/models/singleproduct';
+import {ISingleProduct} from '../../../shared/models/single-product';
 
 @Component({
   selector: 'app-product',
@@ -11,7 +10,7 @@ import {ISingleproduct} from '../../../shared/models/singleproduct';
 })
 export class ProductComponent implements OnInit {
   private id: string;
-  singleProduct: ISingleproduct;
+  singleProduct: ISingleProduct;
 
   constructor(private route: ActivatedRoute, private productController: ProductController) { }
 

@@ -1,6 +1,6 @@
-import {IProductCategory} from './category';
+import { IProductCategory } from './category';
 
-export interface ISingleproduct {
+export interface ISingleProduct {
   category: IProductCategory,
   country: string,
   description: string,

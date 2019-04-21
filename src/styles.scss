@@ -91,6 +91,7 @@ mat-icon {
 
 .mat-expansion-panel-content {
   background: lighten($color-primary, 5);
+  cursor: pointer;
 
   .mat-expansion-panel-body {
     color: $color-white;
