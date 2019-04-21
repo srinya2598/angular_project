@@ -5,11 +5,11 @@ import { IProductCategory } from '../../../shared/models/category';
 import { CommonUtils} from '../../../shared/utils/common.utils';
 
 @Component({
-  selector: 'app-dashboard-category',
-  templateUrl: './dashboard-category.component.html',
-  styleUrls: ['./dashboard-category.component.scss']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
-export class DashboardCategoryComponent implements OnInit {
+export class HomeComponent implements OnInit {
 
   Category = IProductCategory;
 

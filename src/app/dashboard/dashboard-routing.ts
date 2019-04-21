@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { ProductUploadComponent } from './component/product-upload/product-upload.component';
 import { ProfileContainerComponent } from './component/profile-container/profile-container.component';
-import { DashboardCategoryComponent } from './component/dashboard-category/dashboard-category.component';
+import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
 
@@ -13,7 +13,7 @@ export const dashboardRoutes: Routes = [
     children: [
       {
         path: '',
-        component: DashboardCategoryComponent
+        component: HomeComponent
       },
       {
         path: 'upload-product',
