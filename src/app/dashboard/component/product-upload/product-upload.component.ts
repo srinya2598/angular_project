@@ -41,6 +41,7 @@ export class ProductUploadComponent implements OnInit {
     this.formGroup = new FormGroup({
       'productName': new FormControl(null),
       'productDescription': new FormControl(null),
+      'price': new FormControl(null),
       'category': new FormControl(null),
       'image': new FormControl(null),
     });
@@ -57,6 +58,7 @@ export class ProductUploadComponent implements OnInit {
       name: this.formGroup.controls['productName'].value,
       category: this.formGroup.controls['category'].value,
       description: this.formGroup.controls['productDescription'].value,
+      price: this.formGroup.controls['price'].value,
       id: CommonUtils.getRandomId(),
       userId: this.userId,
       imageUrl: this.downloadUrl

@@ -11,9 +11,10 @@ import {productReducer} from '../dashboard/reducers/product';
 import {productRootReducer} from '../dashboard/reducers';
 import { ButtonComponent } from './components/button/button.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SingleproductComponent } from './components/singleproduct/singleproduct.component';
 
 @NgModule({
-  declarations: [NotificationComponent, ButtonComponent],
+  declarations: [NotificationComponent, ButtonComponent, SingleproductComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -31,7 +32,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MaterialModule,
     NgxLoadingModule,
     AvatarModule,
-    ButtonComponent
+    ButtonComponent,
+    SingleproductComponent
   ],
   entryComponents: [NotificationComponent]
 })

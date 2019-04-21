@@ -14,7 +14,7 @@ import { AddProduct, FetchSuccess, SelectCategory } from '../../dashboard/action
 import { ApiService } from '../services/api.service';
 import { NotificationService } from '../services/notification.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { finalize, take } from 'rxjs/operators';
+import {finalize, map, switchMap, take} from 'rxjs/operators';
 import { IProductCategory } from '../../shared/models/category';
 
 @Injectable({
@@ -118,7 +118,14 @@ export class ProductController {
   }
 
   getSingleProduct(id) {
-    return this.store.select((state) => getSelectedProduct(state, id));
+    let data;
+    return this.store.select((state) => getSelectedProduct(state, id)).pipe(
+      switchMap((res)=> {
+        data = {...res};
+        return this.apiService.getUserDetails(res.userId)
+      }),
+      map(res => data  = {...data,...res})
+    );
   }
 }
 
