@@ -1,17 +1,57 @@
+@import "~src/variables";
 
-.navbar-header {
-  h2 {
-    margin-left: 40px;
-    letter-spacing: 1.3px;
-    font-size: 40px;
-    font-weight: bold;
-    color: white;
+mat-sidenav-container {
+  mat-sidenav {
+    width: 22%;
+    background: $color-primary;
+    color: $color-white;
+    .sidenav-header {
+      padding: 8px 25px;
+      mat-icon {
+        font-size: 32px;
+      }
+    }
+    .side-nav-options{
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      padding: 0 25px;
+      margin: 20px 0;
+      mat-icon{
+        font-size: 22px;
+        margin-right: 5px;
+      }
+    }
+    .category-container {
+      margin: 20px 0;
+      mat-expansion-panel {
+        background: $color-primary;
+        box-shadow: none;
+        .mat-expansion-panel-header-title {
+          color: $color-white;
+          font-size: 18px;
+        }
+        .mat-expansion-panel-content{
+          background: lighten($color-primary,0.7);
+
+          .mat-expansion-panel-body{
+            color: $color-white;
+            font-size: 16px;
+            padding-top: 10px;
+            padding-left: 25px;
+          }
+        }
+
+      }
+    }
+    .divider {
+      height: 2px;
+      margin: 0 20px;
+      background: $color-white;
+    }
+  }
+  mat-sidenav-content {
+    width: 100%;
   }
 }
-
-.dropdown-container {
-  cursor: pointer;
-  color: white;
-}
-
 

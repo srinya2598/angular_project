@@ -3,7 +3,6 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "variables";
 
-
 @font-face {
   font-family: Poppins-Black;
   src: url('assets/fonts/Poppins-Black.ttf');
@@ -51,6 +50,7 @@ h1, h2, h3, h4, h5, h6 {
 span, div {
   font-family: Poppins-Light;
 }
+
 .poppins-light {
   font-family: Poppins-Light !important;
 }
@@ -71,18 +71,35 @@ span, div {
   font-family: Poppins-Bold !important;
 }
 
-
-mat-form-field{
+mat-form-field {
   display: block !important;
 }
+
 .mat-snack-bar-container {
   width: 100%;
   font-size: 16px;
   padding: 0 !important;
 }
+
 mat-icon {
   cursor: pointer;
 }
+
 .mat-card {
-  box-shadow: 1px 1px 2px 1px lighten($color-primary,0.9) !important;
+  box-shadow: 1px 1px 2px 1px lighten($color-primary, 0.9) !important;
+}
+
+.mat-expansion-panel-content {
+  background: lighten($color-primary, 5);
+
+  .mat-expansion-panel-body {
+    color: $color-white;
+    font-size: 16px;
+    padding-top: 10px;
+    padding-left: 40px;
+  }
+}
+
+.mat-expansion-indicator::after {
+  color: $color-white;
 }

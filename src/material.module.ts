@@ -8,7 +8,7 @@ import {
   MatMenuModule, MatProgressSpinnerModule,
   MatSelectModule,
   MatSnackBarModule,
-  MatProgressBarModule
+  MatProgressBarModule, MatSidenavModule, MatExpansionModule
 } from '@angular/material';
 
 const modules = [
@@ -22,7 +22,9 @@ const modules = [
   MatMenuModule,
   MatDialogModule,
   MatProgressSpinnerModule,
-  MatProgressBarModule
+  MatProgressBarModule,
+  MatSidenavModule,
+  MatExpansionModule
 ];
 
 @NgModule({
