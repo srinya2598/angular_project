@@ -1,16 +1,18 @@
-<div class="container" fxLayout="row" fxLayoutAlign="center center" >
-  <div class="imagecontainer" fxLayout="row" fxLayoutAlign="center center">
+<div class="card">
+  <div class="imagecontainer">
     <img [src]="product.imageUrl">
   </div>
 
+  <div class="productcontainer">
+    <p class="top">{{product.category}}</p>
+    <h1 class="med">{{product.name}}</h1>
+    <p class="bottom">by {{product.firstName}} {{product.lastName}}</p>
+    <h3>Rs. {{product.price}}</h3>
+    <p class="desc">{{product.description}}</p>
+    <div class="footer">
+      <button class="btn button4">Call</button>
+      <button class="btn button4">Chat</button>
+    </div>
 
-  <div class="productcontainer" fxLayout="column">
-      <p class="productcategory">{{product.category}}</p>
-      <h1>{{product.name}}</h1>
-      <p class="productname">{{product.firstName}} {{product.lastName}} </p>
-      <h2>{{product.price}}</h2>
-      <p class="desc">{{product.description}}</p>
-
-    <ec-button>Call</ec-button>
-    <ec-button>Chat</ec-button>
+  </div>
 </div>
