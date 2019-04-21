@@ -2,6 +2,7 @@ import { Action } from '../actions';
 import { DashboardActions } from '../actions/product';
 import { IProductCategory } from '../../shared/models/category';
 import { IProduct } from '../../shared/models/product';
+import {IUser} from '../../shared/models/users';
 
 export interface ProductCategoryState {
   productsLoaded: boolean;
@@ -17,6 +18,7 @@ export interface ProductCategoryState {
   books: string[],
   movies: string[],
   others: string[],
+  loggedInUserid: string[],
   loadng: boolean,
 }
 
@@ -35,6 +37,8 @@ export const initialProductCategoryState: ProductCategoryState = {
   movies: [],
   others: [],
   loadng: false,
+  loggedInUserid: [],
+
 };
 
 
@@ -99,11 +103,15 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
           others: [...state.others, action.payload.id]
         };
       }
-      return tempState;
+      return  {
+        tempState,
+        ...state,
+        };
 
 
     case DashboardActions.FETCH_SUCCESS:
-      const products = action.payload;
+      const products = action.payload.products;
+      let userId = action.payload.userId;
       let mobileComputesId: string[] = [];
       let electronicsId: string[] = [];
       let homeId: string[] = [];
@@ -115,7 +123,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
       let booksId: string[] = [];
       let moviesId: string[] = [];
       let otherId: string[] = [];
-
+ let loggedInUserProductId: string[]=[];
 
       if (products) {
         products.forEach((product: IProduct) => {
@@ -163,9 +171,11 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
             default:
               otherId.push(product.id);
           }
-        });
-      }
 
+        });
+        }
+
+      loggedInUserProductId=products.filter((product)=>product.userId===userId).map((res)=>res.id);
       return {
         ...state,
         productsLoaded: true,
@@ -180,6 +190,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
         books: booksId,
         movies: moviesId,
         others: otherId,
+        loggedInUserid: loggedInUserProductId,
       };
 
     case DashboardActions.SELECT_CATEGORY:
@@ -207,6 +218,5 @@ export const _getBooksids = (state: ProductCategoryState) => state.books;
 export const _getMoviesids = (state: ProductCategoryState) => state.movies;
 export const _getOthersids = (state: ProductCategoryState) => state.others;
 export const _getSelectedCategory = (state: ProductCategoryState) => state.selectedCategory;
-
-
+export const  _getUserProducts = (state:ProductCategoryState)=> state.loggedInUserid;
 

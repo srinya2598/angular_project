@@ -26,7 +26,7 @@ export class FetchProduct implements Action {
 export class FetchSuccess implements Action {
   readonly type = DashboardActions.FETCH_SUCCESS;
 
-  constructor(public  payload: IProduct[]) {
+  constructor(public  payload: {products: IProduct[], userId: string} ) {
 
   }
 }

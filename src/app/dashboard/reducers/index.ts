@@ -15,9 +15,11 @@ import {
   _getToysids,
   _getVehiclesids,
   _getWomenids,
+  _getUserProducts,
   productCategoryReducer,
   ProductCategoryState
 } from './product-category';
+import {_getLoggedInUser} from '../../auth/reducer/auth';
 
 export interface State {
   product: ProductState;
@@ -106,6 +108,11 @@ export const getSelectedCategory = createSelector(
   _getSelectedCategory
 );
 
+export const getUserProducts = createSelector(
+  getProductCategoryState,
+  _getUserProducts
+);
+
 // Fetching the actual product objects using ids and entities
 
 export const getMobileAndComputers = createSelector(
@@ -184,4 +191,12 @@ export const getOtherItems = createSelector(
   (ids, entities) => {
     return ids.map(id => entities[id]);
   });
+
+export const getLoggedInUserProductId = createSelector(
+  getUserProducts,
+  getEntities,
+  (ids, entities) => {
+    return ids.map(id => entities[id]);
+  });
 export const getSelectedProduct = (state: State, id: string) => _getSelectedProduct(getProductState(state), id);
+
