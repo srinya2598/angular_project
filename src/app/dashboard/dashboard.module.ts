@@ -5,8 +5,7 @@ import { RouterModule } from '@angular/router';
 import { dashboardRoutes } from './dashboard-routing';
 import { SharedModule } from '../shared/shared.module';
 import { ProductUploadComponent } from './component/product-upload/product-upload.component';
-import { ProfileComponent } from './component/profile-container/profile/profile.component';
-import { ProfileContainerComponent } from './component/profile-container/profile-container.component';
+import { ProfileComponent } from './component/profile/profile.component';
 import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
@@ -16,7 +15,6 @@ import { ProductComponent } from './component/product/product.component';
     DashboardComponent,
     ProductUploadComponent,
     ProfileComponent,
-    ProfileContainerComponent,
     HomeComponent,
     CategoryComponent,
     ProductComponent

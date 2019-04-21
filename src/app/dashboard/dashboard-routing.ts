@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { ProductUploadComponent } from './component/product-upload/product-upload.component';
-import { ProfileContainerComponent } from './component/profile-container/profile-container.component';
 import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
@@ -20,10 +19,6 @@ export const dashboardRoutes: Routes = [
         component: ProductUploadComponent
       },
       {
-        path: 'profile',
-        component: ProfileContainerComponent
-      },
-      {
         path: 'categories/:id',
         component: CategoryComponent
       },
@@ -32,6 +27,6 @@ export const dashboardRoutes: Routes = [
         component: ProductComponent
       }
     ]
-  },
+  }
 
 ];

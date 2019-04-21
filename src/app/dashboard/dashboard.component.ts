@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../core/services/api.service';
 import { AuthController } from '../core/controllers/auth-controller';
-import { Router } from '@angular/router';
-import {Constants} from '../shared/utils/constants';
+import { IUser } from '../shared/models/users';
+import { ProfileComponent } from './component/profile/profile.component';
+import { MatDialog } from '@angular/material';
 
 
 @Component({
@@ -11,36 +11,28 @@ import {Constants} from '../shared/utils/constants';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  email: string;
-  show = false;
+  user: IUser;
 
-  constructor(private controller: AuthController, private route: Router,private apiService: ApiService) {
-    this.controller.getUser().subscribe(res => {
+  constructor(private controller: AuthController, private dialog: MatDialog) {
+    this.controller.getUser().subscribe((res: IUser) => {
       if (res) {
-        this.email = res.firstName;
+        this.user = res;
       }
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
-  toggleMenu() {
-    this.show = !this.show;
+  openProfile() {
+    this.dialog.open(ProfileComponent, {
+      width: '65%',
+      data: {
+        user: this.user
+      }
+    });
   }
 
-  uploadProduct() {
-    this.route.navigate(["dashboard/upload-product"]);
-  }
-
-  viewProfile(){
-    this.route.navigate(["dashboard/profile"]);
-  }
-
-  onLogout(){
-    this.apiService.removeItem(Constants.USER_UID);
-    this.route.navigate(['/login']);
-  }
 }
 
 
