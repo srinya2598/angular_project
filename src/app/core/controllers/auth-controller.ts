@@ -9,7 +9,7 @@ import { NotificationService } from '../services/notification.service';
 import {
   Login,
   LoginFailed,
-  LoginSuccess,
+  LoginSuccess, Logout,
   SignUp,
   SignUpFailed,
   SignUpSuccess,
@@ -180,6 +180,11 @@ export class AuthController {
 
   getUser() {
     return this.store.select(getLoggedInUser);
+  }
 
+  logout() {
+    this.apiService.removeItem(Constants.USER_UID);
+    this.store.dispatch(new Logout());
+    this.router.navigate(["login"]);
   }
 }

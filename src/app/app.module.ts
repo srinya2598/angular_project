@@ -13,7 +13,8 @@ import { rootReducer } from './root-reducer';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SharedModule } from './shared/shared.module';
-import {AngularFireStorageModule} from '@angular/fire/storage';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AuthActions } from './auth/actions/auth';
 
 
 @NgModule({
@@ -25,7 +26,7 @@ import {AngularFireStorageModule} from '@angular/fire/storage';
     RouterModule.forRoot(rootRoutes),
     BrowserModule,
     BrowserAnimationsModule,
-    StoreModule.forRoot(rootReducer),
+    StoreModule.forRoot(rootReducer, { metaReducers: [reset] }),
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
@@ -38,4 +39,14 @@ import {AngularFireStorageModule} from '@angular/fire/storage';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
+}
+
+
+export function reset(reducer) {
+  return function (state, action) {
+    if (action.type === AuthActions.LOGOUT) {
+      state = undefined;
+    }
+    return reducer(state, action);
+  };
 }

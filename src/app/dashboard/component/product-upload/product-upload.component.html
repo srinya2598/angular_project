@@ -24,22 +24,25 @@
 
           <mat-form-field>
             <input matInput placeholder="Price" type="number"
-                      formControlName="price">
+                   formControlName="price">
           </mat-form-field>
+          <div class="image-container">
+            <label> Upload an image
+              <input type="file" (change)="uploadImage($event)" formControlName="image">
+            </label>
+          </div>
 
-          <input placeholder="Upload Image" type="file" (change)="uploadImage($event)" formControlName="image">
-          <div class="image-data">
-            <mat-progress-bar *ngIf="uploadPercent!=100"
+
+          <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="image-data">
+            <mat-progress-bar *ngIf="uploadPercent>0 && uploadPercent<100"
                               [value]="uploadPercent"></mat-progress-bar>
 
 
-
-          <img width="100" height="100" *ngIf="downloadUrl&&uploadPercent==100" [src]="downloadUrl"/>
-          <div class="footer">
-            <button class="btn" type="submit">Upload</button>
+            <img width="100" height="100" *ngIf="downloadUrl&&uploadPercent==100" [src]="downloadUrl"/>
           </div>
-          </div>
-
+            <div class="footer">
+              <ec-button [outline]="true" type="submit">Upload</ec-button>
+            </div>
         </form>
       </mat-card-content>
     </mat-card>

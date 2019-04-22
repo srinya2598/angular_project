@@ -45,6 +45,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['dashboard/category', CommonUtils.getRoutePath(category)]);
   }
 
+  logout() {
+    this.controller.logout();
+  }
+
   getCategories(): string[] {
     return CommonUtils.getCategories();
   }

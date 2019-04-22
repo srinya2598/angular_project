@@ -3,6 +3,7 @@ import { IUser } from '../../shared/models/users';
 
 export enum AuthActions {
   LOGIN = '[Login] sent',
+  LOGOUT = '[Logout] logout',
   LOGIN_SUCCESS = '[Login] success',
   LOGIN_FAILED = '[Login] failed',
   SIGNUP = '[SignUp] sent',
@@ -16,6 +17,10 @@ export enum AuthActions {
 
 export class Login implements Action {
   readonly type = AuthActions.LOGIN;
+}
+
+export class Logout implements Action {
+  readonly type = AuthActions.LOGOUT;
 }
 
 export class LoginSuccess implements Action {
