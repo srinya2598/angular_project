@@ -1,5 +1,5 @@
 import { RootState } from '../../root-reducer';
-import {_getEntities, _getIds, _getSelectedProduct, productReducer, ProductState} from './product';
+import { _getEntities, _getIds, _getSelectedProduct, productReducer, ProductState } from './product';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   _getBooksids,
@@ -19,7 +19,7 @@ import {
   productCategoryReducer,
   ProductCategoryState
 } from './product-category';
-import {_getLoggedInUser} from '../../auth/reducer/auth';
+import { _getLoggedInUser } from '../../auth/reducer/auth';
 
 export interface State {
   product: ProductState;

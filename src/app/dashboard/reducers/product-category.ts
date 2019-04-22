@@ -2,7 +2,7 @@ import { Action } from '../actions';
 import { DashboardActions } from '../actions/product';
 import { IProductCategory } from '../../shared/models/category';
 import { IProduct } from '../../shared/models/product';
-import {IUser} from '../../shared/models/users';
+import { IUser } from '../../shared/models/users';
 
 export interface ProductCategoryState {
   productsLoaded: boolean;
@@ -103,10 +103,10 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
           others: [...state.others, action.payload.id]
         };
       }
-      return  {
+      return {
         tempState,
         ...state,
-        };
+      };
 
 
     case DashboardActions.FETCH_SUCCESS:
@@ -123,7 +123,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
       let booksId: string[] = [];
       let moviesId: string[] = [];
       let otherId: string[] = [];
- let loggedInUserProductId: string[]=[];
+      let loggedInUserProductId: string[] = [];
 
       if (products) {
         products.forEach((product: IProduct) => {
@@ -173,9 +173,9 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
           }
 
         });
-        }
+      }
 
-      loggedInUserProductId=products.filter((product)=>product.userId===userId).map((res)=>res.id);
+      loggedInUserProductId = products.filter((product) => product.userId === userId).map((res) => res.id);
       return {
         ...state,
         productsLoaded: true,
@@ -218,5 +218,5 @@ export const _getBooksids = (state: ProductCategoryState) => state.books;
 export const _getMoviesids = (state: ProductCategoryState) => state.movies;
 export const _getOthersids = (state: ProductCategoryState) => state.others;
 export const _getSelectedCategory = (state: ProductCategoryState) => state.selectedCategory;
-export const  _getUserProducts = (state:ProductCategoryState)=> state.loggedInUserid;
+export const _getUserProducts = (state: ProductCategoryState) => state.loggedInUserid;
 

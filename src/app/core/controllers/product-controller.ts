@@ -14,8 +14,9 @@ import { AddProduct, FetchSuccess, SelectCategory } from '../../dashboard/action
 import { ApiService } from '../services/api.service';
 import { NotificationService } from '../services/notification.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {finalize, map, switchMap, take} from 'rxjs/operators';
+import { finalize, map, switchMap, take } from 'rxjs/operators';
 import { IProductCategory } from '../../shared/models/category';
+import { Constants } from '../../shared/utils/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -60,8 +61,8 @@ export class ProductController {
     this.store.dispatch(new SelectCategory(category));
   }
 
-  getSelectedCategoryProducts():Observable<IProduct[]> {
-    let category:IProductCategory;
+  getSelectedCategoryProducts(): Observable<IProduct[]> {
+    let category: IProductCategory;
     this.store.select(getSelectedCategory).subscribe(res => category = res);
     switch (category) {
       case IProductCategory.MOBILE_COMPUTER:
@@ -101,13 +102,14 @@ export class ProductController {
   }
 
   fetchProduct() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
     this.store.select(getIsProductLoaded).pipe(take(1)).subscribe(isLoaded => {
       if (!isLoaded) {
         this.apiService.fetchProduct().pipe(take(1)).subscribe((res) => {
             let products: IProduct[] = [];
             if (res) {
               Object.keys(res).forEach(key => products.push(res[key]));
-              this.store.dispatch(new FetchSuccess(products));
+              this.store.dispatch(new FetchSuccess({ products, userId }));
             }
           },
           (error) => {
@@ -120,11 +122,11 @@ export class ProductController {
   getSingleProduct(id) {
     let data;
     return this.store.select((state) => getSelectedProduct(state, id)).pipe(
-      switchMap((res)=> {
-        data = {...res};
-        return this.apiService.getUserDetails(res.userId)
+      switchMap((res) => {
+        data = { ...res };
+        return this.apiService.getUserDetails(res.userId);
       }),
-      map(res => data  = {...data,...res})
+      map(res => data = { ...data, ...res })
     );
   }
 }
