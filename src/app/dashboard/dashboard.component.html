@@ -13,16 +13,7 @@
               Categories
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <p>Electronic Appliances</p>
-          <p>Home Appliances</p>
-          <p>Men Clothing</p>
-          <p>Women Clothing</p>
-          <p>Kids Clothing</p>
-          <p>Toys</p>
-          <p>Vehicles</p>
-          <p>Books</p>
-          <p>Movies, Music and Videos</p>
-          <p>Others</p>
+          <p *ngFor="let category of getCategories()" (click)="selectCategory(category)">{{category}}</p>
         </mat-expansion-panel>
       </mat-accordion>
     </div>

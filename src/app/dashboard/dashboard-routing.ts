@@ -19,11 +19,11 @@ export const dashboardRoutes: Routes = [
         component: ProductUploadComponent
       },
       {
-        path: 'categories/:id',
+        path: 'category/:id',
         component: CategoryComponent
       },
       {
-        path: 'category/:id',
+        path: 'product/:id',
         component: ProductComponent
       }
     ]

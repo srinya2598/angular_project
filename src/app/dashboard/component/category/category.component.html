@@ -1,22 +1,14 @@
-<p *ngIf="products.length==0; else myProducts" style="color: white; text-align: center">No products available for this category</p>
-<ng-template #myProducts>
-  <div class="row" *ngFor="let product of products" (click)="getSingleProduct(product)">
-    <div class="container">
+<div class="products-container">
+  <h3>{{products[0].category}}</h3>
 
-      <div class="list-group">
-        <a
-          
-          class="list-group-item">
-          <p>
-            <img [src]="product.imageUrl" height="150px" width="180px" class="rounded-pill">
-            <span style="font-size: xx-large"> {{product.name}}</span>
-            <br><span style="font-size: medium">{{product.description}}</span>
-            <!--<br><span style="color: red; font-size: 25px; font-weight: bold">{{// product.}}</span>-->
-          </p>
-        </a>
-      </div>
-    </div>
+  <p *ngIf="products.length==0; else myProducts" style="color: white; text-align: center">No products available for this
+    category</p>
+  <ng-template #myProducts>
+    <ng-container *ngFor="let product of products">
+      <ec-product [product]="product"></ec-product>
+    </ng-container>
 
-  </div>
-</ng-template>
+  </ng-template>
+</div>
+
 

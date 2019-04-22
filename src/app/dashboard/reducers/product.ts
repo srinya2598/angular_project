@@ -26,7 +26,7 @@ export function productReducer(state: ProductState = initialState, action: Actio
 
     case DashboardActions.FETCH_SUCCESS:
       console.log('product fetched success');
-      return adapter.addMany(action.payload, state);
+      return adapter.addMany(action.payload.products, state);
 
 
     default:

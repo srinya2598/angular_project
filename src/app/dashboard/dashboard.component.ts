@@ -3,6 +3,10 @@ import { AuthController } from '../core/controllers/auth-controller';
 import { IUser } from '../shared/models/users';
 import { ProfileComponent } from './component/profile/profile.component';
 import { MatDialog } from '@angular/material';
+import { CommonUtils } from '../shared/utils/common.utils';
+import { ProductController } from '../core/controllers/product-controller';
+import { IProductCategory } from '../shared/models/category';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,7 +17,10 @@ import { MatDialog } from '@angular/material';
 export class DashboardComponent implements OnInit {
   user: IUser;
 
-  constructor(private controller: AuthController, private dialog: MatDialog) {
+  constructor(private controller: AuthController,
+              private dialog: MatDialog,
+              private productController: ProductController,
+              private router: Router) {
     this.controller.getUser().subscribe((res: IUser) => {
       if (res) {
         this.user = res;
@@ -31,6 +38,15 @@ export class DashboardComponent implements OnInit {
         user: this.user
       }
     });
+  }
+
+  selectCategory(category: IProductCategory) {
+    this.productController.setSelectedCategory(category);
+    this.router.navigate(['dashboard/category', CommonUtils.getRoutePath(category)]);
+  }
+
+  getCategories(): string[] {
+    return CommonUtils.getCategories();
   }
 
 }
