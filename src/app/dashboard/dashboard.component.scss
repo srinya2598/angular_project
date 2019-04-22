@@ -11,14 +11,15 @@ mat-sidenav-container {
         font-size: 32px;
       }
     }
-    .side-nav-options{
+    .side-nav-options {
       display: flex;
       justify-content: start;
       align-items: center;
       padding: 0 25px;
       margin: 20px 0;
       cursor: pointer;
-      mat-icon{
+      outline: none;
+      mat-icon {
         font-size: 22px;
         margin-right: 5px;
       }
@@ -32,10 +33,10 @@ mat-sidenav-container {
           color: $color-white;
           font-size: 18px;
         }
-        .mat-expansion-panel-content{
-          background: lighten($color-primary,0.7);
+        .mat-expansion-panel-content {
+          background: lighten($color-primary, 0.7);
 
-          .mat-expansion-panel-body{
+          .mat-expansion-panel-body {
             color: $color-white;
             font-size: 16px;
             padding-top: 10px;
@@ -50,9 +51,6 @@ mat-sidenav-container {
       margin: 0 20px;
       background: $color-white;
     }
-  }
-  mat-sidenav-content {
-    //width: 100%;
   }
 }
 
