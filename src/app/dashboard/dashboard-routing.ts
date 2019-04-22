@@ -4,6 +4,7 @@ import { ProductUploadComponent } from './component/product-upload/product-uploa
 import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
+import {ConversationComponent} from './component/conversation/conversation.component';
 
 export const dashboardRoutes: Routes = [
   {
@@ -25,6 +26,10 @@ export const dashboardRoutes: Routes = [
       {
         path: 'product/:id',
         component: ProductComponent
+      },
+      {
+        path: 'conversation',
+        component: ConversationComponent
       }
     ]
   }

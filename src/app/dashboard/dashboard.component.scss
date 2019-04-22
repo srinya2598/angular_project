@@ -6,7 +6,7 @@ mat-sidenav-container {
     background: $color-primary;
     color: $color-white;
     .sidenav-header {
-      padding: 8px 25px;
+      padding: 8px 10px;
       mat-icon {
         font-size: 32px;
       }
@@ -15,7 +15,7 @@ mat-sidenav-container {
       display: flex;
       justify-content: start;
       align-items: center;
-      padding: 0 25px;
+      padding: 0 20px;
       margin: 20px 0;
       cursor: pointer;
       outline: none;
@@ -25,7 +25,7 @@ mat-sidenav-container {
       }
     }
     .category-container {
-      margin: 20px 0;
+      margin: 10px;
       mat-expansion-panel {
         background: $color-primary;
         box-shadow: none;
@@ -39,7 +39,7 @@ mat-sidenav-container {
           .mat-expansion-panel-body {
             color: $color-white;
             font-size: 16px;
-            padding-top: 10px;
+            padding-top: 5px;
             padding-left: 25px;
           }
         }
@@ -48,7 +48,7 @@ mat-sidenav-container {
     }
     .divider {
       height: 2px;
-      margin: 0 20px;
+      margin: 0 10px;
       background: $color-white;
     }
   }

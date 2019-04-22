@@ -9,6 +9,7 @@ import { ProfileComponent } from './component/profile/profile.component';
 import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
+import { ConversationComponent } from './component/conversation/conversation.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,9 @@ import { ProductComponent } from './component/product/product.component';
     ProfileComponent,
     HomeComponent,
     CategoryComponent,
-    ProductComponent
+    ProductComponent,
+    ConversationComponent,
+
   ],
   imports: [
     CommonModule,
