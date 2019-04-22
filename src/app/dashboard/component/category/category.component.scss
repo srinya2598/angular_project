@@ -1,3 +1,11 @@
+@import "~src/variables";
+
 .header{
   margin: 10px 20px;
+}
+p {
+  text-align: center;
+  color: $color-primary;
+  padding: 20px;
+  font-size: 20px;
 }

@@ -1,12 +1,11 @@
+<p *ngIf="products.length==0; else myProducts">No products available for this
+  category!!</p>
+<ng-template #myProducts>
   <h3 class="header">{{products[0].category}}</h3>
+  <ng-container *ngFor="let product of products">
+    <ec-product [product]="product"></ec-product>
+  </ng-container>
 
-  <p *ngIf="products.length==0; else myProducts" style="color: white; text-align: center">No products available for this
-    category</p>
-  <ng-template #myProducts>
-    <ng-container *ngFor="let product of products">
-      <ec-product [product]="product"></ec-product>
-    </ng-container>
-
-  </ng-template>
+</ng-template>
 
 
