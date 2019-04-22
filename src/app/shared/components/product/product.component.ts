@@ -7,14 +7,14 @@ import { IProduct } from '../../models/product';
   template:`
   <mat-card>
     <mat-card-content>
-      <div fxLayout="row" fxLayoutGap="5px">
+      <div fxLayout="row" fxLayoutGap="30px">
         <div>
           <img [src]="product.imageUrl" />
         </div>
-        <div fxLayout="column" fxLayoutGap="3px">
+        <div fxLayout="column" fxLayoutGap="5px">
           <h3>{{product.name}}</h3>
           <p>{{product.description}}</p>
-          <p>{{product.price}}</p>
+          <p class="price">Price: {{product.price}}</p>
         </div>
       </div>
     </mat-card-content>

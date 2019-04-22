@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProductController } from '../../../core/controllers/product-controller';
 import { IProduct } from '../../../shared/models/product';
 import { Router } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { IProductCategory } from '../../../shared/models/category';
 
 @Component({
   selector: 'app-category',
@@ -15,7 +17,9 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.productController.getSelectedCategoryProducts().subscribe(res => {
+    this.productController.getSelectedCategory().pipe(
+      switchMap((category:IProductCategory) => this.productController.getSelectedCategoryProducts(category))
+    ).subscribe(res => {
       console.log(res);
       if (res) {
         this.products = res;

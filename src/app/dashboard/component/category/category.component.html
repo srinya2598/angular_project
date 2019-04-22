@@ -1,5 +1,4 @@
-<div class="products-container">
-  <h3>{{products[0].category}}</h3>
+  <h3 class="header">{{products[0].category}}</h3>
 
   <p *ngIf="products.length==0; else myProducts" style="color: white; text-align: center">No products available for this
     category</p>
@@ -9,6 +8,5 @@
     </ng-container>
 
   </ng-template>
-</div>
 
 

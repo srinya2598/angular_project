@@ -61,9 +61,11 @@ export class ProductController {
     this.store.dispatch(new SelectCategory(category));
   }
 
-  getSelectedCategoryProducts(): Observable<IProduct[]> {
-    let category: IProductCategory;
-    this.store.select(getSelectedCategory).subscribe(res => category = res);
+  getSelectedCategory() :Observable<IProductCategory>{
+    return this.store.select(getSelectedCategory);
+  }
+
+  getSelectedCategoryProducts(category:IProductCategory): Observable<IProduct[]> {
     switch (category) {
       case IProductCategory.MOBILE_COMPUTER:
         return this.store.select(getMobileAndComputers);

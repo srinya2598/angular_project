@@ -7,7 +7,6 @@ import { StoreModule } from '@ngrx/store';
 import { authRootReducer } from '../auth/reducer';
 import { NotificationComponent } from './components/notification/notification.component';
 import { AvatarModule } from 'ng2-avatar';
-import {productReducer} from '../dashboard/reducers/product';
 import {productRootReducer} from '../dashboard/reducers';
 import { ButtonComponent } from './components/button/button.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
