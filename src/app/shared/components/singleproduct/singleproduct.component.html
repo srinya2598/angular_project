@@ -1,18 +1,17 @@
-<div class="card">
-  <div class="imagecontainer">
+<mat-card>
+  <div class="image-container">
     <img [src]="product.imageUrl">
   </div>
 
-  <div class="productcontainer">
+  <div class="product-container">
     <p class="top">{{product.category}}</p>
     <h1 class="med">{{product.name}}</h1>
     <p class="bottom">by {{product.firstName}} {{product.lastName}}</p>
     <h3>Rs. {{product.price}}</h3>
     <p class="desc">{{product.description}}</p>
     <div class="footer">
-      <button class="btn button4">Call</button>
       <button class="btn button4">Chat</button>
     </div>
 
   </div>
-</div>
+</mat-card>

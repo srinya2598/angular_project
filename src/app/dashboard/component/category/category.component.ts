@@ -27,9 +27,9 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  getSingleProduct(product: IProduct) {
+  visitProduct(product: IProduct) {
     let id = product.id;
-    this.router.navigate(['dashboard/category', id]);
+    this.router.navigate(['dashboard/product', id]);
   }
 
 }
