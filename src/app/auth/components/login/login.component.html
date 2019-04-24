@@ -18,7 +18,8 @@
         <input matInput placeholder="Enter your email" formControlName="email">
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Enter your Password" formControlName="password">
+          <input matInput placeholder="Enter your Password" formControlName="password" [type]="inputType">
+        <button mat-icon-button (click)="toggleDisplayPassword()"> <mat-icon>visibility</mat-icon></button>
       </mat-form-field>
       <div fxLayout="column" fxLayoutAlign="space-evenly center">
         <ec-button type="submit">Login</ec-button>

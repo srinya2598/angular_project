@@ -14,8 +14,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SharedModule } from './shared/shared.module';
 import { AngularFireStorageModule } from '@angular/fire/storage';
-import { AuthActions } from './auth/actions/auth';
-
+import {AuthActions} from './auth/actions/auth';
 
 @NgModule({
   declarations: [

@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
 
   formGroup: FormGroup;
   isLoading = false;
+  isPassword: boolean = true;
 
   constructor(private authController: AuthController) {
     this.authController.getIsLoading().subscribe(isLoading => this.isLoading = isLoading);
@@ -32,5 +33,10 @@ export class LoginComponent implements OnInit {
   loginWithGoogle() {
     this.authController.googleLogin(Constants.LOGIN_WITH_GOOGLE);
   }
-
+  get inputType(): string{
+    return this.isPassword?"password":"text";
+  }
+  toggleDisplayPassword(){
+    this.isPassword = !this.isPassword;
+  }
 }
