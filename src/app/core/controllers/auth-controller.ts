@@ -25,6 +25,7 @@ import { Constants } from '../../shared/utils/constants';
 })
 export class AuthController {
   downloadUrlProfile: BehaviorSubject<string>;
+  uploadPercentage: BehaviorSubject<number>;
 
   constructor(private store: Store<State>,
               private apiService: ApiService,
@@ -32,6 +33,7 @@ export class AuthController {
               private zone: NgZone,
               private notificationService: NotificationService) {
     this.downloadUrlProfile = new BehaviorSubject('null');
+    this.uploadPercentage = new BehaviorSubject(0);
   }
 
   signUp(userData) {
@@ -180,13 +182,13 @@ export class AuthController {
     const fileName = file.name;
     const ref = this.apiService.getProfileImageRef(fileName);
     const task = this.apiService.uploadProfileImage(fileName, file, ref);
-    task.percentageChanges().subscribe(percent => this.uploadPercent.next(percent));
+    task.percentageChanges().subscribe(percent => this.uploadPercentage.next(percent));
     task.snapshotChanges().pipe(
       finalize(() => ref.getDownloadURL().subscribe(url => this.downloadUrlProfile.next(url)))
     ).subscribe(null, (error) => {
       this.notificationService.error(error.message);
     });
-    return [this.uploadPercent, this.downloadUrlProfile];
+    return [this.uploadPercentage, this.downloadUrlProfile];
   }
 
 
