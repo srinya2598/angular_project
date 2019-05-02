@@ -4,7 +4,6 @@ import { IUser } from '../../../shared/models/users';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { CommonUtils } from '../../../shared/utils/common.utils';
 import { AuthController } from '../../../core/controllers/auth-controller';
-import { ProfileController } from '../../../core/controllers/profile-contoller';
 import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
@@ -26,7 +25,6 @@ export class ProfileComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data,
               private authController: AuthController,
-              private profileController: ProfileController,
               private notificationService: NotificationService) {
     this.user = data.user;
     this.authController.getIsLoading().subscribe(res => this.isLoading = res);
@@ -81,7 +79,7 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    const response = this.profileController.uploadProfileImage(event.target.files[0]);
+    const response = this.authController.uploadProfileImage(event.target.files[0]);
     response[0].subscribe(percent => {
       console.log(percent);
       this.uploadPercent = percent;

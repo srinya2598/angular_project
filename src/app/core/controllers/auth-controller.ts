@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { getIsLoading, getIsLoggedIn, getLoggedInUser, State } from '../../auth/reducer';
 import { Store } from '@ngrx/store';
 import { ApiService } from '../services/api.service';
-import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
+import { catchError, filter, finalize, map, switchMap, take } from 'rxjs/operators';
 import { IUser } from '../../shared/models/users';
 import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
@@ -17,19 +17,21 @@ import {
   UpdateSent,
   UpdateSuccess
 } from '../../auth/actions/auth';
-import { combineLatest, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, throwError } from 'rxjs';
 import { Constants } from '../../shared/utils/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthController {
+  downloadUrlProfile: BehaviorSubject<string>;
 
   constructor(private store: Store<State>,
               private apiService: ApiService,
               private router: Router,
               private zone: NgZone,
               private notificationService: NotificationService) {
+    this.downloadUrlProfile = new BehaviorSubject('null');
   }
 
   signUp(userData) {
@@ -171,6 +173,20 @@ export class AuthController {
         this.notificationService.error(error);
         this.store.dispatch(new UpdateFailed());
       });
+  }
+
+
+  uploadProfileImage(file: File): BehaviorSubject<any>[] {
+    const fileName = file.name;
+    const ref = this.apiService.getProfileImageRef(fileName);
+    const task = this.apiService.uploadProfileImage(fileName, file, ref);
+    task.percentageChanges().subscribe(percent => this.uploadPercent.next(percent));
+    task.snapshotChanges().pipe(
+      finalize(() => ref.getDownloadURL().subscribe(url => this.downloadUrlProfile.next(url)))
+    ).subscribe(null, (error) => {
+      this.notificationService.error(error.message);
+    });
+    return [this.uploadPercent, this.downloadUrlProfile];
   }
 
 

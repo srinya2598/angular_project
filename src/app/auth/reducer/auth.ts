@@ -7,7 +7,7 @@ export interface AuthState {
   loggedInUserLoaded: boolean;
   isLoading: boolean;
   isLoggedIn: boolean;
-  isBootsraped: boolean;
+  isBootsrapped: boolean;
 }
 
 export const initialAuthState: AuthState = {
@@ -15,7 +15,7 @@ export const initialAuthState: AuthState = {
   loggedInUserLoaded: false,
   isLoading: false,
   isLoggedIn: false,
-  isBootsraped: false,
+  isBootsrapped: false,
 };
 
 
@@ -56,7 +56,7 @@ export function authReducer(state: AuthState = initialAuthState, action: Action)
           ...state,
           loggedInUser: action.payload,
           loggedInUserLoaded: true,
-          isBootsraped: true
+          isBootsrapped: true
         };
 
       case AuthActions.UPDATE_SENT:
@@ -87,6 +87,6 @@ export function authReducer(state: AuthState = initialAuthState, action: Action)
 export const _getLoggedInUser = (state: AuthState) => state.loggedInUser;
 export const _getIsLoading = (state: AuthState) => state.isLoading;
 export const _getIsLoggedIn = (state: AuthState) => state.isLoggedIn;
-export const _getIsBootstraped = (state: AuthState) => state.isBootsraped;
+export const _getIsBootstraped = (state: AuthState) => state.isBootsrapped;
 export const _getIsLoggedInUserLoaded = (state: AuthState) => state.loggedInUserLoaded;
 
