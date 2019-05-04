@@ -18,7 +18,7 @@ export interface ProductCategoryState {
   books: string[],
   movies: string[],
   others: string[],
-  loggedInUserid: string[],
+  loggedInUserProductId: string[],
   loadng: boolean,
 }
 
@@ -37,7 +37,7 @@ export const initialProductCategoryState: ProductCategoryState = {
   movies: [],
   others: [],
   loadng: false,
-  loggedInUserid: [],
+  loggedInUserProductId: [],
 
 };
 
@@ -190,7 +190,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
         books: booksId,
         movies: moviesId,
         others: otherId,
-        loggedInUserid: loggedInUserProductId,
+        loggedInUserProductId: loggedInUserProductId,
       };
 
     case DashboardActions.SELECT_CATEGORY:
@@ -218,5 +218,5 @@ export const _getBooksids = (state: ProductCategoryState) => state.books;
 export const _getMoviesids = (state: ProductCategoryState) => state.movies;
 export const _getOthersids = (state: ProductCategoryState) => state.others;
 export const _getSelectedCategory = (state: ProductCategoryState) => state.selectedCategory;
-export const _getUserProducts = (state: ProductCategoryState) => state.loggedInUserid;
+export const _getUserProducts = (state: ProductCategoryState) => state.loggedInUserProductId;
 
