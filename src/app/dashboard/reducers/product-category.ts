@@ -218,5 +218,5 @@ export const _getBooksids = (state: ProductCategoryState) => state.books;
 export const _getMoviesids = (state: ProductCategoryState) => state.movies;
 export const _getOthersids = (state: ProductCategoryState) => state.others;
 export const _getSelectedCategory = (state: ProductCategoryState) => state.selectedCategory;
-export const _getUserProducts = (state: ProductCategoryState) => state.loggedInUserProductId;
+export const _getLoggedInUserProductsId = (state: ProductCategoryState) => state.loggedInUserProductId;
 

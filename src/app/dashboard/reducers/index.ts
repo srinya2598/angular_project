@@ -1,12 +1,23 @@
 import { RootState } from '../../root-reducer';
-import { _getEntities, _getIds, _getSelectedProduct, productReducer, ProductState } from './product';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  _getEntities,
+  _getIds,
+  _getSelectedProduct,
+  productReducer,
+  ProductState
+} from './product';
+import {
+  createFeatureSelector,
+  createSelector
+} from '@ngrx/store';
+
 import {
   _getBooksids,
   _getElectronicids,
   _getHomeids,
   _getIsProductLoaded,
   _getKidsids,
+  _getLoggedInUserProductsId,
   _getMenids,
   _getMobileComputerids,
   _getMoviesids,
@@ -15,11 +26,9 @@ import {
   _getToysids,
   _getVehiclesids,
   _getWomenids,
-  _getUserProducts,
   productCategoryReducer,
   ProductCategoryState
 } from './product-category';
-import { _getLoggedInUser } from '../../auth/reducer/auth';
 
 export interface State {
   product: ProductState;
@@ -110,7 +119,7 @@ export const getSelectedCategory = createSelector(
 
 export const getUserProducts = createSelector(
   getProductCategoryState,
-  _getUserProducts
+  _getLoggedInUserProductsId
 );
 
 // Fetching the actual product objects using ids and entities
@@ -192,7 +201,7 @@ export const getOtherItems = createSelector(
     return ids.map(id => entities[id]);
   });
 
-export const getLoggedInUserProductId = createSelector(
+export const getLoggedInUserProducts = createSelector(
   getUserProducts,
   getEntities,
   (ids, entities) => {
