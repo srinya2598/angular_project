@@ -5,7 +5,7 @@ import {
   getBooks,
   getElectronicAppliances,
   getHomeAppliances,
-  getIsProductLoaded, getKidCloathings, getMenCloathings,
+  getIsProductLoaded, getKidCloathings, getLoggedInUserProducts, getMenCloathings,
   getMobileAndComputers, getMovies, getOtherItems,
   getSelectedCategory, getSelectedProduct, getToys, getVehicles, getWomenCloathings,
   State
@@ -61,11 +61,11 @@ export class ProductController {
     this.store.dispatch(new SelectCategory(category));
   }
 
-  getSelectedCategory() :Observable<IProductCategory>{
+  getSelectedCategory(): Observable<IProductCategory> {
     return this.store.select(getSelectedCategory);
   }
 
-  getSelectedCategoryProducts(category:IProductCategory): Observable<IProduct[]> {
+  getSelectedCategoryProducts(category: IProductCategory): Observable<IProduct[]> {
     switch (category) {
       case IProductCategory.MOBILE_COMPUTER:
         return this.store.select(getMobileAndComputers);
@@ -130,6 +130,10 @@ export class ProductController {
       }),
       map(res => data = { ...data, ...res })
     );
+  }
+
+  getUserProducts(): Observable<IProduct> {
+    return this.store.select(getLoggedInUserProducts);
   }
 }
 
