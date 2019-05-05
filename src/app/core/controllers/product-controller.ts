@@ -132,7 +132,7 @@ export class ProductController {
     );
   }
 
-  getUserProducts(): Observable<IProduct> {
+  getUserProducts(): Observable<IProduct[]> {
     return this.store.select(getLoggedInUserProducts);
   }
 }
