@@ -10,6 +10,7 @@ import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
 import { ConversationComponent } from './component/conversation/conversation.component';
+import { UserProductsComponent } from './component/user-products/user-products.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ConversationComponent } from './component/conversation/conversation.com
     CategoryComponent,
     ProductComponent,
     ConversationComponent,
+    UserProductsComponent,
 
   ],
   imports: [
