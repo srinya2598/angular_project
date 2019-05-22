@@ -1,21 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthController } from '../../../core/controllers/auth-controller';
 import { Constants } from '../../../shared/utils/constants';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   formGroup: FormGroup;
   isLoading = false;
   isPassword: boolean = true;
+  isAlive = true;
 
   constructor(private authController: AuthController) {
-    this.authController.getIsLoading().subscribe(isLoading => this.isLoading = isLoading);
+    this.authController.getIsLoading().pipe(takeWhile(() => this.isAlive)).subscribe(isLoading => this.isLoading = isLoading);
   }
 
   ngOnInit(): void {
@@ -33,10 +35,16 @@ export class LoginComponent implements OnInit {
   loginWithGoogle() {
     this.authController.googleLogin(Constants.LOGIN_WITH_GOOGLE);
   }
-  get inputType(): string{
-    return this.isPassword?"password":"text";
+
+  get inputType(): string {
+    return this.isPassword ? 'password' : 'text';
   }
-  toggleDisplayPassword(){
+
+  toggleDisplayPassword() {
     this.isPassword = !this.isPassword;
+  }
+
+  ngOnDestroy(): void {
+    this.isAlive = false;
   }
 }

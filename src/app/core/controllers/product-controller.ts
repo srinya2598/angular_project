@@ -136,7 +136,3 @@ export class ProductController {
     return this.store.select(getLoggedInUserProducts);
   }
 }
-
-
-
-
