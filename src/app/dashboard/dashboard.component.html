@@ -1,6 +1,6 @@
 <mat-sidenav-container fxHide.sm fxHide.xs>
   <mat-sidenav [mode]="'side'" [opened]="true" [fixedInViewport]="true">
-    <div class="side-nav-header" fxLayout="row" fxLayoutGap="20px">
+    <div (click)="navigateToDashboard()" class="side-nav-header" fxLayout="row" fxLayoutGap="20px">
       <mat-icon>dashboard</mat-icon>
       <h3>Dashboard</h3>
     </div>

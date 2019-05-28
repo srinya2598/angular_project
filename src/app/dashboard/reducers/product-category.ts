@@ -19,7 +19,7 @@ export interface ProductCategoryState {
   movies: string[],
   others: string[],
   loggedInUserProductId: string[],
-  loadng: boolean,
+  loading: boolean,
 }
 
 export const initialProductCategoryState: ProductCategoryState = {
@@ -36,7 +36,7 @@ export const initialProductCategoryState: ProductCategoryState = {
   books: [],
   movies: [],
   others: [],
-  loadng: false,
+  loading: false,
   loggedInUserProductId: [],
 
 };

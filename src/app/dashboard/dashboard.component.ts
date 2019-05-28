@@ -45,6 +45,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['dashboard/category', CommonUtils.getRoutePath(category)]);
   }
 
+  navigateToDashboard() {
+    this.router.navigate(['dashboard']);
+  }
+
   logout() {
     this.controller.logout();
   }
@@ -54,7 +58,7 @@ export class DashboardComponent implements OnInit {
   }
 
   uploadProducts() {
-    this.router.navigate(["dashboard/upload-product"])
+    this.router.navigate(['dashboard/upload-product']);
   }
 
   loadUserProduct() {
