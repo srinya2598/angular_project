@@ -23,12 +23,12 @@
       Profile
     </div>
     <div class="divider"></div>
-    <div class="side-nav-options" routerLink="/dashboard/upload-product">
+    <div class="side-nav-options" (click)="uploadProducts()">
       <mat-icon>add_shopping_cart</mat-icon>
       Add Products
     </div>
     <div class="divider"></div>
-    <div class="side-nav-options">
+    <div class="side-nav-options" (click)="loadUserProduct()">
       <mat-icon>shopping_cart</mat-icon>
       Your Products
     </div>

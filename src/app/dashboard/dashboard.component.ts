@@ -53,6 +53,14 @@ export class DashboardComponent implements OnInit {
     return CommonUtils.getCategories();
   }
 
+  uploadProducts() {
+    this.router.navigate(["dashboard/upload-product"])
+  }
+
+  loadUserProduct() {
+    this.router.navigate(['dashboard/products']);
+  }
+
 }
 
 

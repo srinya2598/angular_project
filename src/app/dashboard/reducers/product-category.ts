@@ -46,7 +46,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
 
   switch (action.type) {
     case DashboardActions.ADD_PRODUCT:
-      let tempState = { ...state };
+      let tempState = { ...state, loggedInUserProductId: [...state.loggedInUserProductId, action.payload.id] };
       if (action.payload.category == IProductCategory.MOBILE_COMPUTER) {
         tempState = {
           ...state,
@@ -103,10 +103,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
           others: [...state.others, action.payload.id]
         };
       }
-      return {
-        tempState,
-        ...state,
-      };
+      return tempState;
 
 
     case DashboardActions.FETCH_SUCCESS:
@@ -175,7 +172,12 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
         });
       }
 
-      loggedInUserProductId = products.filter((product) => product.userId === userId).map((res) => res.id);
+      console.log("UserId",userId);
+
+      loggedInUserProductId = products.filter((product) => product.userId == userId).map((res) => {
+        console.log(res);
+        return res.id;
+      });
       return {
         ...state,
         productsLoaded: true,

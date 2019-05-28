@@ -4,7 +4,8 @@ import { ProductUploadComponent } from './component/product-upload/product-uploa
 import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
-import {ConversationComponent} from './component/conversation/conversation.component';
+import { ConversationComponent } from './component/conversation/conversation.component';
+import { UserProductsComponent } from './component/user-products/user-products.component';
 
 export const dashboardRoutes: Routes = [
   {
@@ -26,6 +27,10 @@ export const dashboardRoutes: Routes = [
       {
         path: 'product/:id',
         component: ProductComponent
+      },
+      {
+        path: 'products',
+        component: UserProductsComponent
       },
       {
         path: 'conversation',
