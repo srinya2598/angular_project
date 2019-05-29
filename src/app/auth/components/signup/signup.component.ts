@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonUtils } from '@ec-shared/utils/common.utils';
 import { AuthController } from '@ec-core/controllers/auth-controller';
 import { Constants } from '@ec-shared/utils/constants';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
 
   formGroup: FormGroup;
   firstName: FormControl;
@@ -21,10 +22,12 @@ export class SignupComponent implements OnInit {
   confirmPassword: FormControl;
   countries: string[];
   isLoading = false;
+  isAlive = true;
 
   constructor(private authController: AuthController) {
     this.countries = CommonUtils.getCountries();
     this.authController.getIsLoading().subscribe(isLoading => this.isLoading = isLoading);
+    this.authController.getIsLoading().pipe(takeWhile(() => this.isAlive)).subscribe(isLoading => this.isLoading = isLoading);
   }
 
   ngOnInit() {
@@ -61,4 +64,7 @@ export class SignupComponent implements OnInit {
     } else return null;
   }
 
+  ngOnDestroy(): void {
+    this.isAlive = false;
+  }
 }

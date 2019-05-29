@@ -1,17 +1,18 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IUser } from '@ec-shared/models/users';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { CommonUtils } from '@ec-shared/utils/common.utils';
 import { AuthController } from '@ec-core/controllers/auth-controller';
 import { NotificationService } from '@ec-core/services/notification.service';
+import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
   formGroup: FormGroup;
   countries: string[];
@@ -20,6 +21,7 @@ export class ProfileComponent implements OnInit {
   isLoading = false;
   downloadUrl: string;
   uploadPercent = 0;
+  isAlive = true;
 
   buttonText = ButtonText.EDIT;
 
@@ -28,6 +30,7 @@ export class ProfileComponent implements OnInit {
               private notificationService: NotificationService) {
     this.user = data.user;
     this.authController.getIsLoading().subscribe(res => this.isLoading = res);
+    this.authController.getIsLoading().pipe(takeWhile(() => this.isAlive)).subscribe(isLoading => this.isLoading = isLoading);
   }
 
   ngOnInit() {
@@ -74,8 +77,8 @@ export class ProfileComponent implements OnInit {
       this.notificationService.error('Please select an image');
       return;
     }
-    if(!CommonUtils.isImage(event.target.files[0].type)){
-      this.notificationService.error("File type not supported");
+    if (!CommonUtils.isImage(event.target.files[0].type)) {
+      this.notificationService.error('File type not supported');
       return;
     }
 
@@ -86,6 +89,10 @@ export class ProfileComponent implements OnInit {
     });
     response[1].subscribe(res => this.downloadUrl = res);
 
+  }
+
+  ngOnDestroy(): void {
+    this.isAlive = false;
   }
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CommonUtils } from '@ec-shared/utils/common.utils';
 import { ProductController } from '@ec-core/controllers/product-controller';
@@ -8,6 +8,7 @@ import { AuthController } from '@ec-core/controllers/auth-controller';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ApiService } from '@ec-core/services/api.service';
 import { NotificationService } from '@ec-core/services/notification.service';
+import { takeWhile } from 'rxjs/operators';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { NotificationService } from '@ec-core/services/notification.service';
   templateUrl: './product-upload.component.html',
   styleUrls: ['./product-upload.component.scss']
 })
-export class ProductUploadComponent implements OnInit {
+export class ProductUploadComponent implements OnInit, OnDestroy {
 
   formGroup: FormGroup;
   CommonUtils = CommonUtils;
@@ -23,6 +24,7 @@ export class ProductUploadComponent implements OnInit {
   userId;
   uploadPercent = 0;
   downloadUrl = null;
+  isAlive = true;
 
 
   constructor(private productController: ProductController,
@@ -32,6 +34,9 @@ export class ProductUploadComponent implements OnInit {
               private notificationService: NotificationService) {
     this.categories = CommonUtils.getEnumKeys<IProductCategory>(IProductCategory);
     this.authController.getUser().subscribe((res) => {
+      if (res) this.userId = res.id;
+    });
+    this.authController.getUser().pipe(takeWhile(() => this.isAlive)).subscribe((res) => {
       if (res) this.userId = res.id;
     });
   }
@@ -79,5 +84,9 @@ export class ProductUploadComponent implements OnInit {
     const response = this.productController.uploadProductImage(event.target.files[0]);
     response[0].subscribe(percent => this.uploadPercent = percent);
     response[1].subscribe(res => this.downloadUrl = res);
+  }
+
+  ngOnDestroy(): void {
+    this.isAlive = false;
   }
 }
