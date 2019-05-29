@@ -1,7 +1,8 @@
-
+import { IProductCategory } from '../models/category';
 
 export class CommonUtils {
-  static imagesExtensions = ["jpeg", "jpg", "gif", "png", "bmp", "svg"];
+  static imagesExtensions = ['jpeg', 'jpg', 'gif', 'png', 'bmp', 'svg'];
+
   static getCountries() {
     return [
       'Afghanistan',
@@ -186,21 +187,55 @@ export class CommonUtils {
     ];
   }
 
-  static getCategories() {
-    return [
-      'Mobile and Computer',
-      'Electronic Appliances',
-      'Home Appliances',
-      'Men Clothing',
-      'Women Clothing',
-      'Kids Clothing',
-      'Toys',
-      'Vehicles',
-      'Books',
-      'Movies',
-      'Music and Videos',
-      'Others'
-    ];
+  /**
+   * Ideally, the parameter type any should be replaced by typeof T but the compiler (TS 2.4) can't understand this syntax.
+   * @param enumRef Enum Type
+   * @returns T[] Array of cases in enum
+   */
+
+  static getEnumKeys<T>(enumRef: any): T[] {
+    return Object.keys(enumRef).map(key => enumRef[key]);
+  }
+
+  static getProductCategoryTitle(category: IProductCategory) {
+    let title;
+    switch (category) {
+      case IProductCategory.MOBILE_COMPUTER:
+        title = 'Mobile and Computers';
+        break;
+      case IProductCategory.ELECTRONIC_APPLIANCES:
+        title = 'Electronic appliances';
+        break;
+      case IProductCategory.HOME_APPLIANCES:
+        title = 'Home appliances';
+        break;
+      case IProductCategory.MEN_CLOTHING:
+        title = 'Men clothing';
+        break;
+      case IProductCategory.WOMEN_CLOTHING:
+        title = 'Women clothing';
+        break;
+      case IProductCategory.KIDS_CLOTHING:
+        title = 'Kids clothing';
+        break;
+      case IProductCategory.TOYS:
+        title = 'Toys';
+        break;
+      case IProductCategory.VEHICLES:
+        title = 'Vehicles';
+        break;
+      case IProductCategory.BOOKS:
+        title = 'Books';
+        break;
+      case IProductCategory.MOVIES_MUSIC_VIDEOS:
+        title = 'Movies, music and videos';
+        break;
+      default:
+        title = 'Others';
+        break;
+    }
+    return title;
+
   }
 
   static getRandomId() {
@@ -213,7 +248,7 @@ export class CommonUtils {
   }
 
   static isImage(fileType: string): boolean {
-    const type = fileType.substr(fileType.indexOf("/")+1);
+    const type = fileType.substr(fileType.indexOf('/') + 1);
     return this.imagesExtensions.indexOf(type.toLowerCase()) !== -1;
   }
 

@@ -1,13 +1,13 @@
 export enum IProductCategory {
-  MOBILE_COMPUTER = 'Mobile and Computer',
-  ELECTRONIC_APPLIANCES = 'Electronic Appliances',
-  HOME_APPLIANCES = 'Home Appliances',
-  MEN_CLOTHING = 'Men Clothing',
-  WOMEN_CLOTHING = 'Women Clothing',
-  KIDS_CLOTHING = 'Kids Clothing',
-  TOYS = 'Toys',
-  VEHICLES = 'Vehicles',
-  BOOKS = 'Books',
-  MOVIES_MUSIC_VIDEOS = 'Movies, Music and Videos',
-  OTHERS = 'Others'
+  MOBILE_COMPUTER = 'mobile_and_computer',
+  ELECTRONIC_APPLIANCES = 'electronic_appliances',
+  HOME_APPLIANCES = 'home_appliances',
+  MEN_CLOTHING = 'men_clothing',
+  WOMEN_CLOTHING = 'women_clothing',
+  KIDS_CLOTHING = 'kids_clothing',
+  TOYS = 'toys',
+  VEHICLES = 'vehicles',
+  BOOKS = 'books',
+  MOVIES_MUSIC_VIDEOS = 'movies_music_videos',
+  OTHERS = 'others'
 }

@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
   user: IUser;
+  CommonUtils = CommonUtils;
 
   constructor(private controller: AuthController,
               private dialog: MatDialog,
@@ -54,7 +55,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getCategories(): string[] {
-    return CommonUtils.getCategories();
+    return CommonUtils.getEnumKeys<IProductCategory>(IProductCategory);
   }
 
   uploadProducts() {

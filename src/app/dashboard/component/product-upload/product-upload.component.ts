@@ -5,11 +5,9 @@ import { ProductController } from '../../../core/controllers/product-controller'
 import { IProduct } from '../../../shared/models/product';
 import { IProductCategory } from '../../../shared/models/category';
 import { AuthController } from '../../../core/controllers/auth-controller';
-import { IUser } from '../../../shared/models/users';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { ApiService } from '../../../core/services/api.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { Constants } from '../../../shared/utils/constants';
 
 
 @Component({
@@ -20,6 +18,7 @@ import { Constants } from '../../../shared/utils/constants';
 export class ProductUploadComponent implements OnInit {
 
   formGroup: FormGroup;
+  CommonUtils = CommonUtils;
   categories: string[];
   userId;
   uploadPercent = 0;
@@ -31,7 +30,7 @@ export class ProductUploadComponent implements OnInit {
               private apiService: ApiService,
               private storage: AngularFireStorage,
               private notificationService: NotificationService) {
-    this.categories = CommonUtils.getCategories();
+    this.categories = CommonUtils.getEnumKeys<IProductCategory>(IProductCategory);
     this.authController.getUser().subscribe((res) => {
       if (res) this.userId = res.id;
     });

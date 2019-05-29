@@ -13,7 +13,8 @@
               Categories
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <p *ngFor="let category of getCategories()" (click)="selectCategory(category)">{{category}}</p>
+          <p *ngFor="let category of getCategories()" (click)="selectCategory(category)">
+            {{CommonUtils.getProductCategoryTitle(category)}}</p>
         </mat-expansion-panel>
       </mat-accordion>
     </div>
