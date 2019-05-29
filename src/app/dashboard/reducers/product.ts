@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { IProduct } from '../../shared/models/product';
+import { IProduct } from '@ec-shared/models/product';
 import { DashboardActions } from '../actions/product';
 import { Action } from '../actions';
 

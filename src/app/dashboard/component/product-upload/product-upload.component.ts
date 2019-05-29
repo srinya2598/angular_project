@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CommonUtils } from '../../../shared/utils/common.utils';
-import { ProductController } from '../../../core/controllers/product-controller';
-import { IProduct } from '../../../shared/models/product';
-import { IProductCategory } from '../../../shared/models/category';
-import { AuthController } from '../../../core/controllers/auth-controller';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
+import { ProductController } from '@ec-core/controllers/product-controller';
+import { IProduct } from '@ec-shared/models/product';
+import { IProductCategory } from '@ec-shared/models/category';
+import { AuthController } from '@ec-core/controllers/auth-controller';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { ApiService } from '../../../core/services/api.service';
-import { NotificationService } from '../../../core/services/notification.service';
+import { ApiService } from '@ec-core/services/api.service';
+import { NotificationService } from '@ec-core/services/notification.service';
 
 
 @Component({

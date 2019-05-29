@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductController } from '../../../core/controllers/product-controller';
-import { IProduct } from '../../../shared/models/product';
+import { ProductController } from '@ec-core/controllers/product-controller';
+import { IProduct } from '@ec-shared/models/product';
 import { Router } from '@angular/router';
 
 @Component({

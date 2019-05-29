@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProductController } from '../../../core/controllers/product-controller';
-import { IProductCategory } from '../../../shared/models/category';
-import { CommonUtils} from '../../../shared/utils/common.utils';
+import { ProductController } from '@ec-core/controllers/product-controller';
+import { IProductCategory } from '@ec-shared/models/category';
+import { CommonUtils} from '@ec-shared/utils/common.utils';
 
 @Component({
   selector: 'app-home',

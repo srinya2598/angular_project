@@ -3,7 +3,7 @@ import { getIsLoading, getIsLoggedIn, getLoggedInUser, State } from '../../auth/
 import { Store } from '@ngrx/store';
 import { ApiService } from '../services/api.service';
 import { catchError, filter, finalize, map, switchMap, take } from 'rxjs/operators';
-import { IUser } from '../../shared/models/users';
+import { IUser } from '@ec-shared/models/users';
 import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
 import {
@@ -18,7 +18,7 @@ import {
   UpdateSuccess
 } from '../../auth/actions/auth';
 import { BehaviorSubject, combineLatest, Observable, throwError } from 'rxjs';
-import { Constants } from '../../shared/utils/constants';
+import { Constants } from '@ec-shared/utils/constants';
 
 @Injectable({
   providedIn: 'root'

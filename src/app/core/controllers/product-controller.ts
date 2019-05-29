@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IProduct } from '../../shared/models/product';
+import { IProduct } from '@ec-shared/models/product';
 import { Store } from '@ngrx/store';
 import {
   getBooks,
@@ -15,8 +15,8 @@ import { ApiService } from '../services/api.service';
 import { NotificationService } from '../services/notification.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize, map, switchMap, take } from 'rxjs/operators';
-import { IProductCategory } from '../../shared/models/category';
-import { Constants } from '../../shared/utils/constants';
+import { IProductCategory } from '@ec-shared/models/category';
+import { Constants } from '@ec-shared/utils/constants';
 
 @Injectable({
   providedIn: 'root'

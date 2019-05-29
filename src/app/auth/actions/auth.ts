@@ -1,5 +1,5 @@
 import { Action } from './index';
-import { IUser } from '../../shared/models/users';
+import { IUser } from '@ec-shared/models/users';
 
 export enum AuthActions {
   LOGIN = '[Login] sent',

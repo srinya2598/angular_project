@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { from } from 'rxjs';
-import { IUser } from '../../shared/models/users';
+import { IUser } from '@ec-shared/models/users';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { auth } from 'firebase';
-import { IProduct } from '../../shared/models/product';
+import { IProduct } from '@ec-shared/models/product';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { tsStructureIsReused } from '@angular/compiler-cli/src/transformers/util';
 

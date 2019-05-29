@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { IUser } from '../../../shared/models/users';
+import { IUser } from '@ec-shared/models/users';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { CommonUtils } from '../../../shared/utils/common.utils';
-import { AuthController } from '../../../core/controllers/auth-controller';
-import { NotificationService } from '../../../core/services/notification.service';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
+import { AuthController } from '@ec-core/controllers/auth-controller';
+import { NotificationService } from '@ec-core/services/notification.service';
 
 @Component({
   selector: 'app-profile',

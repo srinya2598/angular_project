@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CommonUtils } from '../../../shared/utils/common.utils';
-import { AuthController } from '../../../core/controllers/auth-controller';
-import { Constants } from '../../../shared/utils/constants';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
+import { AuthController } from '@ec-core/controllers/auth-controller';
+import { Constants } from '@ec-shared/utils/constants';
 
 @Component({
   selector: 'app-signup',
