@@ -1,5 +1,5 @@
 import {
-  _getIsBootstraped,
+  _getIsBootstrapped,
   _getIsLoading,
   _getIsLoggedIn,
   _getIsLoggedInUserLoaded,
@@ -27,6 +27,6 @@ export const getAuthRootState = createFeatureSelector<State>('auth');
 export const getAuthState = createSelector(getAuthRootState, (state) => state.auth);
 export const getLoggedInUser = createSelector(getAuthState, _getLoggedInUser);
 export const getIsLoading = createSelector(getAuthState, _getIsLoading);
-export const getIsBootstraped = createSelector(getAuthState, _getIsBootstraped);
+export const getIsBootstrapped = createSelector(getAuthState, _getIsBootstrapped);
 export const getIsLoggedIn = createSelector(getAuthState, _getIsLoggedIn);
 export const getIsLoggedInUserLoaded = createSelector(getAuthState, _getIsLoggedInUserLoaded);

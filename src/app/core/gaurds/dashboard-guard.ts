@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { getIsBootstraped, State } from '../../auth/reducer';
+import { getIsBootstrapped, State } from '../../auth/reducer';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ export class DashboardGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return this.store.select(getIsBootstraped).pipe(
+    return this.store.select(getIsBootstrapped).pipe(
       take(1),
       map((res) => {
         if (!res) {

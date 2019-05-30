@@ -87,6 +87,6 @@ export function authReducer(state: AuthState = initialAuthState, action: Action)
 export const _getLoggedInUser = (state: AuthState) => state.loggedInUser;
 export const _getIsLoading = (state: AuthState) => state.isLoading;
 export const _getIsLoggedIn = (state: AuthState) => state.isLoggedIn;
-export const _getIsBootstraped = (state: AuthState) => state.isBootsrapped;
+export const _getIsBootstrapped = (state: AuthState) => state.isBootsrapped;
 export const _getIsLoggedInUserLoaded = (state: AuthState) => state.loggedInUserLoaded;
 
