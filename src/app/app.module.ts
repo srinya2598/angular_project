@@ -9,12 +9,12 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { rootReducer } from './root-reducer';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SharedModule } from './shared/shared.module';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import {AuthActions} from './auth/actions/auth';
+import { rootReducer } from '@ec-core/reducers';
 
 @NgModule({
   declarations: [

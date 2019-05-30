@@ -1,7 +1,7 @@
-import { Action } from '../actions';
 import { DashboardActions } from '../actions/product';
 import { IProductCategory } from '@ec-shared/models/category';
 import { IProduct } from '@ec-shared/models/product';
+import { Action } from '@ec-core/actions';
 
 export interface ProductCategoryState {
   productsLoaded: boolean;

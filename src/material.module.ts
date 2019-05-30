@@ -1,14 +1,19 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {
   MatButtonModule,
-  MatCardModule, MatDialogModule,
+  MatCardModule,
+  MatDialogModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
-  MatMenuModule, MatProgressSpinnerModule,
+  MatMenuModule,
+  MatProgressSpinnerModule,
   MatSelectModule,
   MatSnackBarModule,
-  MatProgressBarModule, MatSidenavModule, MatExpansionModule
+  MatProgressBarModule,
+  MatSidenavModule,
+  MatExpansionModule,
+  MatToolbarModule
 } from '@angular/material';
 
 const modules = [
@@ -24,7 +29,8 @@ const modules = [
   MatProgressSpinnerModule,
   MatProgressBarModule,
   MatSidenavModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatToolbarModule
 ];
 
 @NgModule({

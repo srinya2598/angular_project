@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthController } from '../core/controllers/auth-controller';
 import { IUser } from '../shared/models/users';
 import { ProfileComponent } from './component/profile/profile.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSidenav } from '@angular/material';
 import { CommonUtils } from '../shared/utils/common.utils';
 import { ProductController } from '../core/controllers/product-controller';
 import { IProductCategory } from '../shared/models/category';
@@ -17,6 +17,8 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
   user: IUser;
   CommonUtils = CommonUtils;
+
+  @ViewChild('snav') snav: MatSidenav;
 
   constructor(private controller: AuthController,
               private dialog: MatDialog,
@@ -42,6 +44,7 @@ export class DashboardComponent implements OnInit {
   }
 
   selectCategory(category: IProductCategory) {
+    this.closeDrawer();
     this.productController.setSelectedCategory(category);
     this.router.navigate(['dashboard/category', CommonUtils.getRoutePath(category)]);
   }
@@ -51,6 +54,7 @@ export class DashboardComponent implements OnInit {
   }
 
   logout() {
+    this.closeDrawer();
     this.controller.logout();
   }
 
@@ -59,11 +63,19 @@ export class DashboardComponent implements OnInit {
   }
 
   uploadProducts() {
+    this.closeDrawer();
     this.router.navigate(['dashboard/upload-product']);
   }
 
   loadUserProduct() {
+    this.closeDrawer();
     this.router.navigate(['dashboard/products']);
+  }
+
+  closeDrawer() {
+    if (this.snav.opened) {
+      this.snav.close();
+    }
   }
 
 }

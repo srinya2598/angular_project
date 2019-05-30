@@ -1,7 +1,7 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { IProduct } from '@ec-shared/models/product';
 import { DashboardActions } from '../actions/product';
-import { Action } from '../actions';
+import { Action } from '@ec-core/actions';
 
 
 export interface ProductState extends EntityState <IProduct> {

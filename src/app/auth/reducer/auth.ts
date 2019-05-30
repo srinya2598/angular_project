@@ -1,6 +1,6 @@
 import { AuthActions } from '../actions/auth';
-import { Action } from '../actions';
 import { IUser } from '@ec-shared/models/users';
+import { Action } from '@ec-core/actions';
 
 export interface AuthState {
   loggedInUser: IUser;

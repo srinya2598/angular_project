@@ -1,6 +1,9 @@
 @import "~src/variables";
 
+// Desktop-view scss
+
 mat-sidenav-container {
+  height: 100vh;
   mat-sidenav {
     width: 22%;
     background: $color-primary;
@@ -12,46 +15,62 @@ mat-sidenav-container {
         font-size: 32px;
       }
     }
-    .side-nav-options {
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      padding: 0 20px;
-      margin: 20px 0;
-      cursor: pointer;
-      outline: none;
-      mat-icon {
-        font-size: 22px;
-        margin-right: 5px;
-      }
-    }
-    .category-container {
-      margin: 10px 0;
-      mat-expansion-panel {
-        background: $color-primary;
-        box-shadow: none;
-        .mat-expansion-panel-header-title {
-          color: $color-white;
-          font-size: 18px;
-        }
-        .mat-expansion-panel-content {
-          background: lighten($color-primary, 0.7);
-
-          .mat-expansion-panel-body {
-            color: $color-white;
-            font-size: 16px;
-            padding-top: 5px;
-            padding-left: 25px;
-          }
-        }
-
-      }
-    }
-    .divider {
-      height: 2px;
-      margin: 0 10px;
-      background: $color-white;
-    }
   }
 }
 
+// Mobile view scss
+
+mat-toolbar {
+  background-color: $color-primary;
+  color: $color-white;
+}
+mat-sidenav-content {
+  overflow: unset;
+}
+
+// Common scss
+
+.side-nav {
+  width: 55% !important;
+}
+
+.side-nav-options {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 0 20px;
+  margin: 20px 0;
+  cursor: pointer;
+  outline: none;
+  mat-icon {
+    font-size: 22px;
+    margin-right: 5px;
+  }
+}
+.category-container {
+  margin: 10px 0;
+  mat-expansion-panel {
+    background: $color-primary;
+    box-shadow: none;
+    .mat-expansion-panel-header-title {
+      color: $color-white;
+      font-size: 18px;
+    }
+    .mat-expansion-panel-content {
+      background: lighten($color-primary, 0.7);
+
+      .mat-expansion-panel-body {
+        color: $color-white;
+        font-size: 16px;
+        padding-top: 5px;
+        padding-left: 25px;
+      }
+    }
+
+  }
+}
+.divider {
+  height: 2px;
+  margin: 0 10px;
+  background: $color-white;
+}

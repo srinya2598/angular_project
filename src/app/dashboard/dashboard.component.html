@@ -1,3 +1,4 @@
+<!-- Desktop view !-->
 <mat-sidenav-container fxHide.sm fxHide.xs>
   <mat-sidenav [mode]="'side'" [opened]="true" [fixedInViewport]="true">
     <div (click)="navigateToDashboard()" class="side-nav-header" fxLayout="row" fxLayoutGap="20px">
@@ -5,42 +6,66 @@
       <h3>Dashboard</h3>
     </div>
     <div class="divider"></div>
-    <div class="category-container">
-      <mat-accordion>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Categories
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <p *ngFor="let category of getCategories()" (click)="selectCategory(category)">
-            {{CommonUtils.getProductCategoryTitle(category)}}</p>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
-    <div class="divider"></div>
-    <div class="side-nav-options" (click)="openProfile()">
-      <mat-icon>account_circle</mat-icon>
-      Profile
-    </div>
-    <div class="divider"></div>
-    <div class="side-nav-options" (click)="uploadProducts()">
-      <mat-icon>add_shopping_cart</mat-icon>
-      Add Products
-    </div>
-    <div class="divider"></div>
-    <div class="side-nav-options" (click)="loadUserProduct()">
-      <mat-icon>shopping_cart</mat-icon>
-      Your Products
-    </div>
-    <div class="divider"></div>
-    <div class="side-nav-options" (click)="logout()">
-      <mat-icon>reply_all</mat-icon>
-      Logout
-    </div>
+   <ng-container *ngTemplateOutlet="content"></ng-container>
   </mat-sidenav>
   <mat-sidenav-content>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<!-- Mobile view !-->
+<div fxHide.gt-sm>
+  <mat-toolbar>
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>dashboard</mat-icon></button>
+    <h3>Dashboard</h3>
+  </mat-toolbar>
+
+  <mat-sidenav-container>
+    <mat-sidenav #snav class="side-nav">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+<!-- Common Content! -->
+
+<ng-template #content>
+  <div class="category-container">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Categories
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p *ngFor="let category of getCategories()" (click)="selectCategory(category)">
+          {{CommonUtils.getProductCategoryTitle(category)}}</p>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="divider"></div>
+  <div class="side-nav-options" (click)="openProfile()">
+    <mat-icon>account_circle</mat-icon>
+    Profile
+  </div>
+  <div class="divider"></div>
+  <div class="side-nav-options" (click)="uploadProducts()">
+    <mat-icon>add_shopping_cart</mat-icon>
+    Add Products
+  </div>
+  <div class="divider"></div>
+  <div class="side-nav-options" (click)="loadUserProduct()">
+    <mat-icon>shopping_cart</mat-icon>
+    Your Products
+  </div>
+  <div class="divider"></div>
+  <div class="side-nav-options" (click)="logout()">
+    <mat-icon>reply_all</mat-icon>
+    Logout
+  </div>
+</ng-template>
 
