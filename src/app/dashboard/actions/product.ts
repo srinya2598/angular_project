@@ -1,6 +1,6 @@
-import { Action } from './index';
 import { IProduct } from '@ec-shared/models/product';
 import { IProductCategory } from '@ec-shared/models/category';
+import { Action } from '@ec-core/actions';
 
 export enum DashboardActions {
   ADD_PRODUCT = '[dashboard] add product',

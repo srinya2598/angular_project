@@ -37,4 +37,4 @@ export function productReducer(state: ProductState = initialState, action: Actio
 
 export const _getEntities = (state: ProductState) => state.entities;
 export const _getIds = (state: ProductState) => state.ids;
-export  const _getSelectedProduct = (state: ProductState, id: string) => state.entities[id];
+export const _getSelectedProduct = (state: ProductState, id: string) => state.entities[id];

@@ -7,8 +7,8 @@ import {
   authReducer,
   AuthState
 } from './auth';
-import {RootState} from '../../root-reducer';
 import {createFeatureSelector, createSelector} from '@ngrx/store';
+import { RootState } from '@ec-core/reducers';
 
 export interface State {
   auth: AuthState;

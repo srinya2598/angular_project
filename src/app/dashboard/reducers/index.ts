@@ -1,4 +1,3 @@
-import { RootState } from '../../root-reducer';
 import {
   _getEntities,
   _getIds,
@@ -29,6 +28,7 @@ import {
   productCategoryReducer,
   ProductCategoryState
 } from './product-category';
+import { RootState } from '@ec-core/reducers';
 
 export interface State {
   product: ProductState;
