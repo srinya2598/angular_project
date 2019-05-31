@@ -2,8 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthController } from '@ec-core/controllers/auth-controller';
 import { Constants } from '@ec-shared/utils/constants';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
