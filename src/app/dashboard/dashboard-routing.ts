@@ -4,8 +4,8 @@ import { ProductUploadComponent } from './component/product-upload/product-uploa
 import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
-import { ConversationComponent } from './component/conversation/conversation.component';
 import { UserProductsComponent } from './component/user-products/user-products.component';
+import {ChatscreenComponent} from '../chat/components/chatscreen/chatscreen.component';
 
 export const dashboardRoutes: Routes = [
   {
@@ -33,8 +33,8 @@ export const dashboardRoutes: Routes = [
         component: UserProductsComponent
       },
       {
-        path: 'conversation',
-        component: ConversationComponent
+        path: 'chatscreen',
+        component: ChatscreenComponent
       }
     ]
   }

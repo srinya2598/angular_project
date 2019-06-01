@@ -9,8 +9,8 @@ import { ProfileComponent } from './component/profile/profile.component';
 import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
-import { ConversationComponent } from './component/conversation/conversation.component';
 import { UserProductsComponent } from './component/user-products/user-products.component';
+import { ChatscreenComponent } from '../chat/components/chatscreen/chatscreen.component';
 
 @NgModule({
   declarations: [
@@ -20,8 +20,8 @@ import { UserProductsComponent } from './component/user-products/user-products.c
     HomeComponent,
     CategoryComponent,
     ProductComponent,
-    ConversationComponent,
     UserProductsComponent,
+    ChatscreenComponent,
 
   ],
   imports: [
