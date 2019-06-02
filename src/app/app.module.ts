@@ -15,13 +15,11 @@ import { SharedModule } from './shared/shared.module';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import {AuthActions} from './auth/actions/auth';
 import { rootReducer } from '@ec-core/reducers';
-import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BootstrapComponent,
-    ChatComponent,
   ],
   imports: [
     RouterModule.forRoot(rootRoutes),

@@ -1,11 +1,9 @@
 import { Routes } from '@angular/router';
-import { ChatGuard } from '../core/gaurds/chat.guard';
 import { ChatscreenComponent } from './components/chatscreen/chatscreen.component';
 
 export const chatRoutes: Routes = [
   {
-    path: 'chatscreen',
+    path: '',
     component: ChatscreenComponent,
-    canActivate: [ChatGuard]
   }
 ];

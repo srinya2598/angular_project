@@ -72,9 +72,9 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['dashboard/products']);
   }
 
-  openChatscreen() {
+  openChatScreen() {
     this.closeDrawer();
-    this.router.navigate(['chat/chatscreen'])
+    this.router.navigate(['dashboard/chat']);
   }
 
   closeDrawer() {
