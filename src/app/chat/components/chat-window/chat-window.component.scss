@@ -1,7 +1,6 @@
 @import "~src/variables";
 
 .input-text{
- // float: bottom;
  margin:10px;
 }
 
@@ -9,21 +8,6 @@
   background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), lighten($color-primary,0.9));
   position: relative;
   height: 100vh;
-}
-
-input[type = text]{
-  border-radius: 15px;
-  width: 1100px;
-  box-sizing: border-box;
-  border: none;
-  padding: 8px;
-}
-
-.footer{
-  position: absolute;
-  margin-top: 620px;
-  background-color: #e7e7e7;
- // padding: 15px;
 }
 
 mat-icon{
@@ -50,7 +34,85 @@ img{
   color: white;
 }
 
- .menu-button{
-  color: white;
-  margin-left: 1000px;
+@media (min-width: 1200px) {
+  .menu-button{
+    color: white;
+    margin-left: 1000px;
+  }
+
+  .footer{
+    position: absolute;
+    margin-top: 620px;
+    background-color: #e7e7e7;
+  }
+
+  input[type = text]{
+    border-radius: 15px;
+    width: 1100px;
+    box-sizing: border-box;
+    border: none;
+    padding: 8px;
+  }
 }
+@media (max-width: 768px){
+  .menu-button{
+    color: white;
+    margin-left: 200px;
+  }
+
+  .footer{
+    position: absolute;
+    margin-top: 455px;
+    background-color: #e7e7e7;
+  }
+
+  input[type = text]{
+    border-radius: 15px;
+    width: 260px;
+    box-sizing: border-box;
+    border: none;
+    padding: 8px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .menu-button{
+    color: white;
+    margin-left: 700px;
+  }
+
+  .footer{
+    position: absolute;
+    margin-top: 630px;
+    background-color: #e7e7e7;
+  }
+
+  input[type = text]{
+    border-radius: 15px;
+    width: 760px;
+    box-sizing: border-box;
+    border: none;
+    padding: 8px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .menu-button{
+    color: white;
+    margin-left: 700px;
+  }
+
+  .footer{
+    position: absolute;
+    margin-top: 1000px;
+    background-color: #e7e7e7;
+  }
+
+  input[type = text]{
+    border-radius: 15px;
+    width: 400px;
+    box-sizing: border-box;
+    border: none;
+    padding: 8px;
+  }
+}
+
