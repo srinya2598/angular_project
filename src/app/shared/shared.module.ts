@@ -12,13 +12,15 @@ import { ButtonComponent } from './components/button/button.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SingleproductComponent } from './components/singleproduct/singleproduct.component';
 import { ProductComponent } from './components/product/product.component';
+import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 
 @NgModule({
   declarations: [
     NotificationComponent,
     ButtonComponent,
     SingleproductComponent,
-    ProductComponent
+    ProductComponent,
+    PagenotfoundComponent
   ],
   imports: [
     CommonModule,

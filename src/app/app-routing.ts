@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { BootstrapGuard } from './core/gaurds/bootstrap.guard';
 import { BootstrapComponent } from './bootstrap/bootstrap.component';
 import { DashboardGuard } from './core/gaurds/dashboard-guard';
+import {PagenotfoundComponent} from '@ec-shared/components/pagenotfound/pagenotfound.component';
 
 
 export const rootRoutes: Routes = [
@@ -19,6 +20,10 @@ export const rootRoutes: Routes = [
     path: '',
     loadChildren: './dashboard/dashboard.module#DashboardModule',
     canActivate: [DashboardGuard]
+  },
+  {
+    path: '**',
+    component: PagenotfoundComponent
   }
 ];
 
