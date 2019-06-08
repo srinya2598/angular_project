@@ -78,7 +78,7 @@ export class DashboardComponent implements OnInit {
   }
 
   closeDrawer() {
-    if (this.snav.opened) {
+    if (this.snav.opened && CommonUtils.isOnMobile()) {
       this.snav.close();
     }
   }
