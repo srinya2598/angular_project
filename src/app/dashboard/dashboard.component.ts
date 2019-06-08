@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateToDashboard() {
+    this.closeDrawer();
     this.router.navigate(['dashboard']);
   }
 
@@ -72,8 +73,13 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['dashboard/products']);
   }
 
+  openChatScreen() {
+    this.closeDrawer();
+    this.router.navigate(['dashboard/chat']);
+  }
+
   closeDrawer() {
-    if (this.snav.opened) {
+    if (this.snav.opened && CommonUtils.isOnMobile()) {
       this.snav.close();
     }
   }

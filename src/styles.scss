@@ -83,6 +83,13 @@ mat-form-field {
 
 mat-icon {
   cursor: pointer;
+
+}
+
+.mat-icon-button {
+  &:focus {
+    outline: none;
+  }
 }
 
 .mat-card {

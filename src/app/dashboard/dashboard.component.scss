@@ -3,26 +3,20 @@
 // Desktop-view scss
 
 mat-sidenav-container {
-  height: 100vh;
+  height: calc(100vh - 64px);
   mat-sidenav {
     width: 22%;
     background: $color-primary;
     color: $color-white;
-    .side-nav-header {
-      padding: 8px 10px;
-      cursor: pointer;
-      mat-icon {
-        font-size: 32px;
-      }
-    }
   }
 }
-
-// Mobile view scss
 
 mat-toolbar {
   background-color: $color-primary;
   color: $color-white;
+  h3 {
+    cursor: pointer;
+  }
 }
 mat-sidenav-content {
   overflow: unset;
