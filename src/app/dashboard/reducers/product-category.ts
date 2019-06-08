@@ -1,7 +1,7 @@
-import { DashboardActions } from '../actions/product';
-import { IProductCategory } from '@ec-shared/models/category';
-import { IProduct } from '@ec-shared/models/product';
-import { Action } from '@ec-core/actions';
+import {DashboardActions} from '../actions/product';
+import {IProductCategory} from '@ec-shared/models/category';
+import {IProduct} from '@ec-shared/models/product';
+import {Action} from '@ec-core/actions';
 
 export interface ProductCategoryState {
   productsLoaded: boolean;
@@ -19,6 +19,7 @@ export interface ProductCategoryState {
   others: string[],
   loggedInUserProductId: string[],
   loading: boolean,
+  cartproducts: string[],
 }
 
 export const initialProductCategoryState: ProductCategoryState = {
@@ -37,7 +38,7 @@ export const initialProductCategoryState: ProductCategoryState = {
   others: [],
   loading: false,
   loggedInUserProductId: [],
-
+  cartproducts: [],
 };
 
 
@@ -45,7 +46,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
 
   switch (action.type) {
     case DashboardActions.ADD_PRODUCT:
-      let tempState = { ...state, loggedInUserProductId: [...state.loggedInUserProductId, action.payload.id] };
+      let tempState = {...state, loggedInUserProductId: [...state.loggedInUserProductId, action.payload.id]};
       if (action.payload.category == IProductCategory.MOBILE_COMPUTER) {
         tempState = {
           ...state,
@@ -171,7 +172,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
         });
       }
 
-      console.log("UserId",userId);
+      console.log('UserId', userId);
 
       loggedInUserProductId = products.filter((product) => product.userId == userId).map((res) => {
         console.log(res);
@@ -199,7 +200,20 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
         ...state,
         selectedCategory: action.payload
       };
+    case DashboardActions.ADD_CART: {
+      const id = action.payload;
+      const newCartProducts = state.cartproducts;
+      newCartProducts.push(id);
+      return {
+        ...state,
+        cartproducts: newCartProducts
 
+
+      };
+
+
+    }
+      ;
     default:
       return state;
   }

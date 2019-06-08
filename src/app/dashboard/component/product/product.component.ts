@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { ProductController } from '@ec-core/controllers/product-controller';
-import { ISingleProduct } from '@ec-shared/models/single-product';
-
-import { takeWhile } from 'rxjs/operators';
+import {ProductController} from '@ec-core/controllers/product-controller';
+import {ISingleProduct} from '@ec-shared/models/single-product';
+import {SingleproductComponent} from '@ec-shared/components/singleproduct/singleproduct.component';
+import {takeWhile} from 'rxjs/operators';
 
 
 @Component({
@@ -34,5 +34,9 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.isAlive = false;
+  }
+
+  onAdd(productId) {
+    this.productController.addToCart(productId);
   }
 }

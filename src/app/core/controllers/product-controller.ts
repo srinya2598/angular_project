@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { IProduct } from '@ec-shared/models/product';
-import { Store } from '@ngrx/store';
+import {Injectable} from '@angular/core';
+import {IProduct} from '@ec-shared/models/product';
+import {Store} from '@ngrx/store';
 import {
   getBooks,
   getElectronicAppliances,
@@ -10,13 +10,13 @@ import {
   getSelectedCategory, getSelectedProduct, getToys, getVehicles, getWomenCloathings,
   State
 } from '../../dashboard/reducers';
-import { AddProduct, FetchSuccess, SelectCategory } from '../../dashboard/actions/product';
-import { ApiService } from '../services/api.service';
-import { NotificationService } from '../services/notification.service';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { finalize, map, switchMap, take } from 'rxjs/operators';
-import { IProductCategory } from '@ec-shared/models/category';
-import { Constants } from '@ec-shared/utils/constants';
+import {AddCart, AddProduct, FetchSuccess, SelectCategory} from '../../dashboard/actions/product';
+import {ApiService} from '../services/api.service';
+import {NotificationService} from '../services/notification.service';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {finalize, map, switchMap, take} from 'rxjs/operators';
+import {IProductCategory} from '@ec-shared/models/category';
+import {Constants} from '@ec-shared/utils/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -111,7 +111,7 @@ export class ProductController {
             let products: IProduct[] = [];
             if (res) {
               Object.keys(res).forEach(key => products.push(res[key]));
-              this.store.dispatch(new FetchSuccess({ products, userId }));
+              this.store.dispatch(new FetchSuccess({products, userId}));
             }
           },
           (error) => {
@@ -125,14 +125,20 @@ export class ProductController {
     let data;
     return this.store.select((state) => getSelectedProduct(state, id)).pipe(
       switchMap((res) => {
-        data = { ...res };
+        data = {...res};
         return this.apiService.getUserDetails(res.userId);
       }),
-      map(res => data = { ...data, ...res })
+      map(res => data = {...data, ...res})
     );
   }
 
   getUserProducts(): Observable<IProduct[]> {
     return this.store.select(getLoggedInUserProducts);
   }
+
+  addToCart(productId: string) {
+    this.store.dispatch(new AddCart(productId));
+  }
+
+
 }

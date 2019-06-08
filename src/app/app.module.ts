@@ -20,6 +20,7 @@ import { rootReducer } from '@ec-core/reducers';
   declarations: [
     AppComponent,
     BootstrapComponent,
+
   ],
   imports: [
     RouterModule.forRoot(rootRoutes),

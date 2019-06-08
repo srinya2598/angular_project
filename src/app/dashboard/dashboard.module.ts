@@ -11,6 +11,7 @@ import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
 import { UserProductsComponent } from './component/user-products/user-products.component';
 
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -20,6 +21,7 @@ import { UserProductsComponent } from './component/user-products/user-products.c
     CategoryComponent,
     ProductComponent,
     UserProductsComponent,
+
 
   ],
   imports: [
