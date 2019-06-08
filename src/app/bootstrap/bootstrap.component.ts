@@ -27,10 +27,10 @@ export class BootstrapComponent implements OnInit {
       const uid = this.apiService.getItem(Constants.USER_UID);
       this.apiService.getUserDetails(uid).pipe(take(1)).subscribe((res:IUser) => {
         this.store.dispatch(new FetchUser(res));
-        this.router.navigate(['dashboard/chat']);
+        this.router.navigate(['dashboard']);
       });
     } else {
-      this.router.navigate(['dashboard/chat']);
+      this.router.navigate(['dashboard']);
     }
   }
 
