@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateToDashboard() {
+    this.closeDrawer();
     this.router.navigate(['dashboard']);
   }
 

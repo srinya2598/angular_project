@@ -1,12 +1,10 @@
-<div class="chat-container">
-
-  <div class="header" fxLayout="row">
-    <div class="picture">
-      <img src = '/assets/oneplus.jpg'>
+<div class="chat-window">
+  <div class="chat-window__menu-bar" fxLayout="row" fxLayoutAlign="space-between">
+    <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
+      <img src="/assets/oneplus.jpg" alt="image"/>
+      <h3>Manvi</h3>
     </div>
-    <div class="username">
-      Manvi
-    </div>
+    <div>
       <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
@@ -14,19 +12,15 @@
         <button mat-menu-item>
           <span>Attach a File</span>
         </button>
-        <button mat-menu-item>
-          <span>Check voice mail</span>
-        </button>
-        <button mat-menu-item>
-          <span>Disable alerts</span>
-        </button>
       </mat-menu>
-  </div>
-
-  <div class="footer">
-    <div class="input-text">
-      <input type = "text" placeholder="Type a message...">
-      <mat-icon>send</mat-icon>
     </div>
+
+  </div>
+  <div class="chat-window__message-area">
+
+  </div>
+  <div class="chat-window__input-area" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+    <input fxFlex="1 1 auto" type="text" placeholder="Type a message...">
+    <mat-icon>send</mat-icon>
   </div>
 </div>

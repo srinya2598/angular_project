@@ -1,119 +1,43 @@
 @import "~src/variables";
 
-.input-text{
- margin:10px;
-}
-
-.chat-container{
-  background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.12), lighten($color-primary,0.9)),
-  url("../../../../assets/chat.png");
+.chat-window {
   position: relative;
-  height: 100vh;
-}
-
-mat-icon{
-  margin-left: 10px;
-  margin-right: 5px;
-}
-
-img{
-  border-radius: 50px;
-  width: 50px;
-  height: 50px;
-}
-.header{
-  background-color: $color-primary;
-  padding: 10px 15px 15px 10px;
-  height: 70px;
-}
-.username{
-  font-weight: bold;
-  font-size: medium;
-  margin-bottom: 8px;
-  margin-left: 15px;
-  margin-top: 15px;
-  color: white;
-}
-
-@media (min-width: 1200px) {
-  .menu-button{
+  height: 100%;
+  &__menu-bar {
+    background: linear-gradient(to right, lighten($color-primary, 5), lighten($color-primary, 15));
     color: white;
-    margin-left: 1000px;
+    padding: 10px 5px;
+    h3 {
+      font-size: 20px;
+    }
+    img {
+      border-radius: 50px;
+      width: 50px;
+      height: 50px;
+    }
+  }
+  &__message-area {
+    height: -webkit-fill-available;
+    background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.12), lighten($color-primary, 0.9)),
+    url("../../../../assets/chat.png");
   }
 
-  .footer{
+  &__input-area {
     position: absolute;
-    margin-top: 620px;
-    background-color: #e7e7e7;
-  }
-
-  input[type = text]{
-    border-radius: 15px;
-    width: 1135px;
-    box-sizing: border-box;
-    border: none;
-    padding: 8px;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    background: lighten($color-primary, 5);
+    input[type = text] {
+      border-radius: 15px;
+      width: 795px;
+      box-sizing: border-box;
+      border: none;
+      padding: 8px;
+    }
+    mat-icon {
+      color: $color-white;
+      font-size: 26px;
+    }
   }
 }
-@media (max-width: 768px){
-  .menu-button{
-    color: white;
-    margin-left: 200px;
-  }
-
-  .footer{
-    position: absolute;
-    margin-top: 455px;
-    background-color: #e7e7e7;
-  }
-
-  input[type = text]{
-    border-radius: 15px;
-    width: 295px;
-    box-sizing: border-box;
-    border: none;
-    padding: 8px;
-  }
-}
-@media (min-width: 992px) and (max-width: 1199px) {
-  .menu-button{
-    color: white;
-    margin-left: 700px;
-  }
-
-  .footer{
-    position: absolute;
-    margin-top: 630px;
-    background-color: #e7e7e7;
-  }
-
-  input[type = text]{
-    border-radius: 15px;
-    width: 795px;
-    box-sizing: border-box;
-    border: none;
-    padding: 8px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .menu-button{
-    color: white;
-    margin-left: 700px;
-  }
-
-  .footer{
-    position: absolute;
-    margin-top: 1000px;
-    background-color: #e7e7e7;
-  }
-
-  input[type = text]{
-    border-radius: 15px;
-    width: 435px;
-    box-sizing: border-box;
-    border: none;
-    padding: 8px;
-  }
-}
-
