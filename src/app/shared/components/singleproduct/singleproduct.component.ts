@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ISingleProduct} from '../../models/single-product';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ISingleProduct } from '../../models/single-product';
 
 @Component({
   selector: 'app-singleproduct',
@@ -8,9 +8,7 @@ import {ISingleProduct} from '../../models/single-product';
 })
 export class SingleproductComponent implements OnInit {
   @Input() product: ISingleProduct;
-  @Output('productId')
-  productId = new EventEmitter();
-  private cartProduct: string;
+  @Output() addToCart = new EventEmitter<string>();
 
   constructor() {
   }
@@ -19,7 +17,7 @@ export class SingleproductComponent implements OnInit {
   }
 
   onAdd() {
-    this.cartProduct = this.product.id;
-    this.productId.emit(this.cartProduct);
+    console.log("add to cart", this.product);
+    this.addToCart.emit(this.product.id);
   }
 }

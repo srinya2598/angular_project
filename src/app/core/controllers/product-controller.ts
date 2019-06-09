@@ -17,6 +17,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {finalize, map, switchMap, take} from 'rxjs/operators';
 import {IProductCategory} from '@ec-shared/models/category';
 import {Constants} from '@ec-shared/utils/constants';
+import { ISingleProduct } from '@ec-shared/models/single-product';
 
 @Injectable({
   providedIn: 'root'
@@ -128,7 +129,12 @@ export class ProductController {
         data = {...res};
         return this.apiService.getUserDetails(res.userId);
       }),
-      map(res => data = {...data, ...res})
+      map(res => {
+        delete res["id"];
+        delete data["userId"];
+        data = {...data, ...res};
+        return data;
+      })
     );
   }
 

@@ -1,3 +1,3 @@
 <div *ngIf="singleProduct">
-  <app-singleproduct  [product]="singleProduct"></app-singleproduct>
+  <app-singleproduct (addToCart)="addProductToCart($event)"  [product]="singleProduct"></app-singleproduct>
 </div>

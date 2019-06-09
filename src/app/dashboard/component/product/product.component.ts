@@ -24,10 +24,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.route.params.subscribe((res) => {
       this.id = res['id'];
       console.log(this.id);
-      this.productController.getSingleProduct(this.id).subscribe((res: ISingleProduct) => this.singleProduct = res);
-      // this.productController.getSingleProduct(this.id).subscribe(res1 =>
-      // console.log(res1));
-      this.productController.getSingleProduct(this.id).pipe(takeWhile(() => this.isAlive)).subscribe(res => this.singleProduct = res);
+      this.productController.getSingleProduct(this.id).pipe(takeWhile(() => this.isAlive)).subscribe((res: ISingleProduct) => this.singleProduct = res);
     });
 
   }
@@ -36,7 +33,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     this.isAlive = false;
   }
 
-  onAdd(productId) {
+  addProductToCart(productId) {
     this.productController.addToCart(productId);
   }
 }
