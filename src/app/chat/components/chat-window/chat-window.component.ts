@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatWindowComponent implements OnInit {
 
+  isVisible = false;
+
   constructor() { }
 
   ngOnInit() {
   }
-
+  onShowHide(){
+    this.isVisible = true;
+  }
 }

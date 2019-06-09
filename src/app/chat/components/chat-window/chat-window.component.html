@@ -20,7 +20,9 @@
 
   </div>
   <div class="chat-window__input-area" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-    <input fxFlex="1 1 auto" type="text" placeholder="Type a message...">
-    <mat-icon>send</mat-icon>
+    <input fxFlex="1 1 auto" type="text" placeholder="Type a message..." (click) = "onShowHide()">
+    <button mat-icon-button *ngIf = "isVisible">
+      <mat-icon>send</mat-icon>
+    </button>
   </div>
 </div>
