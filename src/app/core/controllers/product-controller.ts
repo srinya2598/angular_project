@@ -139,6 +139,4 @@ export class ProductController {
   addToCart(productId: string) {
     this.store.dispatch(new AddCart(productId));
   }
-
-
 }
