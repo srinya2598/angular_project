@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-chat-window',
@@ -7,13 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatWindowComponent implements OnInit {
 
-  isVisible = false;
+  message: FormControl;
+  myGroup: FormGroup;
+  showSave = false;
 
-  constructor() { }
+  constructor() {
+    this.myGroup = new FormGroup({
+       message: new FormControl(null)
+    });
+  }
 
   ngOnInit() {
-  }
-  onShowHide(){
-    this.isVisible = true;
+    this.myGroup.valueChanges.subscribe((value) => {
+      if (value.length != 0) {
+        (this.showSave = true)
+      }
+    });
   }
 }
+

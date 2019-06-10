@@ -25,8 +25,8 @@
     <p class="from-them">Wow that's impressive. But what's even more impressive is that this bubble is really high.</p>
   </div>
   <div class="chat-window__input-area" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-    <input fxFlex="1 1 auto" type="text" placeholder="Type a message..." (click) = "onShowHide()">
-    <button mat-icon-button *ngIf = "isVisible">
+    <div [formGroup]="myGroup"><input fxFlex="1 1 auto" type="text" placeholder="Type a message..." class="form-control" formControlName="message"></div>
+    <button mat-icon-button ng-show = "showSave">
       <mat-icon>send</mat-icon>
     </button>
   </div>
