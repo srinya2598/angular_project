@@ -1,9 +1,6 @@
 export const MESSAGE_SCHEMA = {
   version: 0,
   type: "object",
-  name: 'messageDatabase',
-  password: 'messageschema',
-
   properties: {
     id: {
       type: "string",

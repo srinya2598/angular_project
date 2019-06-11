@@ -37,7 +37,7 @@
     "ng2-avatar": "^2.3.1",
     "ngx-loading": "^3.0.1",
     "ngx-show-hide-password": "^2.0.3",
-    "pouchdb-adapter-idb": "^7.0.0",
+    "pouchdb-adapter-idb": "latest",
     "rxdb": "^8.2.0",
     "rxjs": "^6.3.3",
     "zone.js": "~0.8.26"

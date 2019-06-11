@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {MESSAGE_SCHEMA} from '../../schema/message.schema';
-import {environment} from '../../../environments/environment';
 
 import * as PouchdbAdapterIdb from 'pouchdb-adapter-idb';
 import RxDB, {RxCollection, RxDatabase} from 'rxdb';
+import { environment } from '../../../environments/environment';
 
 export enum RxCollections {
   MESSAGES = 'messages'
@@ -22,7 +22,7 @@ export class DbService {
       this._db = await RxDB.create({
         name: 'messageDatabase',
         adapter: this._useAdapter,
-        password: 'messageschema',
+        password: environment.dbPassword,
         multiInstance: false,
         queryChangeDetection: false
       });
