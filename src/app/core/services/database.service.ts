@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {MESSAGE_SCHEMA} from '../../schema/message.schema';
+import { Injectable } from '@angular/core';
+import { MESSAGE_SCHEMA } from '../../schema/message.schema';
 
 import * as PouchdbAdapterIdb from 'pouchdb-adapter-idb';
-import RxDB, {RxCollection, RxDatabase} from 'rxdb';
+import RxDB, { RxCollection, RxDatabase } from 'rxdb';
 import { environment } from '../../../environments/environment';
 
 export enum RxCollections {
@@ -10,7 +10,9 @@ export enum RxCollections {
 
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DbService {
   private readonly _useAdapter = 'idb';
   private _db: RxDatabase;
