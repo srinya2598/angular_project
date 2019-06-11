@@ -3,6 +3,7 @@ export const MESSAGE_SCHEMA = {
   type: "object",
   name: 'messageDatabase',
   password: 'messageschema',
+
   properties: {
     id: {
       type: "string",
