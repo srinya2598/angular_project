@@ -29,6 +29,7 @@ export function productReducer(state: ProductState = initialState, action: Actio
       return adapter.addMany(action.payload.products, state);
 
 
+
     default:
       return state;
   }
