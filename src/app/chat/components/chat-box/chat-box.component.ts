@@ -11,14 +11,14 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ChatBoxComponent implements OnInit {
 
-  @Input () class;
+  @Input () userType;
 
   constructor() { }
 
   ngOnInit() {
   }
   getChatboxClass() {
-    switch (this.class) {
+    switch (this.userType) {
       case 'from-me':
         return 'from-me';
       case 'from-them':

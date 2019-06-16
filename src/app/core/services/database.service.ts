@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {MESSAGE_SCHEMA} from '../../schema/message.schema';
 
-import * as PouchdbAdapterIdb from 'pouchdb-adapter-idb';
+import * as PouchdbAdapterIdb from "pouchdb-adapter-idb";
 import RxDB, {RxCollection, RxDatabase} from 'rxdb';
 import {environment} from '../../../environments/environment';
 

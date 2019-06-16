@@ -13,7 +13,7 @@ export class ChatWindowComponent implements OnInit {
   message: FormControl;
   showSendMessageButton = false;
 
-  constructor(private DbService: DbService, private commonUtils: CommonUtils) {
+  constructor(private DbService: DbService) {
     this.message = new FormControl(null);
   }
 
