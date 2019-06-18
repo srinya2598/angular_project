@@ -34,6 +34,8 @@ export class ChatWindowComponent implements OnInit {
       timestamp: new Date().getTime(),
       text: this.message.value,
 
+
+
     });
 
   }
