@@ -37,7 +37,7 @@ export const MESSAGE_SCHEMA = {
       nullable: true,
       properties: {
         id: {
-          type: "number"
+          type: "string"
         },
         full_name: {
           type: "string"
