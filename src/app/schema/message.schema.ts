@@ -6,6 +6,10 @@ export const MESSAGE_SCHEMA = {
       type: "string",
       primary: true
     },
+    roomid: {
+      type: "string[]",
+      nullable: false
+    },
     type: {
       type: "string"
     },
