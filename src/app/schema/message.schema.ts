@@ -19,20 +19,22 @@ export const MESSAGE_SCHEMA = {
     },
     sender: {
       type: "object",
+      nullable: true,
       properties: {
         id: {
-          type: "number"
+          type: "string"
         },
         full_name: {
           type: "string"
         },
         profile_pic: {
           type: "string"
-        }
+        },
       }
     },
     user: {
-      type: "object",
+      type: "string",
+      nullable: true,
       properties: {
         id: {
           type: "number"
@@ -42,7 +44,7 @@ export const MESSAGE_SCHEMA = {
         },
         profile_pic: {
           type: "string"
-        }
+        },
       }
     },
     audio: {
@@ -66,7 +68,7 @@ export const MESSAGE_SCHEMA = {
         },
         caption: {
           nullable: true,
-          type: "number"
+          type: "string"
         }
       }
     }

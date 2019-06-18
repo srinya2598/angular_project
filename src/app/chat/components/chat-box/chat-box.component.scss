@@ -1,0 +1,25 @@
+@import "~src/variables";
+
+.from-me {
+  color:white;
+  background:$color-primary;
+  align-self: flex-end;
+  border-radius:25px 25px 5px 25px;
+  max-width: 255px;
+  word-wrap: break-word;
+  margin-bottom: 12px;
+  line-height: 24px;
+  position:relative;
+  padding:10px 20px;
+}
+.from-them {
+  background:#E5E5EA;
+  color:black;
+  border-radius: 5px 25px 25px 25px;
+  max-width: 255px;
+  word-wrap: break-word;
+  margin-bottom: 12px;
+  line-height: 24px;
+  position:relative;
+  padding:10px 20px;
+}

@@ -4,11 +4,15 @@ import { RouterModule } from '@angular/router';
 import { chatRoutes } from './chat-routing';
 import { ChatscreenComponent } from './components/chatscreen/chatscreen.component';
 import { ChatWindowComponent } from './components/chat-window/chat-window.component';
+import { ChatBubbleComponent } from './components/chat-bubble/chat-bubble.component';
+import { ChatBoxComponent } from './components/chat-box/chat-box.component';
 
 @NgModule({
   declarations: [
     ChatscreenComponent,
     ChatWindowComponent,
+    ChatBubbleComponent,
+    ChatBoxComponent,
   ],
   imports: [
     SharedModule,

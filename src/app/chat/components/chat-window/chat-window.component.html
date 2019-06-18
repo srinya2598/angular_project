@@ -17,11 +17,15 @@
 
   </div>
   <div class="chat-window__message-area">
-
-  </div>
+    <ec-chatbox [userType]="'from-me'">Check out this bubble!</ec-chatbox>
+    <ec-chatbox [userType]="'from-them'">Checking out iOS7 you know..</ec-chatbox>
+    <!--<ec-chatbox><div class="from-me">Check out this bubble!</div></ec-chatbox>-->
+    <!--<ec-chatbox><div class="from-them">It's pretty cool!</div></ec-chatbox>-->
+    <!--<ec-chatbox><div class="from-me">Yeah it's pure CSS &amp; HTML</div></ec-chatbox>-->
+    <!--<ec-chatbox><div class="from-them">Wow that's impressive. But what's even more impressive is that this bubble is really high.</div></ec-chatbox>-->
   <div class="chat-window__input-area" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-    <input fxFlex="1 1 auto" type="text" placeholder="Type a message..." (click) = "onShowHide()">
-    <button mat-icon-button *ngIf = "isVisible">
+    <input fxFlex="1 1 auto" type="text" placeholder="Type a message..." class="form-control" [formControl]="message">
+    <button *ngIf="showSendMessageButton" mat-icon-button (click)="sendMessage()">
       <mat-icon>send</mat-icon>
     </button>
   </div>
