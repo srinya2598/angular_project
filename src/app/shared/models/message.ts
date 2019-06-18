@@ -1,5 +1,6 @@
 export interface IMessage {
   id: string;
+  roomid: string[];
   type: string;
   timestamp: number;
   text?: string;
@@ -7,7 +8,6 @@ export interface IMessage {
   user?: IUser;
   audio?: IAudio;
   image?: IImage;
-
 }
 
 export interface ISender {
