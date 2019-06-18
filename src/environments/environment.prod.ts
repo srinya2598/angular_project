@@ -1,4 +1,5 @@
 export const environment = {
+  dbPassword:"secret",
   production: true,
   firebase: {
     apiKey: 'AIzaSyDgRsAD0-UwlShuWj_dvduQ4SjcurPHSt4',
