@@ -10,7 +10,7 @@ export interface ConversationState {
 export const initialConversationState: ConversationState = {
   isLoading: false,
   isLoaded: false,
-  conversation: {null:[]},
+  conversation: {},
 };
 
   export function conversationReducer(state: ConversationState = initialConversationState, action: Action) {
@@ -41,10 +41,9 @@ export const initialConversationState: ConversationState = {
           tempState = {
             ...tempState,
             [roomId]: newIds
-          }})
+          }});
         return tempState;
-      };
-
+      }
       default:
         return state;
     }
@@ -52,4 +51,4 @@ export const initialConversationState: ConversationState = {
 
 export const _getIsLoading = (state: ConversationState) => state.isLoading;
 export const _getIsLoaded = (state: ConversationState) => state.isLoaded;
-export const _getConversation = (state: ConversationState) => state.conversation;
+export const _getConversationMessageIds = (state: ConversationState, convId:string) => state.conversation[convId];
