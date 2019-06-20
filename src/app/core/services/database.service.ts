@@ -22,7 +22,7 @@ export class DbService {
     if (!this._isDbResolved) {
       RxDB.plugin(PouchdbAdapterIdb);
       this._db = await RxDB.create({
-        name: 'messageDatabase',
+        name: 'message_database',
         adapter: this._useAdapter,
         password: environment.dbPassword,
         multiInstance: false,
