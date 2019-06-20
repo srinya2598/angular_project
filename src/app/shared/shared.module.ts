@@ -13,6 +13,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { SingleproductComponent } from './components/singleproduct/singleproduct.component';
 import { ProductComponent } from './components/product/product.component';
 import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
+import { messageRootReducer} from '../chat/reducers';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.co
     MaterialModule,
     FlexLayoutModule,
     StoreModule.forFeature('auth', authRootReducer),
-    StoreModule.forFeature('product',productRootReducer),
+    StoreModule.forFeature('product', productRootReducer),
+    StoreModule.forFeature('message', messageRootReducer),
     NgxLoadingModule.forRoot({ backdropBorderRadius: '3px' }),
     AvatarModule.forRoot()
   ],
