@@ -43,7 +43,7 @@ export class DbService {
   }
 
   getCollection(name: RxCollections): RxCollection {
-    return this._db.collection[name] as RxCollection;
+    return this._db.collections[name] as RxCollection;
   }
 
   async destroy() {

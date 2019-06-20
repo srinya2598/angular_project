@@ -5,6 +5,7 @@ import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
 import { UserProductsComponent } from './component/user-products/user-products.component';
+import { DatabaseResolver } from '@ec-core/resolver/database.resolver';
 
 export const dashboardRoutes: Routes = [
   {
@@ -34,6 +35,7 @@ export const dashboardRoutes: Routes = [
       {
         path: 'chat',
         loadChildren: '../chat/chat.module#ChatModule',
+        resolve: { rxDb: DatabaseResolver }
       }
     ]
   }
