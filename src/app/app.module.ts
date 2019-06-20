@@ -36,7 +36,6 @@ import { CoreModule } from '@ec-core/core.module';
     CoreModule,
     AngularFireStorageModule,
   ],
-  providers: [],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

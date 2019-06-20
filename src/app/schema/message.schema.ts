@@ -6,6 +6,10 @@ export const MESSAGE_SCHEMA = {
       type: "string",
       primary: true
     },
+    roomid: {
+      type: "string",
+      nullable: false
+    },
     type: {
       type: "string"
     },
@@ -37,7 +41,7 @@ export const MESSAGE_SCHEMA = {
       nullable: true,
       properties: {
         id: {
-          type: "number"
+          type: "string"
         },
         full_name: {
           type: "string"
