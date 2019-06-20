@@ -3,7 +3,6 @@
 .from-me {
   color:white;
   background:$color-primary;
-  align-self: flex-end;
   border-radius:25px 25px 5px 25px;
   max-width: 255px;
   word-wrap: break-word;
@@ -11,6 +10,10 @@
   line-height: 24px;
   position:relative;
   padding:10px 20px;
+  float: right;
+  margin-right: 20px;
+  clear: both;
+  margin-top: 10px;
 }
 .from-them {
   background:#E5E5EA;
@@ -22,4 +25,7 @@
   line-height: 24px;
   position:relative;
   padding:10px 20px;
+  margin-left: 20px;
+  clear: both;
+  margin-top: 10px;
 }
