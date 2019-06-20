@@ -7,7 +7,7 @@ export const MESSAGE_SCHEMA = {
       primary: true
     },
     roomid: {
-      type: "string[]",
+      type: "string",
       nullable: false
     },
     type: {

@@ -4,11 +4,13 @@ import {from, Observable} from 'rxjs';
 import {RxDatabase} from 'rxdb';
 import {DbService} from '@ec-core/services/database.service';
 
-@Injectable()
-export class HnResolver implements Resolve<Promise<RxDatabase>> {
-  constructor(private DbService: DbService) {}
+@Injectable({
+  providedIn: 'root'
+})
+export class DatabaseResolver implements Resolve<Promise<RxDatabase>> {
+  constructor(private dbService: DbService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    return from(this.DbService.init());
+    return from(this.dbService.init());
   }
 }

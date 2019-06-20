@@ -16,7 +16,6 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import {AuthActions} from './auth/actions/auth';
 import { rootReducer } from '@ec-core/reducers';
 import { CoreModule } from '@ec-core/core.module';
-import {HnResolver} from '@ec-core/resolver/resolver.database';
 
 @NgModule({
   declarations: [
@@ -37,7 +36,6 @@ import {HnResolver} from '@ec-core/resolver/resolver.database';
     CoreModule,
     AngularFireStorageModule,
   ],
-  providers: [ HnResolver ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
