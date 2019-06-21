@@ -9,3 +9,8 @@ export enum ButtonType {
   ERROR = 'error',
   PRIMARY = 'primary'
 }
+
+export enum BroadcasterConstants {
+  NETWORK_CONNECTED = 'network_connected',
+  NETWORK_DISCONNECTED = 'network_disconnected',
+}

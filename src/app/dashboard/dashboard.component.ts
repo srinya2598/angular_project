@@ -7,6 +7,9 @@ import { CommonUtils } from '../shared/utils/common.utils';
 import { ProductController } from '../core/controllers/product-controller';
 import { IProductCategory } from '../shared/models/category';
 import { Router } from '@angular/router';
+import { BroadcasterService } from '@ec-core/services/broadcaster.service';
+import { BroadcasterConstants } from '@ec-shared/utils/constants';
+import { NotificationService } from '@ec-core/services/notification.service';
 
 
 @Component({
@@ -17,13 +20,17 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
   user: IUser;
   CommonUtils = CommonUtils;
+  readonly networkConnectedMessage = 'You are connected to the network!';
+  readonly networkDisconnectedMessage = 'You are disconnected from the network!';
 
   @ViewChild('snav') snav: MatSidenav;
 
   constructor(private controller: AuthController,
               private dialog: MatDialog,
               private productController: ProductController,
-              private router: Router) {
+              private router: Router,
+              private broadcasterService: BroadcasterService,
+              private notificationService: NotificationService) {
     this.controller.getUser().subscribe((res: IUser) => {
       if (res) {
         this.user = res;
@@ -32,6 +39,12 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(_ => {
+      this.notificationService.success(this.networkConnectedMessage, 2000);
+    });
+    this.broadcasterService.listen(BroadcasterConstants.NETWORK_DISCONNECTED).subscribe(_ => {
+      this.notificationService.error(this.networkDisconnectedMessage, 2000);
+    });
   }
 
   openProfile() {
