@@ -5,6 +5,7 @@ import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
 import { UserProductsComponent } from './component/user-products/user-products.component';
+import { CartComponent} from './component/cart/cart.component';
 
 export const dashboardRoutes: Routes = [
   {
@@ -32,9 +33,14 @@ export const dashboardRoutes: Routes = [
         component: UserProductsComponent
       },
       {
+        path: 'cart',
+        component: CartComponent
+      },
+      {
         path: 'chat',
         loadChildren: '../chat/chat.module#ChatModule',
-      }
+      },
+
     ]
   }
 

@@ -1,0 +1,10 @@
+<p *ngIf="cartProducts && cartProducts.length == 0; else myCart "> Your Cart Is Empty!! <br>
+Continue Shopping</p>
+
+<ng-template #myCart>
+  <h4 class="header">Your Cart</h4>
+  <ng-container *ngFor="let cartProduct of cartProducts">
+    <ec-cartproduct (removeProduct)="removeCartProduct($event)"  [product]="cartProduct"></ec-cartproduct>
+
+  </ng-container>
+</ng-template>

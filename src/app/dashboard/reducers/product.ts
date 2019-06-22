@@ -19,7 +19,6 @@ export const initialState = adapter.getInitialState();
 export function productReducer(state: ProductState = initialState, action: Action) {
   switch (action.type) {
     case DashboardActions.ADD_PRODUCT:
-      console.log(action.payload);
       return adapter.addOne(action.payload, state);
 
     case DashboardActions.FETCH_PRODUCT:

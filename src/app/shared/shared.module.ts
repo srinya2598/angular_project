@@ -13,6 +13,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { SingleproductComponent } from './components/singleproduct/singleproduct.component';
 import { ProductComponent } from './components/product/product.component';
 import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
+import { CartproductComponent } from './components/cartproduct/cartproduct.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.co
     ButtonComponent,
     SingleproductComponent,
     ProductComponent,
-    PagenotfoundComponent
+    PagenotfoundComponent,
+    CartproductComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.co
     AvatarModule,
     ButtonComponent,
     SingleproductComponent,
-    ProductComponent
+    ProductComponent,
+    CartproductComponent
   ],
   entryComponents: [NotificationComponent]
 })

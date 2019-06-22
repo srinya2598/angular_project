@@ -9,7 +9,7 @@ import { ISingleProduct } from '../../models/single-product';
 export class SingleproductComponent implements OnInit {
   @Input() product: ISingleProduct;
   @Output() addToCart = new EventEmitter<string>();
-
+ 
   constructor() {
   }
 
@@ -17,7 +17,8 @@ export class SingleproductComponent implements OnInit {
   }
 
   onAdd() {
-    console.log("add to cart", this.product);
+    console.log('add to cart', this.product);
     this.addToCart.emit(this.product.id);
   }
 }
+

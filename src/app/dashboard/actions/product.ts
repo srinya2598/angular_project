@@ -1,14 +1,15 @@
-import {IProduct} from '@ec-shared/models/product';
-import {IProductCategory} from '@ec-shared/models/category';
-import {Action} from '@ec-core/actions';
-import {ISingleProduct} from '@ec-shared/models/single-product';
+import { IProduct } from '@ec-shared/models/product';
+import { IProductCategory } from '@ec-shared/models/category';
+import { Action } from '@ec-core/actions';
 
 export enum DashboardActions {
   ADD_PRODUCT = '[dashboard] add product',
   FETCH_PRODUCT = '[dashboard] fetch product',
   FETCH_SUCCESS = '[dashboard] fetch success',
   SELECT_CATEGORY = '[dashboard] select category',
-  ADD_CART = '[dashboard] add to cart'
+  ADD_CART = '[dashboard] add to cart',
+  REMOVE_CART = '[dashboard] remove from cart',
+  FETCH_CART_PRODUCT_SUCCESS = '[dashboard] fetch cart product success',
 }
 
 export class AddProduct implements Action {
@@ -49,3 +50,23 @@ export class AddCart implements Action {
 
   }
 }
+
+export class RemoveCart implements Action {
+  readonly type = DashboardActions.REMOVE_CART;
+
+  constructor(public payload: string) {
+
+  }
+
+
+}
+
+export class FetchCartProductSuccess implements Action {
+  readonly type = DashboardActions.FETCH_CART_PRODUCT_SUCCESS;
+
+  constructor(public payload: string[]) {
+
+  }
+
+}
+

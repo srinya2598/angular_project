@@ -26,7 +26,8 @@ import {
   _getVehiclesids,
   _getWomenids,
   productCategoryReducer,
-  ProductCategoryState
+  ProductCategoryState,
+  _getCartProductIds
 } from './product-category';
 import { RootState } from '@ec-core/reducers';
 
@@ -122,6 +123,11 @@ export const getUserProducts = createSelector(
   _getLoggedInUserProductsId
 );
 
+export const getCartProductIds = createSelector(
+  getProductCategoryState,
+  _getCartProductIds
+);
+
 // Fetching the actual product objects using ids and entities
 
 export const getMobileAndComputers = createSelector(
@@ -208,4 +214,13 @@ export const getLoggedInUserProducts = createSelector(
     return ids.map(id => entities[id]);
   });
 export const getSelectedProduct = (state: State, id: string) => _getSelectedProduct(getProductState(state), id);
+
+export const getCartProducts = createSelector(
+  getCartProductIds,
+  getEntities,
+  (ids, entities) => {
+    return ids.map(id => entities[id])
+
+  }
+);
 

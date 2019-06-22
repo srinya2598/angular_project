@@ -3,27 +3,37 @@ import {IProduct} from '@ec-shared/models/product';
 import {Store} from '@ngrx/store';
 import {
   getBooks,
+  getCartProductIds,
+  getCartProducts,
   getElectronicAppliances,
   getHomeAppliances,
-  getIsProductLoaded, getKidCloathings, getLoggedInUserProducts, getMenCloathings,
-  getMobileAndComputers, getMovies, getOtherItems,
-  getSelectedCategory, getSelectedProduct, getToys, getVehicles, getWomenCloathings,
+  getIsProductLoaded,
+  getKidCloathings,
+  getLoggedInUserProducts,
+  getMenCloathings,
+  getMobileAndComputers,
+  getMovies,
+  getOtherItems,
+  getSelectedCategory,
+  getSelectedProduct,
+  getToys,
+  getVehicles,
+  getWomenCloathings,
   State
 } from '../../dashboard/reducers';
-import {AddCart, AddProduct, FetchSuccess, SelectCategory} from '../../dashboard/actions/product';
+import {AddCart, AddProduct, FetchSuccess, SelectCategory, RemoveCart, FetchCartProductSuccess} from '../../dashboard/actions/product';
 import {ApiService} from '../services/api.service';
 import {NotificationService} from '../services/notification.service';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {finalize, map, switchMap, take} from 'rxjs/operators';
 import {IProductCategory} from '@ec-shared/models/category';
 import {Constants} from '@ec-shared/utils/constants';
-import { ISingleProduct } from '@ec-shared/models/single-product';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductController {
-
+  isProductAdded: boolean;
   uploadPercent: BehaviorSubject<number>;
   downloadUrlSubject: BehaviorSubject<string>;
 
@@ -130,8 +140,8 @@ export class ProductController {
         return this.apiService.getUserDetails(res.userId);
       }),
       map(res => {
-        delete res["id"];
-        delete data["userId"];
+        delete res['id'];
+        delete data['userId'];
         data = {...data, ...res};
         return data;
       })
@@ -143,6 +153,79 @@ export class ProductController {
   }
 
   addToCart(productId: string) {
-    this.store.dispatch(new AddCart(productId));
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    if (!productId || !userId) {
+      return;
+    }
+
+
+    this.isProductAdded = false;
+    this.store.select(getCartProductIds).pipe(
+      take(1),
+      switchMap((ids: string[]) => {
+        console.log('Map', ids);
+        if (ids.includes(productId)) {
+          this.notificationService.error('Product already exists in the cart');
+          this.isProductAdded = true;
+          return of(null);
+        } else {
+          const cartProducts = [...ids, productId];
+          return this.apiService.setCartProducts(userId, cartProducts);
+        }
+      })
+    ).subscribe((res) => {
+      if (this.isProductAdded === false) {
+        this.store.dispatch(new AddCart(productId));
+
+      }
+    });
+  }
+
+  getAllCartProducts(): Observable<IProduct[]> {
+    return this.store.select(getCartProducts);
+  }
+
+  removeCartProduct(productId: string) {
+    console.log('action dispatched');
+    this.store.dispatch(new RemoveCart(productId));
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    if (!productId || !userId) {
+      return;
+    }
+    this.store.select(getCartProductIds).pipe(take(1),
+      switchMap((ids: string[]) => {
+        ids = ids.filter(item => item !== productId);
+        console.log('product removed from cart');
+        return this.apiService.setCartProducts(userId, ids);
+
+      })
+    ).subscribe(res1 => {
+      this.store.dispatch(new RemoveCart(productId));
+    });
+  }
+
+  fetchCartProduct() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    this.apiService.fetchCartProducts(userId).pipe(take(1)).subscribe((res: string[]) => {
+      console.log(res);
+      this.store.dispatch(new FetchCartProductSuccess(res));
+
+
+    },);
+
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
