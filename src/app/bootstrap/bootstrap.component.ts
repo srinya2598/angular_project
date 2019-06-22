@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {getIsLoggedInUserLoaded, State} from '../auth/reducer';
-import {take} from 'rxjs/operators';
-import {ApiService} from '../core/services/api.service';
-import {Constants} from '../shared/utils/constants';
-import {Router} from '@angular/router';
-import {FetchUser} from '../auth/actions/auth';
-import {IUser} from '../shared/models/users';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { getIsLoggedInUserLoaded, State } from '../auth/reducer';
+import { take } from 'rxjs/operators';
+import { ApiService } from '../core/services/api.service';
+import { Constants } from '../shared/utils/constants';
+import { Router } from '@angular/router';
+import { FetchUser } from '../auth/actions/auth';
+import { IUser } from '../shared/models/users';
 
 @Component({
   selector: 'app-bootstrap',
@@ -37,6 +37,4 @@ export class BootstrapComponent implements OnInit {
       this.apiService.setItem(Constants.IS_DB_RESOLVED, 'false');
     }
   }
-
-
 }
