@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { getIsLoggedInUserLoaded, State } from '../auth/reducer';
-import { take } from 'rxjs/operators';
-import { ApiService } from '../core/services/api.service';
-import { Constants } from '../shared/utils/constants';
-import { Router } from '@angular/router';
-import { FetchUser } from '../auth/actions/auth';
-import { IUser } from '../shared/models/users';
+import {Component, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {getIsLoggedInUserLoaded, State} from '../auth/reducer';
+import {take} from 'rxjs/operators';
+import {ApiService} from '../core/services/api.service';
+import {Constants} from '../shared/utils/constants';
+import {Router} from '@angular/router';
+import {FetchUser} from '../auth/actions/auth';
+import {IUser} from '../shared/models/users';
 
 @Component({
   selector: 'app-bootstrap',
@@ -25,13 +25,18 @@ export class BootstrapComponent implements OnInit {
     this.store.select(getIsLoggedInUserLoaded).pipe(take(1)).subscribe(res => isLoggedInUserLoaded = res);
     if (!isLoggedInUserLoaded) {
       const uid = this.apiService.getItem(Constants.USER_UID);
-      this.apiService.getUserDetails(uid).pipe(take(1)).subscribe((res:IUser) => {
+      this.apiService.getUserDetails(uid).pipe(take(1)).subscribe((res: IUser) => {
         this.store.dispatch(new FetchUser(res));
         this.router.navigate(['dashboard']);
       });
     } else {
       this.router.navigate(['dashboard']);
+
+    }
+    if (!this.apiService.getItem(Constants.IS_DB_RESOLVED)) {
+      this.apiService.setItem(Constants.IS_DB_RESOLVED, 'false');
     }
   }
+
 
 }

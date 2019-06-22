@@ -1,7 +1,8 @@
 export enum Constants {
   LOGIN_WITH_GOOGLE = 'login_with_google',
   SIGNUP_WITH_GOOGLE = 'signup_with_google',
-  USER_UID = 'user_uid'
+  USER_UID = 'user_uid',
+  IS_DB_RESOLVED  = 'is_database_resolved'
 }
 
 export enum ButtonType {
