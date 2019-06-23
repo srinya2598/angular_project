@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {MESSAGE_SCHEMA} from '../../schema/message.schema';
+import { Injectable } from '@angular/core';
+import { MESSAGE_SCHEMA } from '../../schema/message.schema';
 
 import * as PouchdbAdapterIdb from 'pouchdb-adapter-idb';
-import RxDB, {RxCollection, RxDatabase} from 'rxdb';
-import {environment} from '../../../environments/environment';
-import {ApiService} from '@ec-core/services/api.service';
-import {Constants} from '@ec-shared/utils/constants';
+import RxDB, { RxCollection, RxDatabase } from 'rxdb';
+import { environment } from '../../../environments/environment';
+import { ApiService } from '@ec-core/services/api.service';
+import { Constants } from '@ec-shared/utils/constants';
 
 export enum RxCollections {
   MESSAGES = 'messages'
@@ -18,15 +18,12 @@ export enum RxCollections {
 export class DbService {
   private readonly _useAdapter = 'idb';
   private _db: RxDatabase;
-  private _isDbResolved = false;
 
   constructor(private apiService: ApiService) {
   }
 
   async init() {
     if (this.apiService.getItem(Constants.IS_DB_RESOLVED) === 'false') {
-
-
       RxDB.plugin(PouchdbAdapterIdb);
       this._db = await RxDB.create({
         name: 'message_database',
@@ -46,8 +43,6 @@ export class DbService {
 
       await Promise.all(schemaPromises);
       this.apiService.setItem(Constants.IS_DB_RESOLVED, 'true');
-
-
     }
   }
 

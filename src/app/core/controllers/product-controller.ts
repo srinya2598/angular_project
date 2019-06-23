@@ -24,7 +24,7 @@ import {
 import { AddCart, AddProduct, FetchCartProductSuccess, FetchSuccess, RemoveCart, SelectCategory } from '../../dashboard/actions/product';
 import { ApiService } from '../services/api.service';
 import { NotificationService } from '../services/notification.service';
-import { BehaviorSubject, fromEvent, Observable } from 'rxjs';
+import { BehaviorSubject, fromEvent, Observable, of } from 'rxjs';
 import { finalize, map, switchMap, take } from 'rxjs/operators';
 import { IProductCategory } from '@ec-shared/models/category';
 import { BroadcasterConstants, Constants } from '@ec-shared/utils/constants';
@@ -34,7 +34,6 @@ import { BroadcasterService } from '@ec-core/services/broadcaster.service';
   providedIn: 'root'
 })
 export class ProductController {
-  isProductAdded: boolean;
   uploadPercent: BehaviorSubject<number>;
   downloadUrlSubject: BehaviorSubject<string>;
 
@@ -163,20 +162,18 @@ export class ProductController {
   }
 
   addToCart(productId: string) {
+    let isProductExisting = false;
     const userId = this.apiService.getItem(Constants.USER_UID);
     if (!productId || !userId) {
       return;
     }
-
-
-    this.isProductAdded = false;
     this.store.select(getCartProductIds).pipe(
       take(1),
       switchMap((ids: string[]) => {
         console.log('Map', ids);
         if (ids.includes(productId)) {
           this.notificationService.error('Product already exists in the cart');
-          this.isProductAdded = true;
+          isProductExisting = true;
           return of(null);
         } else {
           const cartProducts = [...ids, productId];
@@ -184,7 +181,7 @@ export class ProductController {
         }
       })
     ).subscribe((res) => {
-      if (this.isProductAdded === false) {
+      if (isProductExisting === false) {
         this.store.dispatch(new AddCart(productId));
 
       }
@@ -209,7 +206,7 @@ export class ProductController {
         return this.apiService.setCartProducts(userId, ids);
 
       })
-    ).subscribe(res1 => {
+    ).subscribe(() => {
       this.store.dispatch(new RemoveCart(productId));
     });
   }
@@ -219,21 +216,6 @@ export class ProductController {
     this.apiService.fetchCartProducts(userId).pipe(take(1)).subscribe((res: string[]) => {
       console.log(res);
       this.store.dispatch(new FetchCartProductSuccess(res));
-    },);
-
+    });
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
