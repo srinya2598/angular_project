@@ -10,6 +10,7 @@ import { HomeComponent } from './component/home/home.component';
 import { CategoryComponent } from './component/category/category.component';
 import { ProductComponent } from './component/product/product.component';
 import { UserProductsComponent } from './component/user-products/user-products.component';
+import { CartComponent } from './component/cart/cart.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { UserProductsComponent } from './component/user-products/user-products.c
     CategoryComponent,
     ProductComponent,
     UserProductsComponent,
+    CartComponent,
 
 
   ],

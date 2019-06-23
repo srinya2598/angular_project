@@ -11,18 +11,14 @@ import { CommonUtils} from '@ec-shared/utils/common.utils';
 })
 export class HomeComponent implements OnInit {
 
-  Category = IProductCategory;
-
   constructor(private productController: ProductController, private router: Router , ) {
   }
 
   ngOnInit() {
     this.productController.fetchProduct();
-  }
+    this.productController.fetchCartProduct();
+    console.log('01');
 
-  setSelectedCategory(category: IProductCategory) {
-    this.productController.setSelectedCategory(category);
-    this.router.navigate(['dashboard/categories', CommonUtils.getRoutePath(category) ]);
   }
 
 }

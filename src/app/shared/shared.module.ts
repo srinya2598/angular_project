@@ -14,6 +14,7 @@ import { SingleproductComponent } from './components/singleproduct/singleproduct
 import { ProductComponent } from './components/product/product.component';
 import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 import { messageRootReducer} from '../chat/reducers';
+import { CartproductComponent } from './components/cartproduct/cartproduct.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { messageRootReducer} from '../chat/reducers';
     ButtonComponent,
     SingleproductComponent,
     ProductComponent,
-    PagenotfoundComponent
+    PagenotfoundComponent,
+    CartproductComponent
   ],
   imports: [
     CommonModule,
@@ -43,7 +45,8 @@ import { messageRootReducer} from '../chat/reducers';
     AvatarModule,
     ButtonComponent,
     SingleproductComponent,
-    ProductComponent
+    ProductComponent,
+    CartproductComponent
   ],
   entryComponents: [NotificationComponent]
 })

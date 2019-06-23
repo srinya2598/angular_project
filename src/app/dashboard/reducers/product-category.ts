@@ -19,7 +19,7 @@ export interface ProductCategoryState {
   others: string[],
   loggedInUserProductId: string[],
   loading: boolean,
-  cartproducts: string[],
+  cartProducts: string[],
 }
 
 export const initialProductCategoryState: ProductCategoryState = {
@@ -38,7 +38,8 @@ export const initialProductCategoryState: ProductCategoryState = {
   others: [],
   loading: false,
   loggedInUserProductId: [],
-  cartproducts: [],
+  cartProducts: [],
+
 };
 
 
@@ -49,57 +50,57 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
       let tempState = {...state, loggedInUserProductId: [...state.loggedInUserProductId, action.payload.id]};
       if (action.payload.category == IProductCategory.MOBILE_COMPUTER) {
         tempState = {
-          ...state,
+          ...tempState,
           mobileComputer: [...state.mobileComputer, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.ELECTRONIC_APPLIANCES) {
         tempState = {
-          ...state,
+          ...tempState,
           electronic: [...state.electronic, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.HOME_APPLIANCES) {
         tempState = {
-          ...state,
+          ...tempState,
           home: [...state.home, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.MEN_CLOTHING) {
         tempState = {
-          ...state,
+          ...tempState,
           men: [...state.men, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.WOMEN_CLOTHING) {
         tempState = {
-          ...state,
+          ...tempState,
           women: [...state.women, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.KIDS_CLOTHING) {
         tempState = {
-          ...state,
+          ...tempState,
           kids: [...state.kids, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.TOYS) {
         tempState = {
-          ...state,
+          ...tempState,
           toys: [...state.toys, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.VEHICLES) {
         tempState = {
-          ...state,
+          ...tempState,
           vehicles: [...state.vehicles, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.BOOKS) {
         tempState = {
-          ...state,
+          ...tempState,
           books: [...state.books, action.payload.id]
         };
       } else if (action.payload.category == IProductCategory.MOVIES_MUSIC_VIDEOS) {
         tempState = {
-          ...state,
+          ...tempState,
           movies: [...state.movies, action.payload.id]
         };
       } else {
         tempState = {
-          ...state,
+          ...tempState,
           others: [...state.others, action.payload.id]
         };
       }
@@ -200,24 +201,32 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
         ...state,
         selectedCategory: action.payload
       };
-    case DashboardActions.ADD_CART: {
-      const id = action.payload;
-      const newCartProducts = state.cartproducts;
-      newCartProducts.push(id);
+    case DashboardActions.ADD_CART:
+
       return {
         ...state,
-        cartproducts: newCartProducts
-
-
+        cartProducts: [...state.cartProducts, action.payload]
+      };
+    case DashboardActions.REMOVE_CART: {
+      const id = action.payload;
+      let cartProducts = state.cartProducts;
+      cartProducts = cartProducts.filter(item => item !== id);
+      console.log('item removed');
+      return {
+        ...state,
+        cartProducts: cartProducts
+      };
+    }
+    case DashboardActions.FETCH_CART_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        cartProducts: action.payload
       };
 
 
-    }
-      ;
     default:
       return state;
   }
-
 }
 
 export const _getIsProductLoaded = (state: ProductCategoryState) => state.productsLoaded;
@@ -234,4 +243,4 @@ export const _getMoviesids = (state: ProductCategoryState) => state.movies;
 export const _getOthersids = (state: ProductCategoryState) => state.others;
 export const _getSelectedCategory = (state: ProductCategoryState) => state.selectedCategory;
 export const _getLoggedInUserProductsId = (state: ProductCategoryState) => state.loggedInUserProductId;
-
+export const _getCartProductIds = (state: ProductCategoryState) => state.cartProducts;
