@@ -1,5 +1,5 @@
 export const environment = {
-  dbPassword:"secret",
+  dbPassword:"ecommerce",
   production: true,
   firebase: {
     apiKey: 'AIzaSyDgRsAD0-UwlShuWj_dvduQ4SjcurPHSt4',
