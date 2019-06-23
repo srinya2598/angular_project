@@ -182,6 +182,7 @@ export class ProductController {
       })
     ).subscribe((res) => {
       if (isProductExisting === false) {
+        this.notificationService.success('Product successfully added to the cart');
         this.store.dispatch(new AddCart(productId));
 
       }
