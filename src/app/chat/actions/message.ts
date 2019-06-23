@@ -6,7 +6,7 @@ export enum ChatActions {
 
   SEND_MESSAGE = '[chat] send message',
   FETCH_MESSAGE = '[chat] fetch message ',
-  FETCH_SUCCESS = '[chat] fetch success',
+  FETCH_ROOMS_SUCCESS = '[chat] fetch success',
 
 }
 
@@ -28,7 +28,7 @@ export class FetchMessage implements Action {
 }
 
 export class FetchSuccess implements Action {
-  readonly type = ChatActions.FETCH_SUCCESS;
+  readonly type = ChatActions.FETCH_ROOMS_SUCCESS;
 
   constructor(public  payload: { room: IRoom[], roomId: string }) {
 
