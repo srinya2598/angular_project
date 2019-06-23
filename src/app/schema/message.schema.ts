@@ -1,78 +1,57 @@
 export const MESSAGE_SCHEMA = {
   version: 0,
-  type: "object",
+  type: 'object',
   properties: {
     id: {
-      type: "string",
+      type: 'string',
       primary: true
     },
     roomid: {
-      type: "string",
-      nullable: false
+      type: 'string',
+
     },
     type: {
-      type: "string"
+      type: 'string'
     },
     timestamp: {
-      type: "number",
+      type: 'number',
       index: true
     },
     text: {
-      type: "string",
+      type: 'string',
       nullable: true
     },
     sender: {
-      type: "object",
-      nullable: true,
-      properties: {
-        id: {
-          type: "string"
-        },
-        full_name: {
-          type: "string"
-        },
-        profile_pic: {
-          type: "string"
-        },
-      }
+      type: 'string',
+
+
     },
-    user: {
-      type: "string",
-      nullable: true,
-      properties: {
-        id: {
-          type: "string"
-        },
-        full_name: {
-          type: "string"
-        },
-        profile_pic: {
-          type: "string"
-        },
-      }
+    receiver: {
+      type: 'string',
+
     },
     audio: {
-      type: "object",
+      type: 'object',
       nullable: true,
       properties: {
         audio_url: {
-          type: "string"
+          type: 'string'
         },
         audio_duration: {
-          type: "number"
+          type: 'number'
         }
       }
     },
     image: {
-      type: "object",
+      type: 'object',
       nullable: true,
       properties: {
         image_url: {
-          type: "string"
+          type: 'string'
         },
         caption: {
           nullable: true,
-          type: "string"
+          type: 'string'
         }
       }
     }

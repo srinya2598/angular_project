@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DbService } from '@ec-core/services/database.service';
+import {ConversationalController} from '@ec-core/controllers/conversational.controller';
 
 @Component({
   selector: 'app-chat-window',
@@ -12,7 +12,7 @@ export class ChatWindowComponent implements OnInit {
   message: FormControl;
   showSendMessageButton = false;
 
-  constructor(private dbService: DbService) {
+  constructor(private conversationalController: ConversationalController) {
     this.message = new FormControl(null);
   }
 
@@ -27,7 +27,8 @@ export class ChatWindowComponent implements OnInit {
   }
 
   sendMessage() {
-
+    this.conversationalController.sendMessage(this.message.value);
+    console.log('01');
   }
 }
 
