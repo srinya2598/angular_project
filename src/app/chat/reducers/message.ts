@@ -28,7 +28,7 @@ export function messageReducer(state: MessageState = initialState, action: Actio
 
     case ChatActions.FETCH_MESSAGE:
       console.log('message fetched');
-      return adapter.addMany(action.payload.messages, state);
+      return adapter.addMany(action.payload, state);
 
     default:
       return state;
