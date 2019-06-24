@@ -5,12 +5,14 @@ export interface ConversationState {
   isLoading: boolean;
   isLoaded: boolean;
   conversation: {[convId:string]: string[]};
+  rooms: string[];
 }
 
 export const initialConversationState: ConversationState = {
   isLoading: false,
   isLoaded: false,
   conversation: {},
+  rooms: [],
 };
 
   export function conversationReducer(state: ConversationState = initialConversationState, action: Action) {
