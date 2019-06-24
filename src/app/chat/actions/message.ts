@@ -7,6 +7,7 @@ export enum ChatActions {
   SEND_MESSAGE = '[chat] send message',
   FETCH_MESSAGE = '[chat] fetch message ',
   FETCH_ROOMS_SUCCESS = '[chat] fetch success',
+  SELECTED_USER_ID = '[chat] select user id'
 
 }
 
@@ -34,4 +35,12 @@ export class FetchSuccess implements Action {
 
   }
 
+}
+
+export class SelectedUserId implements Action {
+  readonly type = ChatActions.SELECTED_USER_ID;
+
+  constructor(public payload: string ){
+
+  }
 }

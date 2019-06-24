@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DbService, RxCollections } from '@ec-core/services/database.service';
+import * as uuid from 'uuid/v4';
 
 @Injectable({
   providedIn: 'root'

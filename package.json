@@ -41,6 +41,7 @@
     "pouchdb-adapter-idb": "latest",
     "rxdb": "^8.2.0",
     "rxjs": "^6.3.3",
+    "uuid": "^3.3.2",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
