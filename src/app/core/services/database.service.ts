@@ -18,12 +18,13 @@ export enum RxCollections {
 export class DbService {
   private readonly _useAdapter = 'idb';
   private _db: RxDatabase;
+  private _isDbResolved = false;
 
   constructor(private apiService: ApiService) {
   }
 
   async init() {
-    if (this.apiService.getItem(Constants.IS_DB_RESOLVED) === 'false') {
+    if (!this._isDbResolved) {
       RxDB.plugin(PouchdbAdapterIdb);
       this._db = await RxDB.create({
         name: 'message_database',
@@ -42,7 +43,7 @@ export class DbService {
       ];
 
       await Promise.all(schemaPromises);
-      this.apiService.setItem(Constants.IS_DB_RESOLVED, 'true');
+      this._isDbResolved = true;
     }
   }
 

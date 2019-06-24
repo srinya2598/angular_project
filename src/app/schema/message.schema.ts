@@ -6,9 +6,8 @@ export const MESSAGE_SCHEMA = {
       type: 'string',
       primary: true
     },
-    roomid: {
+    roomId: {
       type: 'string',
-
     },
     type: {
       type: 'string'
@@ -23,12 +22,9 @@ export const MESSAGE_SCHEMA = {
     },
     sender: {
       type: 'string',
-
-
     },
     receiver: {
       type: 'string',
-
     },
     audio: {
       type: 'object',

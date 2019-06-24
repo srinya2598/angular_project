@@ -31,10 +31,6 @@ export class BootstrapComponent implements OnInit {
       });
     } else {
       this.router.navigate(['dashboard']);
-
-    }
-    if (!this.apiService.getItem(Constants.IS_DB_RESOLVED)) {
-      this.apiService.setItem(Constants.IS_DB_RESOLVED, 'false');
     }
   }
 }
