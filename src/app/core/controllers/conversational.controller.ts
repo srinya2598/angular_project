@@ -1,33 +1,52 @@
 import { Injectable } from '@angular/core';
 import { DbService, RxCollections } from '@ec-core/services/database.service';
-import * as uuid from 'uuid/v4';
-import {SelectedUserId} from '../../chat/actions/message';
-import {Store} from '@ngrx/store';
-import {getSelectedUserId, State} from '../../chat/reducers';
-import {take} from 'rxjs/operators';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
+import { ApiService } from '@ec-core/services/api.service';
+import { Constants } from '@ec-shared/utils/constants';
+import { Store } from '@ngrx/store';
+import { getIsLoaded, getSelectedUserId, State } from '../../chat/reducers';
+import { IMessage } from '@ec-shared/models/message';
+import { FetchMessage, SelectedUserId } from '../../chat/actions/message';
+import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConversationalController {
   constructor(private dbService: DbService,
+              private apiService: ApiService,
               private store: Store<State>) {
+    this.fetchMessage();
   }
 
   sendMessage(message: string) {
-    // this.dbService.getCollection(RxCollections.MESSAGES).insert({
-    //   id: '12345vjndkjg232',
-    //   roomId: 'iasdga',
-    //   timestamp: new Date().getTime(),
-    //   text: 'zhjsbugbaskf',
-    //   sender: 'dskjfhua',
-    //   receiver: 'SBjhk',
-    // });
-    this.dbService.getCollection(RxCollections.MESSAGES).find().where('roomId').eq('iasdga').$.subscribe(r => console.log(r));
+    this.dbService.getCollection(RxCollections.MESSAGES).insert({
+      id: CommonUtils.getRandomId(),
+      roomId: 'abc',
+      timestamp: new Date().getTime(),
+      text: message,
+      sender: this.apiService.getItem(Constants.USER_UID),
+      receiver: 'qwerty',
+    });
+
 
   }
 
-  setSelectedUserId(userId: string){
+  fetchMessage() {
+    this.store.select(getIsLoaded).pipe(take(1)).subscribe(isLoaded => {
+      if (!isLoaded) {
+        this.dbService.getCollection(RxCollections.MESSAGES)
+          .find()
+          .$
+          .subscribe((res1: IMessage[]) => {
+          this.store.dispatch(new FetchMessage(res1));
+
+        });
+      }
+    });
+  }
+
+  setSelectedUserId(userId: string) {
     this.store.dispatch(new SelectedUserId(userId));
   }
 
