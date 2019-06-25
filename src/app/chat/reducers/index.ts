@@ -4,7 +4,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   _getConversationMessageIds,
   _getIsLoaded,
-  _getIsLoading,
+  _getIsLoading, _getRoomId,
   _getSelectedUserId,
   conversationReducer,
   ConversationState
@@ -31,6 +31,7 @@ export const getEntities = createSelector(getMessageState, _getEntities);
 export const getIsLoading = createSelector(getConversationState, _getIsLoading);
 export const getIsLoaded = createSelector(getConversationState, _getIsLoaded);
 export const getSelectedUserId = createSelector(getConversationState, _getSelectedUserId);
+export const getSelectedRoomId = createSelector(getConversationState, _getRoomId);
 
 
 export const getConversationMessageIds = (state: State, convId: string) => _getConversationMessageIds(

@@ -1,6 +1,6 @@
 export interface IMessage {
   id: string;
-  roomid: string[];
+  roomId: string[];
   type: string;
   timestamp: number;
   text?: string;

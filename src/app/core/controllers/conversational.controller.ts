@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {DbService, RxCollections} from '@ec-core/services/database.service';
-import {SelectedUserId} from '../../chat/actions/message';
+import {SelectedRoom, SelectedUserId, SendMessage} from '../../chat/actions/message';
 import {Store} from '@ngrx/store';
-import {getSelectedUserId, State} from '../../chat/reducers';
+import {getSelectedRoomId, getSelectedUserId, State} from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
 import {_getSelectedUserId} from '../../chat/reducers/conversation';
 import {Constants} from '@ec-shared/utils/constants';
+import {IMessage, ISender} from '@ec-shared/models/message';
+import {message} from '../../chat/reducers/message';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +17,18 @@ export class ConversationalController {
               private store: Store<State>) {
   }
 
-  sendMessage(message: string) {
-    this.dbService.getCollection(RxCollections.MESSAGES).insert({
-      id:"12345vjndkjg232",
-      roomid:"iasdga",
-      type:"text",
-      timestamp:new Date().getTime(),
-      text:"zhjsdbugbaskf",
-      sender:"dskjfhua",
-      receiver:"SBjhk",
-    });
+  sendMessage(data: string) {
+    let selectedUserId:string;
+    this.getSelectedUserId().subscribe(id => selectedUserId = id);
+    const message:IMessage = {
+      id: uuid(),
+      roomId: getSelectedRoomId,
+      type: 'Test Message',
+      timestamp: new Date().getTime(),
+      text: data,
+    };
+    this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+    this.store.dispatch(new SendMessage(message));
   }
 
   setSelectedUserId(userId: string){
@@ -34,5 +38,9 @@ export class ConversationalController {
 
   getSelectedUserId() {
     return this.store.select(getSelectedUserId);
+  }
+
+  getSelectedRoomId() {
+    return this.store.select(getSelectedRoomId);
   }
 }
