@@ -2,8 +2,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ISingleProduct } from '../../models/single-product';
 import { Store } from '@ngrx/store';
 import {SelectedUserId} from '../../../chat/actions/message';
-import {State} from '../../../chat/reducers';
+import {getSelectedUserId, State} from '../../../chat/reducers';
 import {Router} from '@angular/router';
+import {ConversationalController} from '@ec-core/controllers/conversational.controller';
 
 @Component({
   selector: 'app-singleproduct',
@@ -15,7 +16,8 @@ export class SingleproductComponent implements OnInit {
   @Output() addToCart = new EventEmitter<string>();
 
   constructor(private store: Store<State>,
-              private router: Router) {
+              private router: Router,
+              private conversationalController: ConversationalController) {
   }
 
   ngOnInit() {
@@ -28,8 +30,9 @@ export class SingleproductComponent implements OnInit {
 
   onChat(){
     console.log('chat');
-    this.store.dispatch(new SelectedUserId(this.product.userId));
-    this.router.navigate(['/dashboard/chat']);
+    this.conversationalController.setSelectedUserId(this.product.userId);
+    this.conversationalController.getSelectedUserId();
+    this.router.navigate(['dashboard/chat']);
   }
 }
 

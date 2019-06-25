@@ -6,6 +6,7 @@ export interface ConversationState {
   isLoaded: boolean;
   conversation: {[convId:string]: string[]};
   rooms: string[];
+  selectedUserId: string;
 }
 
 export const initialConversationState: ConversationState = {
@@ -13,6 +14,7 @@ export const initialConversationState: ConversationState = {
   isLoaded: false,
   conversation: {},
   rooms: [],
+  selectedUserId: null,
 };
 
   export function conversationReducer(state: ConversationState = initialConversationState, action: Action) {
@@ -46,6 +48,14 @@ export const initialConversationState: ConversationState = {
           }});
         return tempState;
       }
+
+      case ChatActions.SELECTED_USER_ID: {
+        return{
+          ...state,
+          selectedUserId: action.payload
+        };
+      }
+
       default:
         return state;
     }
@@ -54,3 +64,4 @@ export const initialConversationState: ConversationState = {
 export const _getIsLoading = (state: ConversationState) => state.isLoading;
 export const _getIsLoaded = (state: ConversationState) => state.isLoaded;
 export const _getConversationMessageIds = (state: ConversationState, convId:string) => state.conversation[convId];
+export const _getSelectedUserId = (state: ConversationState) => state.selectedUserId;

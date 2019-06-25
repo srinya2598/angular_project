@@ -1,7 +1,14 @@
 import { _getEntities, _getIds, messageReducer, MessageState } from './message';
 import { RootState } from '@ec-core/reducers';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { _getConversationMessageIds, _getIsLoaded, _getIsLoading, conversationReducer, ConversationState } from './conversation';
+import {
+  _getConversationMessageIds,
+  _getIsLoaded,
+  _getIsLoading,
+  _getSelectedUserId,
+  conversationReducer,
+  ConversationState
+} from './conversation';
 
 export interface State {
   message: MessageState,
@@ -23,6 +30,7 @@ export const getIds = createSelector(getMessageState, _getIds);
 export const getEntities = createSelector(getMessageState, _getEntities);
 export const getIsLoading = createSelector(getConversationState, _getIsLoading);
 export const getIsLoaded = createSelector(getConversationState, _getIsLoaded);
+export const getSelectedUserId = createSelector(getConversationState, _getSelectedUserId);
 
 
 export const getConversationMessageIds = (state: State, convId: string) => _getConversationMessageIds(
