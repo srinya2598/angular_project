@@ -7,6 +7,7 @@ export interface ISingleProduct {
   email: string,
   firstName: string,
   id: string,
+  userId: string,
   imageUrl: string,
   lastName: string,
   name: string,

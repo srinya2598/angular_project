@@ -1,50 +1,38 @@
-import {Injectable} from '@angular/core';
-import {DbService, RxCollections} from '@ec-core/services/database.service';
-import {CommonUtils} from '@ec-shared/utils/common.utils';
-import {ApiService} from '@ec-core/services/api.service';
-import {Constants} from '@ec-shared/utils/constants';
+import { Injectable } from '@angular/core';
+import { DbService, RxCollections } from '@ec-core/services/database.service';
+import * as uuid from 'uuid/v4';
+import {SelectedUserId} from '../../chat/actions/message';
 import {Store} from '@ngrx/store';
-import {getIsLoaded, State} from '../../chat/reducers';
-import {IMessage} from '@ec-shared/models/message';
-import {FetchMessage} from '../../chat/actions/message';
+import {getSelectedUserId, State} from '../../chat/reducers';
+import {take} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConversationalController {
-  constructor(private dbService: DbService, private apiService: ApiService, private store: Store<State>) {
-    this.dbService.getCollection(RxCollections.MESSAGES).find().where('roomId').eq('iasdga').$.subscribe(res => console.log(res));
-    this.fetchMessage();
-
+  constructor(private dbService: DbService,
+              private store: Store<State>) {
   }
 
   sendMessage(message: string) {
-    this.dbService.getCollection(RxCollections.MESSAGES).insert({
-      id: CommonUtils.getRandomId(),
-      roomId: 'abc',
-      timestamp: new Date().getTime(),
-      text: message,
-      sender: this.apiService.getItem(Constants.USER_UID),
-      receiver: 'qwerty',
-    });
-
+    // this.dbService.getCollection(RxCollections.MESSAGES).insert({
+    //   id: '12345vjndkjg232',
+    //   roomId: 'iasdga',
+    //   timestamp: new Date().getTime(),
+    //   text: 'zhjsbugbaskf',
+    //   sender: 'dskjfhua',
+    //   receiver: 'SBjhk',
+    // });
+    this.dbService.getCollection(RxCollections.MESSAGES).find().where('roomId').eq('iasdga').$.subscribe(r => console.log(r));
 
   }
 
-  fetchMessage() {
-    const isLoaded = this.store.select(getIsLoaded);
-
-    if (!isLoaded) {
-
-      this.dbService.getCollection(RxCollections.MESSAGES).find().$.subscribe((res1: IMessage[]) => {
-        this.store.dispatch(new FetchMessage(res1));
-
-      });
-      console.log('fetching message');
+  setSelectedUserId(userId: string){
+    this.store.dispatch(new SelectedUserId(userId));
+  }
 
 
-    }
-
-
+  getSelectedUserId() {
+    return this.store.select(getSelectedUserId);
   }
 }

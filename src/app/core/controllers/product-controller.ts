@@ -143,15 +143,20 @@ export class ProductController {
 
   getSingleProduct(id) {
     let data;
+    let userId;
+    let productId;
     return this.store.select((state) => getSelectedProduct(state, id)).pipe(
       switchMap((res) => {
+        productId = res.id;
         data = { ...res };
         return this.apiService.getUserDetails(res.userId);
       }),
       map(res => {
+        // @ts-ignore
+        userId = res.id;
         delete res['id'];
         delete data['userId'];
-        data = { ...data, ...res };
+        data = { ...data, ...res, id: productId, userId: userId };
         return data;
       })
     );
