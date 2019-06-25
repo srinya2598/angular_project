@@ -7,13 +7,13 @@ import {Store} from '@ngrx/store';
 import {getIsLoaded, State} from '../../chat/reducers';
 import {IMessage} from '@ec-shared/models/message';
 import {FetchMessage} from '../../chat/actions/message';
+import {take} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConversationalController {
   constructor(private dbService: DbService, private apiService: ApiService, private store: Store<State>) {
-    this.dbService.getCollection(RxCollections.MESSAGES).find().where('roomId').eq('iasdga').$.subscribe(res => console.log(res));
     this.fetchMessage();
 
   }
@@ -32,18 +32,20 @@ export class ConversationalController {
   }
 
   fetchMessage() {
-    const isLoaded = this.store.select(getIsLoaded);
+    this.store.select(getIsLoaded).pipe(take(1)).subscribe(isLoaded =>{
+      if (!isLoaded) {
 
-    if (!isLoaded) {
+        this.dbService.getCollection(RxCollections.MESSAGES).find().$.subscribe((res1: IMessage[]) => {
+          this.store.dispatch(new FetchMessage(res1));
 
-      this.dbService.getCollection(RxCollections.MESSAGES).find().$.subscribe((res1: IMessage[]) => {
-        this.store.dispatch(new FetchMessage(res1));
-
-      });
-      console.log('fetching message');
+        });
+        console.log('fetching message');
 
 
-    }
+      }
+    });
+
+
 
 
   }
