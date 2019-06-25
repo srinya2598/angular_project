@@ -33,8 +33,6 @@ export class ConversationalController {
 
 
   getSelectedUserId() {
-    return this.store.select(getSelectedUserId).pipe(take(1)).subscribe(res => {
-      console.log(res);
-    })
+    return this.store.select(getSelectedUserId);
   }
 }

@@ -31,7 +31,9 @@ export class SingleproductComponent implements OnInit {
   onChat(){
     console.log('chat');
     this.conversationalController.setSelectedUserId(this.product.userId);
-    this.conversationalController.getSelectedUserId();
+    this.conversationalController.getSelectedUserId().subscribe(res => {
+      console.log(res);
+    });
     this.router.navigate(['dashboard/chat']);
   }
 }
