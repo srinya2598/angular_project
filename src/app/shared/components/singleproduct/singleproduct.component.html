@@ -9,7 +9,7 @@
     <p class="bottom">by {{product.firstName}} {{product.lastName}}</p>
     <h3>Rs. {{product.price}}</h3>
     <p class="desc">{{product.description}}</p>
-    <div class="footer">
+    <div class="footer" *ngIf="!isLoggedInUserProduct()">
       <button class="btn button4" (click)="onChat()">Chat</button>
       <button class="btn button4" (click)="onAdd()">Add to Cart</button>
 

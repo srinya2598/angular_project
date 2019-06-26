@@ -6,7 +6,7 @@ import { Constants } from '@ec-shared/utils/constants';
 import { Store } from '@ngrx/store';
 import { getIsLoaded, getSelectedUserId, State } from '../../chat/reducers';
 import { IMessage } from '@ec-shared/models/message';
-import { FetchMessage, SelectedUserId } from '../../chat/actions/message';
+import { FetchMessage, SelectedUserId, SendMessage } from '../../chat/actions/message';
 import { take } from 'rxjs/operators';
 
 @Injectable({
@@ -17,6 +17,7 @@ export class ConversationalController {
               private apiService: ApiService,
               private store: Store<State>) {
     this.fetchMessage();
+    this.setUpMessageChannel();
   }
 
   sendMessage(message: string) {
@@ -38,10 +39,9 @@ export class ConversationalController {
         this.dbService.getCollection(RxCollections.MESSAGES)
           .find()
           .$
-          .subscribe((res1: IMessage[]) => {
-          this.store.dispatch(new FetchMessage(res1));
-
-        });
+          .subscribe((res: IMessage[]) => {
+            this.store.dispatch(new FetchMessage(res));
+          });
       }
     });
   }
@@ -53,5 +53,17 @@ export class ConversationalController {
 
   getSelectedUserId() {
     return this.store.select(getSelectedUserId);
+  }
+
+  setUpMessageChannel() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    if (!userId) {
+      return;
+    }
+    this.apiService.getMessageStream(userId).subscribe((message: IMessage) => {
+      // TODO: check if the room already exist... if not, first create the room and then store the message.
+      this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+      this.store.dispatch(new SendMessage(message));
+    });
   }
 }

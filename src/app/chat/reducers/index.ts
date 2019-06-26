@@ -2,17 +2,17 @@ import { _getEntities, _getIds, messageReducer, MessageState } from './message';
 import { RootState } from '@ec-core/reducers';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
-  _getConversationMessageIds,
+  _getRoomMessageIds,
   _getIsLoaded,
   _getIsLoading,
   _getSelectedUserId,
-  conversationReducer,
-  ConversationState
-} from './conversation';
+  roomMessagesReducer,
+  RoomMessageState
+} from './room-messages';
 
 export interface State {
   message: MessageState,
-  conversation: ConversationState
+  roomMessages: RoomMessageState
 }
 
 export interface MessageRootState extends RootState {
@@ -21,25 +21,25 @@ export interface MessageRootState extends RootState {
 
 export const messageRootReducer = {
   message: messageReducer,
-  conversation: conversationReducer
+  roomMessages: roomMessagesReducer
 };
 export const getMessageRootState = createFeatureSelector<State>('message');
 export const getMessageState = createSelector(getMessageRootState, (state) => state.message);
-export const getConversationState = createSelector(getMessageRootState, (state) => state.conversation);
+export const getRoomMessageState = createSelector(getMessageRootState, (state) => state.roomMessages);
 export const getIds = createSelector(getMessageState, _getIds);
 export const getEntities = createSelector(getMessageState, _getEntities);
-export const getIsLoading = createSelector(getConversationState, _getIsLoading);
-export const getIsLoaded = createSelector(getConversationState, _getIsLoaded);
-export const getSelectedUserId = createSelector(getConversationState, _getSelectedUserId);
+export const getIsLoading = createSelector(getRoomMessageState, _getIsLoading);
+export const getIsLoaded = createSelector(getRoomMessageState, _getIsLoaded);
+export const getSelectedUserId = createSelector(getRoomMessageState, _getSelectedUserId);
 
 
-export const getConversationMessageIds = (state: State, convId: string) => _getConversationMessageIds(
-  getConversationState(state),
+export const getRoomMessageIds = (state: State, convId: string) => _getRoomMessageIds(
+  getRoomMessageState(state),
   convId
 );
 
-export const getConversationMessages = (state: State, convId: string) => {
-  const messageIds = getConversationMessageIds(state, convId);
+export const getRoomMessages = (state: State, convId: string) => {
+  const messageIds = getRoomMessageIds(state, convId);
   const entities = getEntities(state);
   return messageIds.map(id => entities[id]);
 };
@@ -52,7 +52,7 @@ export const getConversationMessages = (state: State, convId: string) => {
  * }
  *
  * getMessages(convId: string) {
- *     return this.store.select(state => getConversationMessages(state,convId));
+ *     return this.store.select(state => getRoomMessages(state,convId));
  * }
  *
  **/

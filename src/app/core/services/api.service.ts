@@ -7,6 +7,7 @@ import {auth} from 'firebase';
 import {IProduct} from '@ec-shared/models/product';
 import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
 import {tsStructureIsReused} from '@angular/compiler-cli/src/transformers/util';
+import { IMessage } from '@ec-shared/models/message';
 
 @Injectable({
   providedIn: 'root',
@@ -99,9 +100,10 @@ export class ApiService {
 
   fetchCartProducts(userId: string) {
     return this.angularFireDb.object(`user/${userId}/cart`).valueChanges();
-    console.log('03');
   }
 
-
+  getMessageStream(userId: string) {
+    return this.angularFireDb.object<IMessage>(`chat/${userId}`).valueChanges();
+  }
 }
 
