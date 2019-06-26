@@ -7,8 +7,8 @@ export enum ChatActions {
   SEND_MESSAGE = '[chat] send message',
   FETCH_MESSAGE = '[chat] fetch message ',
   FETCH_ROOMS_SUCCESS = '[chat] fetch success',
-  SELECTED_USER_ID = '[chat] select user id'
-
+  SET_SELECTED_USER_ID = '[chat] set select user id',
+  SET_SELECTED_ROOM_ID = '[chat] set select room id',
 }
 
 export class SendMessage implements Action {
@@ -37,8 +37,16 @@ export class FetchSuccess implements Action {
 
 }
 
-export class SelectedUserId implements Action {
-  readonly type = ChatActions.SELECTED_USER_ID;
+export class SetSelectedUserId implements Action {
+  readonly type = ChatActions.SET_SELECTED_USER_ID;
+
+  constructor(public payload: string ){
+
+  }
+}
+
+export class SetSelectedRoomId implements Action {
+  readonly type = ChatActions.SET_SELECTED_ROOM_ID;
 
   constructor(public payload: string ){
 
