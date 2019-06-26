@@ -7,7 +7,8 @@ import {auth} from 'firebase';
 import {IProduct} from '@ec-shared/models/product';
 import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
 import {tsStructureIsReused} from '@angular/compiler-cli/src/transformers/util';
-import { IMessage } from '@ec-shared/models/message';
+import {IMessage} from '@ec-shared/models/message';
+import {IRoom} from '@ec-shared/models/room';
 
 @Injectable({
   providedIn: 'root',
@@ -104,6 +105,12 @@ export class ApiService {
 
   getMessageStream(userId: string) {
     return this.angularFireDb.object<IMessage>(`chat/${userId}`).valueChanges();
+
+
   }
+  getUserRooms(userId: string){
+    return this.angularFireDb.object<IRoom>(`users/room/${userId}`).valueChanges();
+  }
+
 }
 

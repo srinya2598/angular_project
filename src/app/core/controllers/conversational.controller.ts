@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { DbService, RxCollections } from '@ec-core/services/database.service';
-import { FetchMessage, SendMessage, SetSelectedRoomId, SetSelectedUserId } from '../../chat/actions/message';
-import { Store } from '@ngrx/store';
-import { getIsLoaded, getSelectedRoomId, getSelectedUserId, State } from '../../chat/reducers';
+import {Injectable} from '@angular/core';
+import {DbService, RxCollections} from '@ec-core/services/database.service';
+import {FetchMessage, FetchSuccess, SendMessage, SetSelectedRoomId, SetSelectedUserId} from '../../chat/actions/message';
+import {Store} from '@ngrx/store';
+import {getIsLoaded, getRooms, getSelectedRoomId, getSelectedUserId, State} from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
-import { IMessage } from '@ec-shared/models/message';
-import { take } from 'rxjs/operators';
-import { Constants, MessageType } from '@ec-shared/utils/constants';
-import { ApiService } from '@ec-core/services/api.service';
+import {IMessage} from '@ec-shared/models/message';
+import {take} from 'rxjs/operators';
+import {Constants, MessageType} from '@ec-shared/utils/constants';
+import {ApiService} from '@ec-core/services/api.service';
+import {IRoom} from '@ec-shared/models/room';
 
 @Injectable({
   providedIn: 'root'
@@ -84,7 +85,7 @@ export class ConversationalController {
     }
     this.apiService.getMessageStream(userId).subscribe((message: IMessage) => {
       // TODO: check if the room already exist... if not, first create the room and then store the message.
-      if(message){
+      if (message) {
         this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
         this.store.dispatch(new SendMessage(message));
       }
@@ -92,4 +93,18 @@ export class ConversationalController {
     });
   }
 
+  getRooms() {
+
+    const member = this.apiService.getItem(Constants.USER_UID);
+    this.apiService.getUserRooms(member).pipe(take(1)).subscribe((res: IRoom[]) => {
+      if (res) {
+        this.store.dispatch(new FetchSuccess(res));
+
+
+      }
+
+    });
+
+
+  }
 }

@@ -79,3 +79,4 @@ export const _getIsLoaded = (state: RoomMessageState) => state.isLoaded;
 export const _getRoomMessageIds = (state: RoomMessageState, convId: string) => state.ids[convId];
 export const _getSelectedUserId = (state: RoomMessageState) => state.selectedUserId;
 export const _getSelectedRoomId = (state: RoomMessageState) => state.selectedRoomId;
+export const _getRooms = (state: RoomMessageState) => state.rooms;

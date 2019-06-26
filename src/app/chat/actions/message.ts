@@ -31,7 +31,7 @@ export class FetchMessage implements Action {
 export class FetchSuccess implements Action {
   readonly type = ChatActions.FETCH_ROOMS_SUCCESS;
 
-  constructor(public  payload: { room: IRoom[], roomId: string }) {
+  constructor(public  payload:  IRoom[]) {
 
   }
 

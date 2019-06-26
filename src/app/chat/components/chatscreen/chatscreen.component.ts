@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ConversationalController} from '@ec-core/controllers/conversational.controller';
 
 @Component({
   selector: 'app-chatscreen',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatscreenComponent implements OnInit {
 
-  constructor() { }
+  constructor(private conversationalController : ConversationalController) { }
 
   ngOnInit() {
+    this.conversationalController.getRooms();
   }
 
 }

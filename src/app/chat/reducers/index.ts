@@ -8,7 +8,7 @@ import {
   _getSelectedRoomId,
   _getSelectedUserId,
   roomMessagesReducer,
-  RoomMessageState
+  RoomMessageState, _getRooms
 } from './room-messages';
 
 export interface State {
@@ -33,7 +33,7 @@ export const getIsLoading = createSelector(getRoomMessageState, _getIsLoading);
 export const getIsLoaded = createSelector(getRoomMessageState, _getIsLoaded);
 export const getSelectedUserId = createSelector(getRoomMessageState, _getSelectedUserId);
 export const getSelectedRoomId = createSelector(getRoomMessageState, _getSelectedRoomId);
-
+export const getRooms = createSelector(getRoomMessageState, _getRooms);
 
 export const getRoomMessageIds = (state: State, convId: string) => _getRoomMessageIds(
   getRoomMessageState(state),
