@@ -84,8 +84,11 @@ export class ConversationalController {
     }
     this.apiService.getMessageStream(userId).subscribe((message: IMessage) => {
       // TODO: check if the room already exist... if not, first create the room and then store the message.
-      this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
-      this.store.dispatch(new SendMessage(message));
+      if(message){
+        this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+        this.store.dispatch(new SendMessage(message));
+      }
+
     });
   }
 
