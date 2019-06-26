@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
-import {from} from 'rxjs';
-import {IUser} from '@ec-shared/models/users';
-import {AngularFireDatabase} from '@angular/fire/database';
-import {auth} from 'firebase';
-import {IProduct} from '@ec-shared/models/product';
-import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
-import {tsStructureIsReused} from '@angular/compiler-cli/src/transformers/util';
+import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { from } from 'rxjs';
+import { IUser } from '@ec-shared/models/users';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { auth } from 'firebase';
+import { IProduct } from '@ec-shared/models/product';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+import { tsStructureIsReused } from '@angular/compiler-cli/src/transformers/util';
 import { IMessage } from '@ec-shared/models/message';
 
 @Injectable({
@@ -104,6 +104,14 @@ export class ApiService {
 
   getMessageStream(userId: string) {
     return this.angularFireDb.object<IMessage>(`chat/${userId}`).valueChanges();
+  }
+
+  fetchUserRooms(userId: string) {
+    return this.angularFireDb.object(`user_rooms/${userId}`).valueChanges();
+  }
+
+  fetchRoomDetails(roomId: string) {
+    return this.angularFireDb.object(`rooms/${roomId}`).valueChanges();
   }
 }
 

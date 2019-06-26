@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { DbService, RxCollections } from '@ec-core/services/database.service';
-import { FetchMessage, SendMessage, SetSelectedRoomId, SetSelectedUserId } from '../../chat/actions/message';
+import { FetchMessage, FetchRoomSuccess, SendMessage, SetSelectedRoomId, SetSelectedUserId } from '../../chat/actions/message';
 import { Store } from '@ngrx/store';
 import { getIsLoaded, getSelectedRoomId, getSelectedUserId, State } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
 import { IMessage } from '@ec-shared/models/message';
-import { take } from 'rxjs/operators';
+import { catchError, concatMap, reduce, take, takeWhile, tap } from 'rxjs/operators';
 import { Constants, MessageType } from '@ec-shared/utils/constants';
 import { ApiService } from '@ec-core/services/api.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { IRoom } from '@ec-shared/models/room';
+import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -84,7 +87,7 @@ export class ConversationalController {
     }
     this.apiService.getMessageStream(userId).subscribe((message: IMessage) => {
       // TODO: check if the room already exist... if not, first create the room and then store the message.
-      if(message){
+      if (message) {
         this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
         this.store.dispatch(new SendMessage(message));
       }
@@ -92,4 +95,41 @@ export class ConversationalController {
     });
   }
 
+  fetchRooms() {
+    let rooms: IRoom[] = [];
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    this.apiService.fetchUserRooms(userId)
+      .pipe(take(1))
+      .subscribe((res: string[]) => {
+        let rooms = res;
+        const trigger = new BehaviorSubject<string>(rooms.shift());
+        trigger.asObservable().pipe(
+          concatMap((r: string) => {
+            if (r) {
+              this.apiService.fetchRoomDetails(r)
+                .pipe(
+                  tap((room) => {
+                    if (rooms && rooms.length > 0) {
+                      trigger.next(rooms.shift());
+                    }
+                    else {
+                      trigger.complete();
+                    }
+                  }),
+                  catchError(() => of({})
+                  )
+                );
+            } else {
+              return of({});
+            }
+          }),
+          takeWhile(room => room['id']),
+          reduce((accumulator, room) => {
+            return [...accumulator, room];
+          })
+        ).subscribe((rooms: IRoom[]) => {
+          this.store.dispatch(new FetchRoomSuccess(rooms));
+        });
+      });
+  }
 }
