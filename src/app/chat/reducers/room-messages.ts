@@ -8,6 +8,7 @@ export interface RoomMessageState {
   ids: { [convId: string]: string[] };
   rooms: string[];
   selectedUserId: string;
+  selectedRoomId: string;
 }
 
 export const initialRoomMessagesState: RoomMessageState = {
@@ -16,6 +17,7 @@ export const initialRoomMessagesState: RoomMessageState = {
   ids: {},
   rooms: [],
   selectedUserId: null,
+  selectedRoomId: null
 };
 
 export function roomMessagesReducer(state: RoomMessageState = initialRoomMessagesState, action: Action) {
@@ -36,10 +38,16 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
     }
 
 
-    case ChatActions.SELECTED_USER_ID: {
+    case ChatActions.SET_SELECTED_USER_ID: {
       return {
         ...state,
         selectedUserId: action.payload
+      };
+    }
+    case ChatActions.SET_SELECTED_ROOM_ID: {
+      return {
+        ...state,
+        selectedRoomId: action.payload
       };
     }
     case ChatActions.FETCH_MESSAGE : {
@@ -70,3 +78,4 @@ export const _getIsLoading = (state: RoomMessageState) => state.isLoading;
 export const _getIsLoaded = (state: RoomMessageState) => state.isLoaded;
 export const _getRoomMessageIds = (state: RoomMessageState, convId: string) => state.ids[convId];
 export const _getSelectedUserId = (state: RoomMessageState) => state.selectedUserId;
+export const _getSelectedRoomId = (state: RoomMessageState) => state.selectedRoomId;

@@ -1,8 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ISingleProduct } from '../../models/single-product';
-import { Store } from '@ngrx/store';
-import { SelectedUserId } from '../../../chat/actions/message';
-import { getSelectedUserId, State } from '../../../chat/reducers';
 import { Router } from '@angular/router';
 import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 import { ApiService } from '@ec-core/services/api.service';
