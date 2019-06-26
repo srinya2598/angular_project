@@ -113,5 +113,9 @@ export class ApiService {
   fetchRoomDetails(roomId: string) {
     return this.angularFireDb.object(`rooms/${roomId}`).valueChanges();
   }
+
+  setRoomDetails(id: string, participants: string[]) {
+    return from(this.angularFireDb.database.ref(`room/${id}`).set(participants));
+  }
 }
 

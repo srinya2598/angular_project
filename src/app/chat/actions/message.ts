@@ -9,6 +9,7 @@ export enum ChatActions {
   FETCH_ROOMS_SUCCESS = '[chat] fetch success',
   SET_SELECTED_USER_ID = '[chat] set select user id',
   SET_SELECTED_ROOM_ID = '[chat] set select room id',
+  CREATE_ROOM = '[chat] create room',
 }
 
 export class SendMessage implements Action {
@@ -51,4 +52,13 @@ export class SetSelectedRoomId implements Action {
   constructor(public payload: string) {
 
   }
+}
+
+export class createRoom implements Action {
+  readonly type = ChatActions.CREATE_ROOM;
+
+  constructor(public payload: IRoom) {
+
+  }
+
 }
