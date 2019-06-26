@@ -32,8 +32,7 @@ export const initialConversationState: ConversationState = {
           conversation :{
             ...state.conversation,
             [message.roomId]: newIds
-          },
-          selectedRoomId: action.payload.roomId,
+          }
         }
       }
 
@@ -52,10 +51,17 @@ export const initialConversationState: ConversationState = {
         return tempState;
       }
 
-      case ChatActions.SELECTED_USER_ID: {
+      case ChatActions.SET_SELECTED_USER_ID: {
         return{
           ...state,
           selectedUserId: action.payload
+        };
+      }
+
+      case ChatActions.SET_SELECTED_ROOM_ID: {
+        return{
+          ...state,
+          selectedRoomId: action.payload
         };
       }
 
@@ -68,4 +74,4 @@ export const _getIsLoading = (state: ConversationState) => state.isLoading;
 export const _getIsLoaded = (state: ConversationState) => state.isLoaded;
 export const _getConversationMessageIds = (state: ConversationState, convId:string) => state.conversation[convId];
 export const _getSelectedUserId = (state: ConversationState) => state.selectedUserId;
-export const _getRoomId = (state: ConversationState) => state.selectedRoomId;
+export const _getSelectedRoomId = (state: ConversationState) => state.selectedRoomId;

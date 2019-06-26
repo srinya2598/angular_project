@@ -14,3 +14,8 @@ export enum BroadcasterConstants {
   NETWORK_CONNECTED = 'network_connected',
   NETWORK_DISCONNECTED = 'network_disconnected',
 }
+
+export enum MessageType {
+  TEXT = 'text_message',
+  IMAGE = 'image_message'
+}

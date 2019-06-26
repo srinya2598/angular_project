@@ -1,25 +1,15 @@
 export interface IMessage {
   id: string;
-  roomId: string[];
+  roomId: string;
   type: string;
   timestamp: number;
-  text?: string;
-  sender?: ISender;
-  user?: IUser;
+  text: string;
+  sender: string;
+  receiver: string;
   audio?: IAudio;
   image?: IImage;
 }
 
-export interface ISender {
-  id: string;
-  full_name: string;
-  profile_pic?: string;
-}
-export interface IUser {
-  id: string;
-  full_name: string;
-  profile_pic?: string;
-}
  export interface IAudio {
    audio_url: string;
    audio_duration: number;
