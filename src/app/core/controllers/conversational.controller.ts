@@ -1,6 +1,14 @@
 import { Injectable } from '@angular/core';
 import { DbService, RxCollections } from '@ec-core/services/database.service';
-import { createRoom, FetchMessage, FetchRoomSuccess, SendMessage, SetSelectedRoomId, SetSelectedUserId } from '../../chat/actions/message';
+import {
+  CreateRoom,
+  createRoom,
+  FetchMessage,
+  FetchRoomSuccess,
+  SendMessage,
+  SetSelectedRoomId,
+  SetSelectedUserId
+} from '../../chat/actions/message';
 import { Store } from '@ngrx/store';
 import { getIsLoaded, getSelectedRoomId, getSelectedUserId, State } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
@@ -134,20 +142,17 @@ export class ConversationalController {
   }
 
   createRoom() {
-    let selectedRoomId: string;
     let selectedUserId: string;
     let member: string;
     member = this.apiService.getItem(Constants.USER_UID);
-    this.getSelectedRoomId().pipe(take(1)).subscribe(id => selectedRoomId = id);
     this.getSelectedUserId().pipe(take(1)).subscribe(id => selectedUserId = id);
     const room: IRoom = {
-      id: selectedRoomId,
+      id: uuid(),
       participants: [member, selectedUserId]
     };
-    this.apiService.setRoomDetails(room.id, room.participants).subscribe(room => {
-        this.store.dispatch(new createRoom(room));
+    this.apiService.setRoomDetails(selectedUserId, room).subscribe(room => {
+        this.store.dispatch(new CreateRoom(room));
       }
     );
   }
-
 }

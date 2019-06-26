@@ -8,6 +8,8 @@ import { IProduct } from '@ec-shared/models/product';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
 import { tsStructureIsReused } from '@angular/compiler-cli/src/transformers/util';
 import { IMessage } from '@ec-shared/models/message';
+import { getSelectedUserId } from '../../chat/reducers';
+import { room } from '../../chat/reducers/room';
 
 @Injectable({
   providedIn: 'root',
@@ -116,6 +118,10 @@ export class ApiService {
 
   setRoomDetails(id: string, participants: string[]) {
     return from(this.angularFireDb.database.ref(`room/${id}`).set(participants));
+  }
+
+  setRoomDetails(userId: string, room) {
+    return from(this.angularFireDb.database.ref(`rooms/${userId}`).set(room));
   }
 }
 

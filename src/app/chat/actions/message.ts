@@ -54,7 +54,7 @@ export class SetSelectedRoomId implements Action {
   }
 }
 
-export class createRoom implements Action {
+export class CreateRoom implements Action {
   readonly type = ChatActions.CREATE_ROOM;
 
   constructor(public payload: IRoom) {
