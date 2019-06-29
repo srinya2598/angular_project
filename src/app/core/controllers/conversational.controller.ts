@@ -98,7 +98,7 @@ export class ConversationalController {
         filter(room => room['id']),
         reduce((accumulator, room) => {
           return [...accumulator, room];
-        })
+        },[])
       ).subscribe((rooms: IRoom[]) => {
         this.store.dispatch(new FetchRoomSuccess(rooms));
       });
