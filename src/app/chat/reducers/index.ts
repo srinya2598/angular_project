@@ -10,7 +10,7 @@ import {
   roomMessagesReducer,
   RoomMessageState
 } from './room-messages';
-import { _getIsRoomsLoaded, _getIsRoomsLoading, roomReducer, RoomState } from './room';
+import { _getIsRoomsLoaded, _getIsRoomsLoading, roomAdapter, roomReducer, RoomState } from './room';
 
 export interface State {
   message: MessageState,
@@ -25,7 +25,7 @@ export interface MessageRootState extends RootState {
 export const messageRootReducer = {
   message: messageReducer,
   roomMessages: roomMessagesReducer,
-  rooms:roomReducer
+  rooms: roomReducer
 };
 
 export const getMessageRootState = createFeatureSelector<State>('message');
@@ -55,11 +55,17 @@ export const getSelectedRoomId = createSelector(getRoomMessageState, _getSelecte
 
 export const getRoomState = createSelector(getMessageRootState, (state) => state.rooms);
 
-export const getIsRoomsLoaded = createSelector(getRoomState,_getIsRoomsLoaded);
-export const getIsRoomsLoading = createSelector(getRoomState,_getIsRoomsLoading);
+export const {
+  selectIds: getRoomIds,
+  selectEntities: getRoomEntities,
+  selectAll: getAllRooms,
+  selectTotal: getTotalRooms
+} = roomAdapter.getSelectors(getRoomState);
 
+export const getIsRoomsLoaded = createSelector(getRoomState, _getIsRoomsLoaded);
+export const getIsRoomsLoading = createSelector(getRoomState, _getIsRoomsLoading);
 
-
+export const getRoomsList = (state: State) => getAllRooms(state);
 export const getRoomMessageIds = (state: State, convId: string) => _getRoomMessageIds(
   getRoomMessageState(state),
   convId

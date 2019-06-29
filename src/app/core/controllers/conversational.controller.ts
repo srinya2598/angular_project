@@ -9,7 +9,15 @@ import {
   SetSelectedUserId
 } from '../../chat/actions/message';
 import { Store } from '@ngrx/store';
-import { getIsLoaded, getIsRoomsLoaded, getIsRoomsLoading, getSelectedRoomId, getSelectedUserId, State } from '../../chat/reducers';
+import {
+  getIsLoaded,
+  getIsRoomsLoaded,
+  getIsRoomsLoading,
+  getRoomsList,
+  getSelectedRoomId,
+  getSelectedUserId,
+  State
+} from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
 import { IMessage } from '@ec-shared/models/message';
 import { catchError, concatMap, filter, map, reduce, switchMap, take, tap } from 'rxjs/operators';
@@ -95,6 +103,24 @@ export class ConversationalController {
         this.store.dispatch(new FetchRoomSuccess(rooms));
       });
     });
+  }
+
+  isRoomsExisting(id: string): string | boolean {
+    let roomId: string;
+    if (!id) {
+      return false;
+    }
+    this.store.select(getRoomsList).subscribe((rooms: IRoom[]) => {
+      if (rooms && rooms.length) {
+        for (let iterator = 0; iterator < rooms.length; iterator++) {
+          if (rooms[iterator].participants.includes(id)) {
+            roomId = rooms[iterator].id;
+            break;
+          }
+        }
+      }
+    });
+    return roomId ? roomId : false;
   }
 
 
