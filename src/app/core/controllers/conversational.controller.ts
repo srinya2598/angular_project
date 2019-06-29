@@ -2,20 +2,20 @@ import { Injectable } from '@angular/core';
 import { DbService, RxCollections } from '@ec-core/services/database.service';
 import {
   CreateRoom,
-  FetchMessage,
+  FetchMessage, FetchRooms,
   FetchRoomSuccess,
   SendMessage,
   SetSelectedRoomId,
   SetSelectedUserId
 } from '../../chat/actions/message';
 import { Store } from '@ngrx/store';
-import { getIsLoaded, getSelectedRoomId, getSelectedUserId, State } from '../../chat/reducers';
+import { getIsLoaded, getIsRoomsLoaded, getIsRoomsLoading, getSelectedRoomId, getSelectedUserId, State } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
 import { IMessage } from '@ec-shared/models/message';
-import { catchError, concatMap, filter, reduce, take, tap } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, reduce, switchMap, take, tap } from 'rxjs/operators';
 import { Constants, MessageType } from '@ec-shared/utils/constants';
 import { ApiService } from '@ec-core/services/api.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { IRoom } from '@ec-shared/models/room';
 import { of } from 'rxjs';
 import { NotificationService } from '@ec-core/services/notification.service';
@@ -106,39 +106,47 @@ export class ConversationalController {
   fetchRooms() {
     let rooms: IRoom[] = [];
     const userId = this.apiService.getItem(Constants.USER_UID);
-    this.apiService.fetchUserRooms(userId)
-      .pipe(take(1))
-      .subscribe((res: string[]) => {
-        let rooms = res;
-        const trigger = new BehaviorSubject<string>(rooms.shift());
-        trigger.asObservable().pipe(
-          concatMap((r: string) => {
-            if (r) {
-              this.apiService.fetchRoomDetails(r)
-                .pipe(
-                  tap((room) => {
-                    if (rooms && rooms.length > 0) {
-                      trigger.next(rooms.shift());
-                    }
-                    else {
-                      trigger.complete();
-                    }
-                  }),
-                  catchError(() => of({})
-                  )
-                );
-            } else {
-              return of({});
-            }
-          }),
-          filter(room => room['id']),
-          reduce((accumulator, room) => {
-            return [...accumulator, room];
-          })
-        ).subscribe((rooms: IRoom[]) => {
-          this.store.dispatch(new FetchRoomSuccess(rooms));
-        });
+    let isRoomsLoaded$ = this.store.select(getIsRoomsLoaded);
+    let isRoomsLoading$ = this.store.select(getIsRoomsLoading);
+    combineLatest(isRoomsLoaded$, isRoomsLoading$).pipe(
+      take(1),
+      map(([isLoaded, isLoading]) => isLoaded || isLoading),
+      filter(res => !res),
+      switchMap(() => {
+        this.store.dispatch(new FetchRooms());
+        return this.apiService.fetchUserRooms(userId);
+      })
+    ).pipe(take(1)).subscribe((res: string[]) => {
+      let rooms = res;
+      const trigger = new BehaviorSubject<string>(rooms.shift());
+      trigger.asObservable().pipe(
+        concatMap((r: string) => {
+          if (r) {
+            this.apiService.fetchRoomDetails(r)
+              .pipe(
+                tap((room) => {
+                  if (rooms && rooms.length > 0) {
+                    trigger.next(rooms.shift());
+                  }
+                  else {
+                    trigger.complete();
+                  }
+                }),
+                catchError(() => of({})
+                )
+              );
+          } else {
+            return of({});
+          }
+        }),
+        filter(room => room['id']),
+        reduce((accumulator, room) => {
+          return [...accumulator, room];
+        })
+      ).subscribe((rooms: IRoom[]) => {
+        this.store.dispatch(new FetchRoomSuccess(rooms));
       });
+    });
   }
 
   async createRoom(): Promise<string> {

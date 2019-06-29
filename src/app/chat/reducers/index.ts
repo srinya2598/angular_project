@@ -10,10 +10,12 @@ import {
   roomMessagesReducer,
   RoomMessageState
 } from './room-messages';
+import { _getIsRoomsLoaded, _getIsRoomsLoading, roomReducer, RoomState } from './room';
 
 export interface State {
   message: MessageState,
-  roomMessages: RoomMessageState
+  roomMessages: RoomMessageState,
+  rooms: RoomState
 }
 
 export interface MessageRootState extends RootState {
@@ -22,19 +24,17 @@ export interface MessageRootState extends RootState {
 
 export const messageRootReducer = {
   message: messageReducer,
-  roomMessages: roomMessagesReducer
+  roomMessages: roomMessagesReducer,
+  rooms:roomReducer
 };
 
 export const getMessageRootState = createFeatureSelector<State>('message');
 
-export const getIsLoading = createSelector(getRoomMessageState, _getIsLoading);
-export const getIsLoaded = createSelector(getRoomMessageState, _getIsLoaded);
 
 // Message Selectors
 
 
 export const getMessageState = createSelector(getMessageRootState, (state) => state.message);
-export const getRoomMessageState = createSelector(getMessageRootState, (state) => state.roomMessages);
 
 export const {
   selectIds: getMessageIds,
@@ -43,10 +43,21 @@ export const {
   selectTotal: getTotalMessages
 } = messageAdapter.getSelectors(getMessageState);
 
-// Room Selectors
+// Room-Message Selectors
+export const getRoomMessageState = createSelector(getMessageRootState, (state) => state.roomMessages);
 
+export const getIsLoading = createSelector(getRoomMessageState, _getIsLoading);
+export const getIsLoaded = createSelector(getRoomMessageState, _getIsLoaded);
 export const getSelectedUserId = createSelector(getRoomMessageState, _getSelectedUserId);
 export const getSelectedRoomId = createSelector(getRoomMessageState, _getSelectedRoomId);
+
+// Rooms Selectors
+
+export const getRoomState = createSelector(getMessageRootState, (state) => state.rooms);
+
+export const getIsRoomsLoaded = createSelector(getRoomState,_getIsRoomsLoaded);
+export const getIsRoomsLoading = createSelector(getRoomState,_getIsRoomsLoading);
+
 
 
 export const getRoomMessageIds = (state: State, convId: string) => _getRoomMessageIds(
