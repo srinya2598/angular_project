@@ -36,6 +36,6 @@ export function messageReducer(state: MessageState = initialState, action: Actio
 
 }
 
-export const _getEntities = (state: MessageState) => state.entities;
-export const _getIds = (state: MessageState) => state.ids;
+export const _getMessageEntities = (state: MessageState) => state.entities;
+export const _getMessageIds = (state: MessageState) => state.ids;
 

@@ -1,4 +1,4 @@
-import { _getEntities, _getIds, messageReducer, MessageState } from './message';
+import { _getMessageEntities, _getMessageIds, messageReducer, MessageState } from './message';
 import { RootState } from '@ec-core/reducers';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
@@ -27,8 +27,8 @@ export const messageRootReducer = {
 export const getMessageRootState = createFeatureSelector<State>('message');
 export const getMessageState = createSelector(getMessageRootState, (state) => state.message);
 export const getRoomMessageState = createSelector(getMessageRootState, (state) => state.roomMessages);
-export const getIds = createSelector(getMessageState, _getIds);
-export const getEntities = createSelector(getMessageState, _getEntities);
+export const getMessageIds = createSelector(getMessageState, _getMessageIds);
+export const getMessageEntities = createSelector(getMessageState, _getMessageEntities);
 export const getIsLoading = createSelector(getRoomMessageState, _getIsLoading);
 export const getIsLoaded = createSelector(getRoomMessageState, _getIsLoaded);
 export const getSelectedUserId = createSelector(getRoomMessageState, _getSelectedUserId);
@@ -42,7 +42,7 @@ export const getRoomMessageIds = (state: State, convId: string) => _getRoomMessa
 
 export const getRoomMessages = (state: State, convId: string) => {
   const messageIds = getRoomMessageIds(state, convId);
-  const entities = getEntities(state);
+  const entities = getMessageEntities(state);
   return messageIds.map(id => entities[id]);
 };
 
