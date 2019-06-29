@@ -1,7 +1,7 @@
 <p *ngIf="products.length==0; else myProducts">No products available for this
   category!!</p>
 <ng-template #myProducts>
-  <h3 class="header">{{products[0].category}}</h3>
+  <h3 class="header">{{CommonUtils.getProductCategoryTitle(products[0].category)}}</h3>
   <ng-container *ngFor="let product of products">
     <ec-product (productClicked)="visitProduct($event)" [product]="product"></ec-product>
   </ng-container>
