@@ -51,58 +51,6 @@ export class ConversationalController {
     });
   }
 
-  fetchMessage() {
-    this.store.select(getIsLoaded).pipe(take(1)).subscribe(isLoaded => {
-      if (!isLoaded) {
-        this.dbService.getCollection(RxCollections.MESSAGES)
-          .find()
-          .$
-          .subscribe((res: IMessage[]) => {
-            this.store.dispatch(new FetchMessage(res));
-          });
-      }
-    });
-  }
-
-
-  setSelectedUserId(userId: string) {
-    if (!userId) {
-      return;
-    }
-    this.store.dispatch(new SetSelectedUserId(userId));
-  }
-
-  setSelectedRoomId(roomId: string) {
-    if (!roomId) {
-      return;
-    }
-    this.store.dispatch(new SetSelectedRoomId(roomId));
-  }
-
-
-  getSelectedUserId() {
-    return this.store.select(getSelectedUserId);
-  }
-
-  getSelectedRoomId() {
-    return this.store.select(getSelectedRoomId);
-  }
-
-  setUpMessageChannel() {
-    const userId = this.apiService.getItem(Constants.USER_UID);
-    if (!userId) {
-      return;
-    }
-    this.apiService.getMessageStream(userId).subscribe((message: IMessage) => {
-      // TODO: check if the room already exist... if not, first create the room and then store the message.
-      if (message) {
-        this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
-        this.store.dispatch(new SendMessage(message));
-      }
-
-    });
-  }
-
   fetchRooms() {
     let rooms: IRoom[] = [];
     const userId = this.apiService.getItem(Constants.USER_UID);
@@ -149,6 +97,30 @@ export class ConversationalController {
     });
   }
 
+
+  setSelectedUserId(userId: string) {
+    if (!userId) {
+      return;
+    }
+    this.store.dispatch(new SetSelectedUserId(userId));
+  }
+
+  setSelectedRoomId(roomId: string) {
+    if (!roomId) {
+      return;
+    }
+    this.store.dispatch(new SetSelectedRoomId(roomId));
+  }
+
+
+  getSelectedUserId() {
+    return this.store.select(getSelectedUserId);
+  }
+
+  getSelectedRoomId() {
+    return this.store.select(getSelectedRoomId);
+  }
+
   async createRoom(): Promise<string> {
     let selectedUserId: string;
     let roomId: string;
@@ -179,6 +151,33 @@ export class ConversationalController {
         reject('Something went wrong');
       });
     });
+  }
 
+  private fetchMessage() {
+    this.store.select(getIsLoaded).pipe(take(1)).subscribe(isLoaded => {
+      if (!isLoaded) {
+        this.dbService.getCollection(RxCollections.MESSAGES)
+          .find()
+          .$
+          .subscribe((res: IMessage[]) => {
+            this.store.dispatch(new FetchMessage(res));
+          });
+      }
+    });
+  }
+
+  private setUpMessageChannel() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    if (!userId) {
+      return;
+    }
+    this.apiService.getMessageStream(userId).subscribe((message: IMessage) => {
+      // TODO: check if the room already exist... if not, first create the room and then store the message.
+      if (message) {
+        this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+        this.store.dispatch(new SendMessage(message));
+      }
+
+    });
   }
 }
