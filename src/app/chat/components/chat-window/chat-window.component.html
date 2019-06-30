@@ -1,8 +1,8 @@
 <div class="chat-window">
   <div class="chat-window__menu-bar" fxLayout="row" fxLayoutAlign="space-between">
     <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
-      <img src="/assets/oneplus.jpg" alt="image"/>
-      <h3>Manvi</h3>
+      <img [src]=profileUrl alt="image"/>
+      <h3>{{firstName}} {{lastName}}</h3>
     </div>
     <div>
       <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
