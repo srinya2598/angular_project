@@ -4,6 +4,7 @@ import { IProduct } from '@ec-shared/models/product';
 import { Router } from '@angular/router';
 import { switchMap, takeWhile } from 'rxjs/operators';
 import { IProductCategory } from '@ec-shared/models/category';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
 
 @Component({
   selector: 'app-category',
@@ -13,6 +14,7 @@ import { IProductCategory } from '@ec-shared/models/category';
 export class CategoryComponent implements OnInit, OnDestroy {
   products: IProduct[];
   isAlive = true;
+  CommonUtils = CommonUtils;
 
   constructor(private productController: ProductController, private router: Router) {
   }

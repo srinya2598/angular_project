@@ -9,7 +9,7 @@ export interface MessageState extends EntityState<IMessage> {
 
 export const message = (message: IMessage) => message.id;
 
-export const adapter: EntityAdapter<IMessage> = createEntityAdapter<IMessage>({
+export const messageAdapter: EntityAdapter<IMessage> = createEntityAdapter<IMessage>({
   selectId: message,
   sortComparer: sortByTimeStamp
 });
@@ -18,24 +18,20 @@ export function sortByTimeStamp(message1: IMessage, message2: IMessage): number 
   return message1.timestamp - message2.timestamp;
 }
 
-export const initialState = adapter.getInitialState();
+export const initialState = messageAdapter.getInitialState();
 
 export function messageReducer(state: MessageState = initialState, action: Action) {
   switch (action.type) {
     case ChatActions.SEND_MESSAGE:
       console.log(action.payload);
-      return adapter.addOne(action.payload, state);
+      return messageAdapter.addOne(action.payload, state);
 
     case ChatActions.FETCH_MESSAGE:
       console.log('message fetched');
-      return adapter.addMany(action.payload, state);
+      return messageAdapter.addMany(action.payload, state);
 
     default:
       return state;
   }
 
 }
-
-export const _getEntities = (state: MessageState) => state.entities;
-export const _getIds = (state: MessageState) => state.ids;
-
