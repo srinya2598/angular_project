@@ -11,7 +11,6 @@ export class ChatscreenComponent implements OnInit {
   constructor(private conversationalController : ConversationalController) { }
 
   ngOnInit() {
-    this.conversationalController.getRooms();
   }
 
 }

@@ -28,6 +28,18 @@ export class SingleproductComponent implements OnInit {
 
   onChat() {
     this.conversationalController.setSelectedUserId(this.product.userId);
+    let roomId = this.conversationalController.isRoomsExisting(this.product.userId);
+    if (typeof roomId === "string")
+    {
+      this.conversationalController.setSelectedRoomId(roomId);
+      this.conversationalController.fetchRoomMessages(roomId);
+    }
+    else
+    {
+      this.conversationalController.createRoom().then(createdRoomId => {
+        this.conversationalController.setSelectedRoomId(createdRoomId);
+      });
+    }
     this.router.navigate(['dashboard/chat']);
   }
 

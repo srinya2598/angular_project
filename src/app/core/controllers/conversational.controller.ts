@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import {
   getIsLoaded,
   getIsRoomsLoaded,
-  getIsRoomsLoading,
+  getIsRoomsLoading, getRoomMessages,
   getRoomsList,
   getSelectedRoomId,
   getSelectedUserId,
@@ -205,5 +205,10 @@ export class ConversationalController {
       }
 
     });
+  }
+
+  fetchRoomMessages(roomId: string) {
+    return this.store.select(state => getRoomMessages(state, roomId))
+      .pipe(take(1)).subscribe(res => console.log(res));
   }
 }
