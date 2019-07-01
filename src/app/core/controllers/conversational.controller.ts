@@ -78,6 +78,7 @@ export class ConversationalController {
       trigger.asObservable().pipe(
         concatMap((r: string) => {
           if (r) {
+            console.log(r);
             this.apiService.fetchRoomDetails(r)
               .pipe(
                 tap((room) => {

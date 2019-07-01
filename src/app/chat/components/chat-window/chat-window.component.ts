@@ -19,7 +19,8 @@ export class ChatWindowComponent implements OnInit {
   profileUrl: string;
 
 
-  constructor(private conversationalController: ConversationalController) {
+  constructor(private conversationalController: ConversationalController,
+              private apiService: ApiService) {
     this.message = new FormControl(null);
 
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
