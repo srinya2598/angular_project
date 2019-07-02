@@ -110,6 +110,10 @@ export class ApiService {
     return this.angularFireDb.object(`user_rooms/${userId}`).valueChanges();
   }
 
+  setUserRooms(ids: string[], userId: string) {
+    return from(this.angularFireDb.database.ref(`user_rooms/${userId}`).set(ids));
+  }
+
   fetchRoomDetails(roomId: string) {
     return this.angularFireDb.object(`rooms/${roomId}`).valueChanges();
   }
