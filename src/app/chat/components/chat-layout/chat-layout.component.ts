@@ -5,6 +5,7 @@ import {ApiService} from '@ec-core/services/api.service';
 import {ConversationalController} from '@ec-core/controllers/conversational.controller';
 import {IRoom} from '@ec-shared/models/room';
 import {take} from 'rxjs/operators';
+import {Constants} from '@ec-shared/utils/constants';
 
 @Component({
   selector: 'app-chat-layout',
@@ -21,14 +22,20 @@ export class ChatLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
+    let selectedUserId = this.userRoom.participants;
+    console.log(selectedUserId)
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    selectedUserId = selectedUserId.filter(item => item !== userId);
 
-    this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
-        this.apiService.getUserDetails(id).pipe(take(1)).subscribe((res: IUser) => {
-          this.firstName = res.firstName;
-          this.profileUrl = res.profileUrl;
-        });
 
-      }
-    );
-    }
+    console.log(selectedUserId);
+
+    this.apiService.getUserDetails(selectedUserId).pipe(take(1)).subscribe((res: IUser) => {
+      this.firstName = res.firstName;
+      this.profileUrl = res.profileUrl;
+    });
+
+  }
+
+
 }
