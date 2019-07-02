@@ -76,6 +76,7 @@ export class ConversationalController {
       })
     ).pipe(take(1)).subscribe((res: string[]) => {
       let rooms = res;
+      console.log(res);
       const trigger = new BehaviorSubject<string>(rooms.shift());
       trigger.asObservable().pipe(
         concatMap((r: string) => {
