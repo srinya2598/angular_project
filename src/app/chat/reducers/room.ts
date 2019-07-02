@@ -29,7 +29,7 @@ export function roomReducer(state: RoomState = initialState, action: Action) {
 
     case ChatActions.FETCH_ROOMS_SUCCESS:
       return {
-        ...roomAdapter.addMany(action.payload.rooms, state),
+        ...roomAdapter.addMany(action.payload, state),
         isRoomsLoaded: true,
         isRoomsLoading: false,
       };

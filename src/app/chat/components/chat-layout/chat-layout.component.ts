@@ -13,8 +13,8 @@ import {take} from 'rxjs/operators';
 })
 export class ChatLayoutComponent implements OnInit {
   @ Input() userRoom: IRoom;
-  firstName: string;
-  profileUrl: string;
+  @ Input() firstName: string;
+  @ Input() profileUrl: string;
 
   constructor(private apiService: ApiService,
               private conversationalController: ConversationalController) {
