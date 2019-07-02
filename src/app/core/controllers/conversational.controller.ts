@@ -105,10 +105,10 @@ export class ConversationalController {
         },[])
       ).subscribe((rooms: IRoom[]) => {
         this.store.dispatch(new FetchRoomSuccess(rooms));
-        console.log(rooms);
+
       });
     });
-  }
+     }
 
   isRoomsExisting(id: string): string | boolean {
     let roomId: string;

@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ConversationalController} from '@ec-core/controllers/conversational.controller';
 import {IRoom} from '@ec-shared/models/room';
-import {take} from 'rxjs/operators';
+
 import {ApiService} from '@ec-core/services/api.service';
+import {take, takeWhile} from 'rxjs/operators';
 import {Constants} from '@ec-shared/utils/constants';
+
+
+class IUsers {
+}
 
 @Component({
   selector: 'app-chatscreen',
@@ -11,18 +16,27 @@ import {Constants} from '@ec-shared/utils/constants';
   styleUrls: ['./chatscreen.component.scss']
 })
 export class ChatscreenComponent implements OnInit {
-  chats: IRoom[];
+  selectedUsers: IUsers;
+  
 
-  constructor(private conversationalController : ConversationalController,
+
+  constructor(private conversationalController: ConversationalController,
               private apiService: ApiService) {
-    this.conversationalController.fetchRooms();
+
 
   }
 
   ngOnInit() {
+
     this.conversationalController.fetchRooms();
-    const yoo = 'heya';
-    console.log(yoo);
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    this.apiService.fetchUserRooms(userId).pipe(take(1)).subscribe((res: IUsers) => {
+      console.log( res);
+
+       this.selectedUsers = res  ;
+
+    });
+
   }
 
 }
