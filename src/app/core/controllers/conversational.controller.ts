@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { DbService, RxCollections } from '@ec-core/services/database.service';
+import {Injectable} from '@angular/core';
+import {DbService, RxCollections} from '@ec-core/services/database.service';
 import {
   CreateRoom,
   FetchMessage, FetchRooms,
@@ -8,7 +8,7 @@ import {
   SetSelectedRoomId,
   SetSelectedUserId
 } from '../../chat/actions/message';
-import { Store } from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {
   getIsLoaded,
   getIsRoomsLoaded,
@@ -20,14 +20,14 @@ import {
   State
 } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
-import { IMessage } from '@ec-shared/models/message';
-import { catchError, concatMap, filter, map, reduce, switchMap, take, tap } from 'rxjs/operators';
-import { Constants, MessageType } from '@ec-shared/utils/constants';
-import { ApiService } from '@ec-core/services/api.service';
-import { BehaviorSubject, combineLatest, Observable, forkJoin } from 'rxjs';
-import { IRoom } from '@ec-shared/models/room';
-import { of } from 'rxjs';
-import { NotificationService } from '@ec-core/services/notification.service';
+import {IMessage} from '@ec-shared/models/message';
+import {catchError, concatMap, filter, map, reduce, switchMap, take, tap} from 'rxjs/operators';
+import {Constants, MessageType} from '@ec-shared/utils/constants';
+import {ApiService} from '@ec-core/services/api.service';
+import {BehaviorSubject, combineLatest, Observable, forkJoin} from 'rxjs';
+import {IRoom} from '@ec-shared/models/room';
+import {of} from 'rxjs';
+import {NotificationService} from '@ec-core/services/notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -81,14 +81,13 @@ export class ConversationalController {
       trigger.asObservable().pipe(
         concatMap((r: string) => {
           if (r) {
-             return this.apiService.fetchRoomDetails(r)
+            return this.apiService.fetchRoomDetails(r)
               .pipe(
                 take(1),
                 tap((room) => {
                   if (rooms && rooms.length > 0) {
                     trigger.next(rooms.shift());
-                  }
-                  else {
+                  } else {
                     trigger.complete();
                   }
                 }),
@@ -102,13 +101,13 @@ export class ConversationalController {
         filter(room => room['id']),
         reduce((accumulator, room) => {
           return [...accumulator, room];
-        },[])
+        }, [])
       ).subscribe((rooms: IRoom[]) => {
         this.store.dispatch(new FetchRoomSuccess(rooms));
 
       });
     });
-     }
+  }
 
   isRoomsExisting(id: string): string | boolean {
     let roomId: string;
@@ -176,17 +175,21 @@ export class ConversationalController {
       if (!id || !room.id) {
         reject('Invalid id');
       }
-        let roomIds: string[];
-        this.store.select(getUserRoomIds).subscribe((ids: string[]) => roomIds = ids);
-        let userEvent$ = this.apiService.setUserRooms([...roomIds,id], userId);
-        let roomEvent$ = this.apiService.setRoomDetails(room);
-        forkJoin(userEvent$, roomEvent$).subscribe(() => {
+      let roomIds: string[];
+      this.store.select(getUserRoomIds).subscribe((ids: string[]) => {
+          roomIds = ids;
+          console.log(ids);
+        }
+      );
+      let userEvent$ = this.apiService.setUserRooms([...roomIds, room.id], userId);
+      let roomEvent$ = this.apiService.setRoomDetails(room);
+      forkJoin(userEvent$, roomEvent$).subscribe(() => {
           this.store.dispatch(new CreateRoom(room));
           resolve(room.id);
         },
         () => {
-        reject('Something went wrong');
-      });
+          reject('Something went wrong');
+        });
     });
   }
 

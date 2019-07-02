@@ -3,12 +3,11 @@ import {ConversationalController} from '@ec-core/controllers/conversational.cont
 import {IRoom} from '@ec-shared/models/room';
 
 import {ApiService} from '@ec-core/services/api.service';
-import {take, takeWhile} from 'rxjs/operators';
+import {take, } from 'rxjs/operators';
 import {Constants} from '@ec-shared/utils/constants';
 
 
-class IUsers {
-}
+
 
 @Component({
   selector: 'app-chatscreen',
@@ -16,7 +15,7 @@ class IUsers {
   styleUrls: ['./chatscreen.component.scss']
 })
 export class ChatscreenComponent implements OnInit {
-  selectedUsers: IUsers;
+  userRooms: IRoom[];
   
 
 
@@ -30,13 +29,14 @@ export class ChatscreenComponent implements OnInit {
 
     this.conversationalController.fetchRooms();
     const userId = this.apiService.getItem(Constants.USER_UID);
-    this.apiService.fetchUserRooms(userId).pipe(take(1)).subscribe((res: IUsers) => {
+    this.apiService.fetchUserRooms(userId).pipe(take(1)).subscribe((res: IRoom[]) => {
       console.log( res);
 
-       this.selectedUsers = res  ;
+       this.userRooms = res ;
 
     });
 
   }
+
 
 }

@@ -2,7 +2,7 @@
   <div class="row">
     Conversations
   </div>
-  <ng-container *ngFor="let selectedUser of selectedUsers">
-    <app-chat-layout [selectedUser]="selectedUser"  ></app-chat-layout>
+  <ng-container *ngFor="let userRoom of userRooms">
+    <app-chat-layout [userRoom]="userRoom"  ></app-chat-layout>
   </ng-container>
 </div>

@@ -12,19 +12,23 @@ import {take} from 'rxjs/operators';
   styleUrls: ['./chat-layout.component.scss']
 })
 export class ChatLayoutComponent implements OnInit {
-  @ Input () selectedUser: IUser;
-firstName: string;
-profileUrl: string;
+  @ Input() userRoom: IRoom;
+  firstName: string;
+  profileUrl: string;
 
-  constructor( private apiService: ApiService,
-               private conversationalController: ConversationalController ) {
+  constructor(private apiService: ApiService,
+              private conversationalController: ConversationalController) {
   }
 
   ngOnInit() {
 
+    this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
+        this.apiService.getUserDetails(id).pipe(take(1)).subscribe((res: IUser) => {
+          this.firstName = res.firstName;
+          this.profileUrl = res.profileUrl;
+        });
 
-    this.apiService.getUserDetails(this.selectedUser.id).pipe(take(1)).subscribe((res:IUser)=>{
-     this.firstName  = res.firstName;
-      this.profileUrl = res.profileUrl;
-    });
+      }
+    );
+    }
 }
