@@ -16,6 +16,7 @@ import {
   getRoomsList,
   getSelectedRoomId,
   getSelectedUserId,
+  getUserRoomIds,
   State
 } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
@@ -23,7 +24,7 @@ import { IMessage } from '@ec-shared/models/message';
 import { catchError, concatMap, filter, map, reduce, switchMap, take, tap } from 'rxjs/operators';
 import { Constants, MessageType } from '@ec-shared/utils/constants';
 import { ApiService } from '@ec-core/services/api.service';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, forkJoin } from 'rxjs';
 import { IRoom } from '@ec-shared/models/room';
 import { of } from 'rxjs';
 import { NotificationService } from '@ec-core/services/notification.service';
@@ -38,6 +39,7 @@ export class ConversationalController {
               private notificationService: NotificationService) {
     this.setUpMessageChannel();
     this.fetchMessage();
+    this.fetchRooms();
   }
 
   sendMessage(body: string) {
@@ -78,9 +80,9 @@ export class ConversationalController {
       trigger.asObservable().pipe(
         concatMap((r: string) => {
           if (r) {
-            console.log(r);
-            this.apiService.fetchRoomDetails(r)
+             return this.apiService.fetchRoomDetails(r)
               .pipe(
+                take(1),
                 tap((room) => {
                   if (rooms && rooms.length > 0) {
                     trigger.next(rooms.shift());
@@ -102,6 +104,7 @@ export class ConversationalController {
         },[])
       ).subscribe((rooms: IRoom[]) => {
         this.store.dispatch(new FetchRoomSuccess(rooms));
+        console.log(rooms);
       });
     });
   }
@@ -167,14 +170,20 @@ export class ConversationalController {
   }
 
   private setRoomDetails(id: string, room: IRoom): Promise<string> {
+    const userId = this.apiService.getItem(Constants.USER_UID);
     return new Promise((resolve, reject) => {
       if (!id || !room.id) {
         reject('Invalid id');
       }
-      this.apiService.setRoomDetails(id, room).subscribe(() => {
-        this.store.dispatch(new CreateRoom(room));
-        resolve(room.id);
-      }, () => {
+        let roomIds: string[];
+        this.store.select(getUserRoomIds).subscribe((ids: string[]) => roomIds = ids);
+        let userEvent$ = this.apiService.setUserRooms([...roomIds,id], userId);
+        let roomEvent$ = this.apiService.setRoomDetails(room);
+        forkJoin(userEvent$, roomEvent$).subscribe(() => {
+          this.store.dispatch(new CreateRoom(room));
+          resolve(room.id);
+        },
+        () => {
         reject('Something went wrong');
       });
     });

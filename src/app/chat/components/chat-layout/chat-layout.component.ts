@@ -14,7 +14,7 @@ export class ChatLayoutComponent implements OnInit {
   @ Input () chat: IRoom;
 
   constructor( private apiService: ApiService,
-               private conversationalController: ConversationalController) {
+               private conversationalController: ConversationalController ) {
   }
 
   ngOnInit() {
