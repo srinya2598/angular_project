@@ -38,6 +38,7 @@ export class ConversationalController {
               private notificationService: NotificationService) {
     this.setUpMessageChannel();
     this.fetchMessage();
+    this.fetchRooms();
   }
 
   sendMessage(body: string) {
@@ -78,8 +79,9 @@ export class ConversationalController {
       trigger.asObservable().pipe(
         concatMap((r: string) => {
           if (r) {
-            this.apiService.fetchRoomDetails(r)
+            return this.apiService.fetchRoomDetails(r)
               .pipe(
+                take(1),
                 tap((room) => {
                   if (rooms && rooms.length > 0) {
                     trigger.next(rooms.shift());
@@ -170,7 +172,7 @@ export class ConversationalController {
       if (!id || !room.id) {
         reject('Invalid id');
       }
-      this.apiService.setRoomDetails(id, room).subscribe(() => {
+      this.apiService.setRoomDetails(room).subscribe(() => {
         this.store.dispatch(new CreateRoom(room));
         resolve(room.id);
       }, () => {
