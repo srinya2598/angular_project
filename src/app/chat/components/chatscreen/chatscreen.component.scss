@@ -1,14 +1,3 @@
-.row{
-  background-color: #24252a;
-  padding-bottom: 13px;
-  padding-top: 13px;
-  padding-left: 35px;
-  font-size: x-large;
-  font-weight: bold;
-  color: white;
-  font-family: Raleway;
-}
-
 .chat-element{
   padding: 20px;
 
@@ -44,6 +33,20 @@ hr {
   background: #333;
   background: -webkit-gradient(linear, 0 0, 100% 0, from(#CCC), to(#CCC), color-stop(50%, #333));
 }
-.fluid-container{
-  overflow-x:hidden;
+
+.conversation-container {
+  &__header {
+    background-color: #24252a;
+    padding-bottom: 13px;
+    padding-top: 13px;
+    padding-left: 35px;
+    font-size: x-large;
+    font-weight: bold;
+    color: white;
+    font-family: Raleway;
+  }
+  &__content {
+    padding: 0 20px;
+    margin-top: 5px;
+  }
 }

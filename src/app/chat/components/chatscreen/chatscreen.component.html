@@ -1,8 +1,11 @@
-<div class="fluid-container">
-  <div class="row">
+<div class="conversation-container">
+  <div class="conversation-container__header">
     Conversations
   </div>
-  <ng-container *ngFor="let userRoom of userRooms">
-    <app-chat-layout [userRoom]="userRoom"  ></app-chat-layout>
-  </ng-container>
+  <div class="conversation-container__content">
+    <ng-container *ngFor="let userRoom of userRooms">
+      <app-chat-layout [userRoom]="userRoom"  ></app-chat-layout>
+    </ng-container>
+  </div>
+
 </div>
