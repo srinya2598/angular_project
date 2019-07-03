@@ -1,7 +1,8 @@
 <div class="chat-window">
   <div class="chat-window__menu-bar" fxLayout="row" fxLayoutAlign="space-between">
     <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
-      <img [src]=profileUrl alt="image"/>
+      <avatar *ngIf="!profileUrl" size="50" [name]="firstName" [displayType]="'circle'"></avatar>
+      <img *ngIf="profileUrl" [src] = "profileUrl">
       <h3>{{firstName}} {{lastName}}</h3>
     </div>
     <div>

@@ -21,32 +21,10 @@ export const MESSAGE_SCHEMA = {
       nullable: true
     },
     sender: {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'string'
-        },
-        full_name: {
-          type: 'string'
-        },
-        profile_pic: {
-          type: 'string'
-        }
-      }
+      type: 'string',
     },
     receiver: {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'string'
-        },
-        full_name: {
-          type: 'string'
-        },
-        profile_pic: {
-          type: 'string'
-        }
-      }
+      type: 'string',
     },
     audio: {
       type: 'object',
