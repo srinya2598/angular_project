@@ -1,11 +1,11 @@
-<ngx-loading [show]="isLoading"></ngx-loading>
+<mat-spinner *ngIf="isLoading == true"></mat-spinner>
 <div class="conversation-container">
   <div class="conversation-container__header">
     Conversations
   </div>
   <div class="conversation-container__content">
     <ng-container *ngFor="let userRoom of userRooms">
-      <app-chat-layout [userRoom]="userRoom"  ></app-chat-layout>
+      <app-chat-layout [userRoom]="userRoom"></app-chat-layout>
     </ng-container>
   </div>
 </div>

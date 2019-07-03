@@ -1,11 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 import { IRoom } from '@ec-shared/models/room';
-
 import { Store } from '@ngrx/store';
 import { getRoomsList, State } from '../../reducers';
-import {AuthController} from '@ec-core/controllers/auth-controller';
-import {takeWhile} from 'rxjs/operators';
 
 
 @Component({
@@ -13,17 +10,13 @@ import {takeWhile} from 'rxjs/operators';
   templateUrl: './chatscreen.component.html',
   styleUrls: ['./chatscreen.component.scss']
 })
-export class ChatscreenComponent implements OnInit, OnDestroy {
+export class ChatscreenComponent implements OnInit {
   userRooms: IRoom[];
-  isLoading = false;
-  isAlive = true;
-
+  isLoading = true;
 
   constructor(private store: Store<State>,
-              private conversationalController: ConversationalController,
-              private authController: AuthController) {
+              private conversationalController: ConversationalController) {
     this.conversationalController.fetchRooms();
-    this.authController.getIsLoading().pipe(takeWhile(() => this.isAlive)).subscribe(isLoading => this.isLoading = isLoading);
   }
 
   ngOnInit() {
@@ -32,12 +25,9 @@ export class ChatscreenComponent implements OnInit, OnDestroy {
 
       console.log(res);
       this.userRooms = res;
-
+      this.isLoading = false;
     });
+  }
 
-  }
-  ngOnDestroy(): void {
-    this.isAlive = false;
-  }
 
 }
