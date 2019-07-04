@@ -73,7 +73,9 @@ export const getRoomMessageIds = (state: State, convId: string) => _getRoomMessa
 
 export const getRoomMessages = (state: State, convId: string) => {
   const messageIds = getRoomMessageIds(state, convId);
+  console.log(messageIds);
   const entities = getMessageEntities(state);
+  console.log(entities);
   return messageIds.map(id => entities[id]);
 };
 

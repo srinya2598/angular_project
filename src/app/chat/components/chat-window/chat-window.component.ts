@@ -1,12 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {ConversationalController} from '@ec-core/controllers/conversational.controller';
-import {IUser} from '@ec-shared/models/users';
-import {take} from 'rxjs/operators';
-import {ApiService} from '@ec-core/services/api.service';
-import {IMessage} from '@ec-shared/models/message';
-import {getRoomMessages, State} from '../../reducers';
-import {Store} from '@ngrx/store';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ConversationalController } from '@ec-core/controllers/conversational.controller';
+import { IUser } from '@ec-shared/models/users';
+import { take } from 'rxjs/operators';
+import { ApiService } from '@ec-core/services/api.service';
+import { IMessage } from '@ec-shared/models/message';
+import { getRoomMessages, State } from '../../reducers';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-chat-window',
@@ -56,10 +56,12 @@ export class ChatWindowComponent implements OnInit {
     });
 
     let roomId: string;
-    this.conversationalController.getSelectedRoomId().pipe().subscribe( res => res = roomId);
+    this.conversationalController.getSelectedRoomId().subscribe(res => roomId = res);
     this.conversationalController.getSelectedUserId();
-    this.store.select(state => getRoomMessages(state, roomId)).pipe(take(1)).subscribe((res: IMessage[]) => {
-      this.messages = res; });
+    this.store.select(state => getRoomMessages(state, roomId)).subscribe((res: IMessage[]) => {
+      console.log('res', res);
+      this.messages = res;
+    });
   }
 
   sendMessage() {

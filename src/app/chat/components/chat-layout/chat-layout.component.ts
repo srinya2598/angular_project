@@ -44,11 +44,13 @@ export class ChatLayoutComponent implements OnInit {
       this.profileUrl = res.profileUrl;
     });
 
-    this.store.select(state => getRoomMessages(state, this.userRoom.id)).pipe(take(1)).subscribe((res) => {
+    this.store.select(state => getRoomMessages(state, this.userRoom.id)).subscribe((res) => {
         console.log(res);
-        const len = res.length;
-        this.message = res[len - 1].text;
-        this.time = new Date(res[len - 1 ].timestamp);
+        if(res.length>0) {
+          const len = res.length;
+          this.message = res[len - 1].text;
+          this.time = new Date(res[len - 1 ].timestamp);
+        }
       }
     );
   }

@@ -199,6 +199,7 @@ export class ConversationalController {
         this.dbService.getCollection(RxCollections.MESSAGES)
           .find()
           .$
+          .pipe(take(1))
           .subscribe((res: IMessage[]) => {
             this.store.dispatch(new FetchMessage(res));
           });
