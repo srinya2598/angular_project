@@ -58,8 +58,8 @@ export class ChatWindowComponent implements OnInit {
     let roomId: string;
     this.conversationalController.getSelectedRoomId().pipe().subscribe( res => res = roomId);
     this.conversationalController.getSelectedUserId();
-    this.store.select(state => getRoomMessages(state, roomId)).pipe(take(1)).subscribe((res:IMessage[])=>{
-      this.messages = res });
+    this.store.select(state => getRoomMessages(state, roomId)).pipe(take(1)).subscribe((res: IMessage[]) => {
+      this.messages = res; });
   }
 
   sendMessage() {

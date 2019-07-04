@@ -17,42 +17,45 @@ import {CommonUtils} from '@ec-shared/utils/common.utils';
 })
 export class ChatLayoutComponent implements OnInit {
   @ Input() userRoom: IRoom;
-  @ Input() firstName: string;
-  @ Input() profileUrl: string;
-  @ Input() message: string;
-   time: any;
+  firstName: string;
+  profileUrl: string;
+  message: string;
+  selectedUserId: string[];
+  time: any;
 
 
   constructor(private apiService: ApiService,
               private conversationalController: ConversationalController,
-              private store: Store<State>,private router: Router) {
+              private store: Store<State>, private router: Router) {
 
   }
 
   ngOnInit() {
-    let selectedUserId = this.userRoom.participants;
-    console.log(selectedUserId);
+    this.selectedUserId = this.userRoom.participants;
+    console.log(this.selectedUserId);
     const userId = this.apiService.getItem(Constants.USER_UID);
-    selectedUserId = selectedUserId.filter(item => item !== userId);
+    this.selectedUserId = this.selectedUserId.filter(item => item !== userId);
 
 
-    console.log(selectedUserId);
+    console.log(this.selectedUserId);
 
-    this.apiService.getUserDetails(selectedUserId[0]).pipe(take(1)).subscribe((res: IUser) => {
+    this.apiService.getUserDetails(this.selectedUserId[0]).pipe(take(1)).subscribe((res: IUser) => {
       this.firstName = res.firstName;
       this.profileUrl = res.profileUrl;
     });
 
-    this.store.select( state => getRoomMessages(state, this.userRoom.id)).pipe(take(1)).subscribe( (res) => {
-      console.log(res);
-      const len = res.length;
-      this.message = res[0].text;
-        this.time = new Date(res[0].timestamp);
-    }
-    )
+    this.store.select(state => getRoomMessages(state, this.userRoom.id)).pipe(take(1)).subscribe((res) => {
+        console.log(res);
+        const len = res.length;
+        this.message = res[len - 1].text;
+        this.time = new Date(res[len - 1 ].timestamp);
+      }
+    );
   }
-visitChat(){
-    this.conversationalController.setSelectedUserId(this.userRoom.participants[1]);
-    this.router.navigate(['dashboard/chat', CommonUtils.getRoutePath(this.firstName)]);
-}
+
+  visitChat() {
+    this.conversationalController.setSelectedUserId(this.selectedUserId[0]);
+    this.conversationalController.setSelectedRoomId(this.userRoom.id);
+    this.router.navigate(['dashboard/chat', CommonUtils.getRoutePath(this.userRoom.id)]);
+  }
 }

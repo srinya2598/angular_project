@@ -41,7 +41,8 @@ export class SingleproductComponent implements OnInit {
         this.conversationalController.setSelectedRoomId(createdRoomId);
       });
     }
-    this.router.navigate(['dashboard/chat', CommonUtils.getRoutePath(this.product.firstName)]);
+
+    this.router.navigate(['dashboard/chat', CommonUtils.getRoutePath(this.product.userId)]);
   }
 
   isLoggedInUserProduct() {
