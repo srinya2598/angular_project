@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {IUser} from '@ec-shared/models/users';
 import {ApiService} from '@ec-core/services/api.service';
 import {ConversationalController} from '@ec-core/controllers/conversational.controller';
@@ -19,10 +19,12 @@ export class ChatLayoutComponent implements OnInit {
   @ Input() profileUrl: string;
   @ Input() message: string;
   @ Input() time: number;
+  @Output() chatClicked: EventEmitter<IRoom>;
 
   constructor(private apiService: ApiService,
               private conversationalController: ConversationalController,
               private store: Store<State>) {
+    this.chatClicked = new EventEmitter();
   }
 
   ngOnInit() {
@@ -46,6 +48,9 @@ export class ChatLayoutComponent implements OnInit {
       this.time = res[len-1].timestamp;
     }
     )
+  }
+  emit(){
+    this.chatClicked.emit(this.userRoom);
   }
 
 }

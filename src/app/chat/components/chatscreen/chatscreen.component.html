@@ -5,7 +5,7 @@
   </div>
   <div class="conversation-container__content">
     <ng-container *ngFor="let userRoom of userRooms">
-      <app-chat-layout [userRoom]="userRoom"></app-chat-layout>
+      <app-chat-layout (chatClicked)="visitChat($event)" [userRoom]="userRoom"></app-chat-layout>
     </ng-container>
   </div>
 </div>

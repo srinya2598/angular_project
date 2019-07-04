@@ -1,4 +1,4 @@
-<div class="chat-container" fxLayout="row" fxLayoutAlign="space-between start">
+<div class="chat-container" fxLayout="row" fxLayoutAlign="space-between start" (click)="emit()">
   <div class="chat-element" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
     <div class="profile-image">
       <avatar *ngIf="!profileUrl" size="50" [name]="firstName" [displayType]="'circle'"></avatar>
@@ -9,6 +9,6 @@
       <div class="element-text">{{message}}</div>
     </div>
   </div>
-  <div class="element-time">{{time.toLocaleString()}}</div>
+  <div class="element-time">{{time}}</div>
 </div>
 <hr>
