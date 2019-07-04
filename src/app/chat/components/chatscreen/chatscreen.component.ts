@@ -36,16 +36,5 @@ export class ChatscreenComponent implements OnInit {
     });
   }
 
-  visitChat(room: IRoom) {
-    let selectedUserId = room.participants;
-    const userId = this.apiService.getItem(Constants.USER_UID);
-    selectedUserId = selectedUserId.filter(item => item !== userId);
-    this.conversationalController.setSelectedUserId(selectedUserId[0]);
-    this.apiService.getUserDetails(selectedUserId[0]).pipe(take(1)).subscribe((res: IUser) => {
-      const name = res.firstName;
-      this.router.navigate(['dashboard/chat', CommonUtils.getRoutePath(name)]);
-    });
 
-
-  }
 }

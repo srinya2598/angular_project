@@ -1,4 +1,4 @@
-<div class="chat-container" fxLayout="row" fxLayoutAlign="space-between start" (click)="emit()">
+<div class="chat-container" fxLayout="row" fxLayoutAlign="space-between start" (click)="visitChat()">
   <div class="chat-element" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
     <div class="profile-image">
       <avatar *ngIf="!profileUrl" size="50" [name]="firstName" [displayType]="'circle'"></avatar>

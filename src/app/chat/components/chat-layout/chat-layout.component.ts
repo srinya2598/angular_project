@@ -7,6 +7,8 @@ import {take} from 'rxjs/operators';
 import {Constants} from '@ec-shared/utils/constants';
 import {getRoomMessages, State} from '../../reducers';
 import {Store} from '@ngrx/store';
+import {Router} from '@angular/router';
+import {CommonUtils} from '@ec-shared/utils/common.utils';
 
 @Component({
   selector: 'app-chat-layout',
@@ -19,12 +21,12 @@ export class ChatLayoutComponent implements OnInit {
   @ Input() profileUrl: string;
   @ Input() message: string;
   @ Input() time: number;
-  @Output() chatClicked: EventEmitter<IRoom>;
+
 
   constructor(private apiService: ApiService,
               private conversationalController: ConversationalController,
-              private store: Store<State>) {
-    this.chatClicked = new EventEmitter();
+              private store: Store<State>,private router: Router) {
+
   }
 
   ngOnInit() {
@@ -44,13 +46,13 @@ export class ChatLayoutComponent implements OnInit {
     this.store.select( state => getRoomMessages(state, this.userRoom.id)).pipe(take(1)).subscribe( (res) => {
       console.log(res);
       const len = res.length;
-      this.message = res[len-1].text;
-      this.time = res[len-1].timestamp;
+      this.message = res[0].text;
+      this.time = res[0].timestamp;
     }
     )
   }
-  emit(){
-    this.chatClicked.emit(this.userRoom);
-  }
-
+visitChat(){
+    this.conversationalController.setSelectedUserId(this.userRoom.participants[1]);
+    this.router.navigate(['dashboard/chat', CommonUtils.getRoutePath(this.firstName)]);
+}
 }
