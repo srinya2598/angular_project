@@ -10,13 +10,18 @@ import {ConversationalController} from '@ec-core/controllers/conversational.cont
   styleUrls: ['./chat-bubble.component.scss']
 })
 export class ChatBubbleComponent implements OnInit {
-  @Input () msg: IMessage;
+  @Input() msg: IMessage;
 
   constructor(private apiService: ApiService,
-              private conversationalController: ConversationalController) { }
-
-  ngOnInit() {
-    const user = this.apiService.getItem(Constants.USER_UID);
+              private conversationalController: ConversationalController) {
   }
 
+  ngOnInit() {
+  }
+
+  senderMessage() {
+    const user = this.apiService.getItem(Constants.USER_UID);
+    return user === this.msg.sender;
+
+  }
 }

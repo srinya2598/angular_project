@@ -1,7 +1,4 @@
-<p *ngIf="this.user == msg.sender" class="from-me">{{msg.text}}</p>
-<p class="from-them">{{msg.text}}</p>
-<p class="from-me">Check out this bubble!</p>
-<p class="from-them">It's pretty cool!</p>
-<p class="from-me">Yeah it's pure CSS HTML</p>
-<p class="from-them">Wow that's impressive. But what's even more impressive is that this bubble is really high.</p>
+<p *ngIf="senderMessage()" class="from-me">{{msg.text}}</p>
+<p *ngIf="!senderMessage()" class="from-them">{{msg.text}}</p>
+
 
