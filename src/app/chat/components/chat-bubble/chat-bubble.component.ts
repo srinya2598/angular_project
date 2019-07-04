@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {IMessage} from '@ec-shared/models/message';
+import {ApiService} from '@ec-core/services/api.service';
+import {Constants} from '@ec-shared/utils/constants';
+import {ConversationalController} from '@ec-core/controllers/conversational.controller';
 
 @Component({
   selector: 'app-chat-bubble',
@@ -6,10 +10,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat-bubble.component.scss']
 })
 export class ChatBubbleComponent implements OnInit {
+  @Input () msg: IMessage;
 
-  constructor() { }
+  constructor(private apiService: ApiService,
+              private conversationalController: ConversationalController) { }
 
   ngOnInit() {
+    const user = this.apiService.getItem(Constants.USER_UID);
   }
 
 }

@@ -20,7 +20,7 @@ export class ChatLayoutComponent implements OnInit {
   @ Input() firstName: string;
   @ Input() profileUrl: string;
   @ Input() message: string;
-  @ Input() time: number;
+   time: any;
 
 
   constructor(private apiService: ApiService,
@@ -47,7 +47,7 @@ export class ChatLayoutComponent implements OnInit {
       console.log(res);
       const len = res.length;
       this.message = res[0].text;
-      this.time = res[0].timestamp;
+        this.time = new Date(res[0].timestamp);
     }
     )
   }

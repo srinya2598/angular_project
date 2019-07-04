@@ -4,6 +4,9 @@ import {ConversationalController} from '@ec-core/controllers/conversational.cont
 import {IUser} from '@ec-shared/models/users';
 import {take} from 'rxjs/operators';
 import {ApiService} from '@ec-core/services/api.service';
+import {IMessage} from '@ec-shared/models/message';
+import {getRoomMessages, State} from '../../reducers';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'app-chat-window',
@@ -17,10 +20,12 @@ export class ChatWindowComponent implements OnInit {
   firstName: string;
   lastName: string;
   profileUrl: string;
+  messages: IMessage[];
 
 
   constructor(private conversationalController: ConversationalController,
-              private apiService: ApiService) {
+              private apiService: ApiService,
+              private store: Store<State>) {
     this.message = new FormControl(null);
 
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
@@ -49,6 +54,12 @@ export class ChatWindowComponent implements OnInit {
       }
       this.showSendMessageButton = true;
     });
+
+    let roomId: string;
+    this.conversationalController.getSelectedRoomId().pipe().subscribe( res => res = roomId);
+    this.conversationalController.getSelectedUserId();
+    this.store.select(state => getRoomMessages(state, roomId)).pipe(take(1)).subscribe((res:IMessage[])=>{
+      this.messages = res });
   }
 
   sendMessage() {
