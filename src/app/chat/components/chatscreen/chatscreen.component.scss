@@ -1,17 +1,20 @@
-.chat-element{
+.chat-element {
   padding: 20px;
 
 }
-img{
+
+img {
   border-radius: 50px;
   width: 50px;
   height: 50px;
 }
-.element-container{
+
+.element-container {
   margin: 15px 15px 5px 25px;
 
 }
-.element-name{
+
+.element-name {
   font-weight: bold;
   font-size: medium;
   margin-bottom: 8px;
@@ -49,4 +52,9 @@ hr {
     padding: 0 20px;
     margin-top: 5px;
   }
+
+ &__spinner {
+   color: #10A881;
+   position: center;
+ }
 }

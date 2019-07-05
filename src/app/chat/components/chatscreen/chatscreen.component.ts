@@ -18,7 +18,7 @@ import {CommonUtils} from '@ec-shared/utils/common.utils';
 })
 export class ChatscreenComponent implements OnInit {
   userRooms: IRoom[];
-  isLoading = true;
+  isLoading = false;
 
   constructor(private store: Store<State>,
               private conversationalController: ConversationalController,
@@ -29,7 +29,7 @@ export class ChatscreenComponent implements OnInit {
   ngOnInit() {
 
     this.store.select(getRoomsList).subscribe(res => {
-
+      this.conversationalController.getIsLoading().subscribe((res: boolean) => this.isLoading = res);
       console.log(res);
       this.userRooms = res;
       this.isLoading = false;

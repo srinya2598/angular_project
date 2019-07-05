@@ -3,6 +3,8 @@
   <div class="conversation-container__header">
     Conversations
   </div>
+  <mat-spinner class="conversation-container__spinner" *ngIf="!isLoading">
+  </mat-spinner>
   <div class="conversation-container__content">
     <ng-container *ngFor="let userRoom of userRooms">
       <app-chat-layout  [userRoom]="userRoom"></app-chat-layout>

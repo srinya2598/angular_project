@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { from } from 'rxjs';
-import { IUser } from '@ec-shared/models/users';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { auth } from 'firebase';
-import { IProduct } from '@ec-shared/models/product';
-import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
-import { IMessage } from '@ec-shared/models/message';
-import { IRoom } from '@ec-shared/models/room';
+import {Injectable} from '@angular/core';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {from} from 'rxjs';
+import {IUser} from '@ec-shared/models/users';
+import {AngularFireDatabase} from '@angular/fire/database';
+import {auth} from 'firebase';
+import {IProduct} from '@ec-shared/models/product';
+import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
+import {IMessage} from '@ec-shared/models/message';
+import {IRoom} from '@ec-shared/models/room';
 
 @Injectable({
   providedIn: 'root',
@@ -104,6 +104,10 @@ export class ApiService {
 
   getMessageStream(userId: string) {
     return this.angularFireDb.object<IMessage>(`chat/${userId}`).valueChanges();
+  }
+
+  sendMessage(id: string, message: IMessage) {
+    return from(this.angularFireDb.database.ref(`chat/${id}`).set(message));
   }
 
   fetchUserRooms(userId: string) {

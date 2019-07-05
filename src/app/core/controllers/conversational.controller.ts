@@ -56,9 +56,12 @@ export class ConversationalController {
       text: body || '',
       timestamp: new Date().getTime()
     };
-    this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
-      this.store.dispatch(new SendMessage(message));
+    this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
+      this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
+        this.store.dispatch(new SendMessage(message));
+      });
     });
+
   }
 
   fetchRooms() {
@@ -221,8 +224,11 @@ export class ConversationalController {
         console.log(roomId, 'roomId');
         if (!roomId) {
           console.log('the room was not  created');
-          this.createRoom().then(createrRoomId => {
-            this.setSelectedRoomId(createrRoomId);
+          this.store.select(getUserRoomIds).pipe(switchMap((ids: string[]) => {
+            return this.apiService.setUserRooms([...ids, message.roomId], userId);
+
+          })).subscribe(() => {
+
           });
         }
         this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
@@ -238,4 +244,9 @@ export class ConversationalController {
     return this.store.select(state => getRoomMessages(state, roomId))
       .pipe(take(1)).subscribe(res => console.log(res));
   }
+
+  getIsLoading() {
+    return this.store.select(getIsRoomsLoaded);
+  }
+
 }
