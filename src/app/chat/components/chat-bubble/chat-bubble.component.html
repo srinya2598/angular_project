@@ -1,4 +1,4 @@
 <p *ngIf="userId===msg.sender" class="from-me">{{msg.text}} <span id="stamp">{{time | date: 'shortTime'}}</span></p>
-<p  *ngIf="userId!==msg.sender" class="from-them">{{msg.text}} {{time | date: 'shortTime'}}</p>
+<p  *ngIf="userId!==msg.sender" class="from-them">{{msg.text}} <span id="stamp">{{time | date: 'shortTime'}}</span></p>
 
 
