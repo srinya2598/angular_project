@@ -4,6 +4,10 @@
   position: relative;
   height: 100%;
   &__menu-bar {
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 1;
+    top: 0;
     background: linear-gradient(to right, lighten($color-primary, 5), lighten($color-primary, 15));
     color: white;
     padding: 10px 5px;
@@ -24,8 +28,10 @@
   }
 
   &__input-area {
-    position: absolute;
+    //position: -webkit-sticky;
+    position: fixed;
     bottom: 0;
+    z-index: 1;
     width: 100%;
     padding: 10px;
     background: lighten($color-primary, 5);

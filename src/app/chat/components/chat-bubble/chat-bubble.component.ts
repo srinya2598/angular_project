@@ -11,16 +11,19 @@ import {ConversationalController} from '@ec-core/controllers/conversational.cont
 })
 export class ChatBubbleComponent implements OnInit {
   @Input() msg: IMessage;
+  time: any;
   userId: string
 
   constructor(private apiService: ApiService,
               private conversationalController: ConversationalController) {
      this.userId = this.apiService.getItem(Constants.USER_UID);
 
+
   }
 
 
   ngOnInit() {
+    this.time = new Date(this.msg.timestamp);
   }
 
 
