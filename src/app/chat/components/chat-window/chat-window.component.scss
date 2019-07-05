@@ -18,12 +18,13 @@
   }
   &__message-area {
     height: auto;
+    overflow-y: auto;
     background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.12), lighten($color-primary, 0.9)),
     url("../../../../assets/chat.png");
   }
 
   &__input-area {
-    position: relative;
+    position: fixed;
     bottom: 0;
     width: 100%;
     padding: 10px;
