@@ -208,6 +208,7 @@ export class ConversationalController {
   }
 
   private setUpMessageChannel() {
+    console.log('setting up message channel');
     const userId = this.apiService.getItem(Constants.USER_UID);
     if (!userId) {
       return;
@@ -215,8 +216,19 @@ export class ConversationalController {
     this.apiService.getMessageStream(userId).subscribe((message: IMessage) => {
       // TODO: check if the room already exist... if not, first create the room and then store the message.
       if (message) {
+        console.log(message, 'message');
+        let roomId = this.isRoomsExisting(userId);
+        console.log(roomId, 'roomId');
+        if (!roomId) {
+          console.log('the room was not  created');
+          this.createRoom().then(createrRoomId => {
+            this.setSelectedRoomId(createrRoomId);
+          });
+        }
         this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
         this.store.dispatch(new SendMessage(message));
+      } else {
+        console.log('there are no new messages');
       }
 
     });

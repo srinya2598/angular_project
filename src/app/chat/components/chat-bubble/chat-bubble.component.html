@@ -1,4 +1,4 @@
-<p *ngIf="senderMessage()" class="from-me">{{msg.text}}</p>
-<p *ngIf="!senderMessage()" class="from-them">{{msg.text}}</p>
+<p *ngIf="userId===msg.sender" class="from-me">{{msg.text}}</p>
+<p  *ngIf="userId!==msg.sender" class="from-them">{{msg.text}}</p>
 
 
