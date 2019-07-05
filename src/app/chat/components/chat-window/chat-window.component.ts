@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 import { IUser } from '@ec-shared/models/users';
@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.scss']
 })
-export class ChatWindowComponent implements OnInit {
+export class ChatWindowComponent implements OnInit, AfterViewChecked {
   @Input() selectedUser: IUser;
   message: FormControl;
   showSendMessageButton = false;
@@ -21,6 +21,11 @@ export class ChatWindowComponent implements OnInit {
   lastName: string;
   profileUrl: string;
   messages: IMessage[];
+  private isScrollUpdateNeeded = true;
+  private scrollHeight: number;
+  private scrollTop: number;
+  private autoScrollDown = true;
+  @ViewChild('chatContainer') chatContainer: ElementRef;
 
 
   constructor(private conversationalController: ConversationalController,
@@ -60,13 +65,43 @@ export class ChatWindowComponent implements OnInit {
     this.conversationalController.getSelectedUserId();
     this.store.select(state => getRoomMessages(state, roomId)).subscribe((res: IMessage[]) => {
       console.log('res', res);
+      this.isScrollUpdateNeeded = true;
+      this.autoScrollDown = true;
       this.messages = res;
     });
+  }
+
+  ngAfterViewChecked(): void {
+    this.updateScroll();
   }
 
   sendMessage() {
     this.conversationalController.sendMessage(this.message.value);
     console.log('01');
   }
+
+  private updateScroll(): void {
+    if (!this.isScrollUpdateNeeded) {
+      return;
+    }
+    const element = this.chatContainer.nativeElement;
+
+    if (this.autoScrollDown) {
+      try {
+        element.scrollTop = element.scrollHeight;
+      } catch (err) {
+      }
+    } else {
+      try {
+        element.scrollTop = this.scrollTop + (element.scrollHeight - this.scrollHeight);
+      } catch (err) {
+      }
+    }
+
+    this.scrollHeight = element.scrollHeight;
+    this.scrollTop = element.scrollTop;
+    this.isScrollUpdateNeeded = true;
+  }
+
 }
 
