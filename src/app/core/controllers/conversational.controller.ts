@@ -145,11 +145,11 @@ export class ConversationalController {
   }
 
 
-  getSelectedUserId() {
+  getSelectedUserId(): Observable<string> {
     return this.store.select(getSelectedUserId);
   }
 
-  getSelectedRoomId() {
+  getSelectedRoomId(): Observable<string> {
     return this.store.select(getSelectedRoomId);
   }
 
@@ -208,7 +208,7 @@ export class ConversationalController {
     });
   }
 
-  private setUpMessageChannel() {
+  private setUpMessageChannel(): Observable<Object> {
     const userId = this.apiService.getItem(Constants.USER_UID);
     if (!userId) {
       return;
@@ -232,15 +232,31 @@ export class ConversationalController {
     });
   }
 
-  fetchRoomMessages(roomId: string) {
+  fetchRoomMessages(roomId: string): Observable<IMessage[]> {
+    if (!roomId) {
+      return;
+    }
     return this.store.select(state => getRoomMessages(state, roomId));
   }
 
-  getIsLoaded() {
+  getIsLoaded(): Observable<boolean> {
     return this.store.select(getIsRoomsLoaded);
   }
 
   getRoomLists() {
     return this.store.select(getRoomsList);
   }
+
+  fetchLastMessage(roomId: string) {
+    this.fetchRoomMessages(roomId).subscribe(res => {
+      if (res.length > 0) {
+        const length = res.length;
+        const textMessage: string = res[length - 1].text;
+        const time: any = new Date(res[length - 1].timestamp);
+        return [textMessage, time];
+      }
+
+    });
+  }
 }
+

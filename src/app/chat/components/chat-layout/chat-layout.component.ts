@@ -38,14 +38,12 @@ export class ChatLayoutComponent implements OnInit {
       this.profileUrl = res.profileUrl;
     });
 
-    this.conversationalController.fetchRoomMessages(this.userRoom.id).subscribe((res: IMessage[]) => {
-        if (res.length > 0) {
-          const len = res.length;
-          this.message = res[len - 1].text;
-          this.time = new Date(res[len - 1].timestamp);
-        }
-      }
-    );
+    const lastMessage = this.conversationalController.fetchLastMessage(this.userRoom.id);
+    console.log(typeof lastMessage, lastMessage, 'last message');
+    this.message = lastMessage[0];
+    this.time = lastMessage[1];
+
+
   }
 
   visitChat() {

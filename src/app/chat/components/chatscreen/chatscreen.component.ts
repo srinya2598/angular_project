@@ -18,7 +18,7 @@ export class ChatscreenComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.conversationalController.getIsLoaded().subscribe((res1: boolean) => this.isLoaded = res1);
+    this.conversationalController.getIsLoaded().subscribe(res1 => this.isLoaded = res1);
     this.conversationalController.getRoomLists().subscribe(res => {
         this.userRooms = res;
       }
