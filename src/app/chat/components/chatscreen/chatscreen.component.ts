@@ -6,6 +6,7 @@ import {getRoomsList, State} from '../../reducers';
 import {Router} from '@angular/router';
 import {IUser} from '@ec-shared/models/users';
 import {CommonUtils} from '@ec-shared/utils/common.utils';
+import {ApiService} from '@ec-core/services/api.service';
 
 
 @Component({
@@ -26,9 +27,7 @@ export class ChatscreenComponent implements OnInit {
 
   ngOnInit() {
     this.conversationalController.getIsLoaded().subscribe((res1: boolean) => this.isLoaded = res1);
-    this.store.select(getRoomsList).subscribe(res => {
-      this.conversationalController.getIsLoading().subscribe((res: boolean) => this.isLoading = res);
-      console.log(res);
+    this.store.select(getRoomsList).subscribe(res => {console.log(res);
       this.userRooms = res;
 
     });
