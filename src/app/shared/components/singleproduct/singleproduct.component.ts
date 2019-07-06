@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ISingleProduct } from '../../models/single-product';
-import { Router } from '@angular/router';
-import { ConversationalController } from '@ec-core/controllers/conversational.controller';
-import { ApiService } from '@ec-core/services/api.service';
-import { Constants } from '@ec-shared/utils/constants';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ISingleProduct} from '../../models/single-product';
+import {Router} from '@angular/router';
+import {ConversationalController} from '@ec-core/controllers/conversational.controller';
+import {ApiService} from '@ec-core/services/api.service';
+import {Constants} from '@ec-shared/utils/constants';
 import {CommonUtils} from '@ec-shared/utils/common.utils';
 
 @Component({
@@ -32,13 +32,10 @@ export class SingleproductComponent implements OnInit {
   onChat() {
     this.conversationalController.setSelectedUserId(this.product.userId);
     let roomId = this.conversationalController.isRoomsExisting(this.product.userId);
-    if (typeof roomId === "string")
-    {
-      this.conversationalController.setSelectedRoomId(roomId);
-      this.conversationalController.fetchRoomMessages(roomId);
-    }
-    else
-    {
+    if (roomId) {
+      this.conversationalController.setSelectedRoomId(<string>roomId);
+      this.conversationalController.fetchRoomMessages(<string>roomId);
+    } else {
       this.conversationalController.createRoom().then(createdRoomId => {
         this.conversationalController.setSelectedRoomId(createdRoomId);
       });

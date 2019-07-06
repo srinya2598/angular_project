@@ -28,7 +28,6 @@ import {BehaviorSubject, combineLatest, Observable, forkJoin} from 'rxjs';
 import {IRoom} from '@ec-shared/models/room';
 import {of} from 'rxjs';
 import {NotificationService} from '@ec-core/services/notification.service';
-import {getIsLoading} from '../../auth/reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -80,7 +79,6 @@ export class ConversationalController {
       })
     ).pipe(take(1)).subscribe((res: string[]) => {
       let rooms = res;
-      console.log(res);
       const trigger = new BehaviorSubject<string>(rooms.shift());
       trigger.asObservable().pipe(
         concatMap((r: string) => {
@@ -182,7 +180,6 @@ export class ConversationalController {
       let roomIds: string[];
       this.store.select(getUserRoomIds).subscribe((ids: string[]) => {
           roomIds = ids;
-          console.log(ids);
         }
       );
       let userEvent$ = this.apiService.setUserRooms([...roomIds, room.id], userId);
@@ -212,19 +209,14 @@ export class ConversationalController {
   }
 
   private setUpMessageChannel() {
-    console.log('setting up message channel');
     const userId = this.apiService.getItem(Constants.USER_UID);
     if (!userId) {
       return;
     }
     this.apiService.getMessageStream(userId).subscribe((message: IMessage) => {
-      // TODO: check if the room already exist... if not, first create the room and then store the message.
       if (message) {
-        console.log(message, 'message');
         let roomId = this.isRoomsExisting(userId);
-        console.log(roomId, 'roomId');
         if (!roomId) {
-          console.log('the room was not  created');
           this.store.select(getUserRoomIds).pipe(switchMap((ids: string[]) => {
             return this.apiService.setUserRooms([...ids, message.roomId], userId);
 
@@ -235,20 +227,20 @@ export class ConversationalController {
         }
         this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
         this.store.dispatch(new SendMessage(message));
-      } else {
-        console.log('there are no new messages');
       }
 
     });
   }
 
   fetchRoomMessages(roomId: string) {
-    return this.store.select(state => getRoomMessages(state, roomId))
-      .pipe(take(1)).subscribe(res => console.log(res));
+    return this.store.select(state => getRoomMessages(state, roomId));
   }
 
   getIsLoaded() {
     return this.store.select(getIsRoomsLoaded);
   }
 
+  getRoomLists() {
+    return this.store.select(getRoomsList);
+  }
 }

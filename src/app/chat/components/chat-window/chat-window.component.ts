@@ -1,12 +1,10 @@
-import { AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ConversationalController } from '@ec-core/controllers/conversational.controller';
-import { IUser } from '@ec-shared/models/users';
-import { take } from 'rxjs/operators';
-import { ApiService } from '@ec-core/services/api.service';
-import { IMessage } from '@ec-shared/models/message';
-import { getRoomMessages, State } from '../../reducers';
-import { Store } from '@ngrx/store';
+import {AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {ConversationalController} from '@ec-core/controllers/conversational.controller';
+import {IUser} from '@ec-shared/models/users';
+import {take} from 'rxjs/operators';
+import {ApiService} from '@ec-core/services/api.service';
+import {IMessage} from '@ec-shared/models/message';
 
 @Component({
   selector: 'app-chat-window',
@@ -29,25 +27,20 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
 
 
   constructor(private conversationalController: ConversationalController,
-              private apiService: ApiService,
-              private store: Store<State>) {
+              private apiService: ApiService) {
     this.message = new FormControl(null);
 
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
 
 
       this.apiService.getUserDetails(id).pipe(take(1)).subscribe((res: IUser) => {
-        console.log(res);
-
         this.firstName = res.firstName;
         this.lastName = res.lastName;
         this.profileUrl = res.profileUrl;
 
-
       });
 
     });
-
 
   }
 
@@ -63,8 +56,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     let roomId: string;
     this.conversationalController.getSelectedRoomId().subscribe(res => roomId = res);
     this.conversationalController.getSelectedUserId();
-    this.store.select(state => getRoomMessages(state, roomId)).subscribe((res: IMessage[]) => {
-      console.log('res', res);
+    this.conversationalController.fetchRoomMessages(roomId).subscribe((res: IMessage[]) => {
       this.isScrollUpdateNeeded = true;
       this.autoScrollDown = true;
       this.messages = res;
@@ -77,7 +69,6 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
 
   sendMessage() {
     this.conversationalController.sendMessage(this.message.value);
-    console.log('01');
   }
 
   private updateScroll(): void {
