@@ -28,6 +28,7 @@ import {BehaviorSubject, combineLatest, Observable, forkJoin} from 'rxjs';
 import {IRoom} from '@ec-shared/models/room';
 import {of} from 'rxjs';
 import {NotificationService} from '@ec-core/services/notification.service';
+import {getIsLoading} from '../../auth/reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -230,6 +231,7 @@ export class ConversationalController {
           })).subscribe(() => {
 
           });
+
         }
         this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
         this.store.dispatch(new SendMessage(message));
@@ -245,7 +247,7 @@ export class ConversationalController {
       .pipe(take(1)).subscribe(res => console.log(res));
   }
 
-  getIsLoading() {
+  getIsLoaded() {
     return this.store.select(getIsRoomsLoaded);
   }
 

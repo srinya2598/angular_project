@@ -25,6 +25,8 @@ export class SingleproductComponent implements OnInit {
 
   onAdd() {
     this.addToCart.emit(this.product.id);
+
+
   }
 
   onChat() {
