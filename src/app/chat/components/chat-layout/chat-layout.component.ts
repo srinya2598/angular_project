@@ -30,9 +30,9 @@ export class ChatLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    let participants = this.userRoom.participants;
+    let participants: IUser[] = this.userRoom.participants;
     const userId = this.apiService.getItem(Constants.USER_UID);
-    this.selectedUserId = participants.filter(item => item !== userId)[0];
+    this.selectedUser = participants.filter(item => item !== userId)[0];
     this.apiService.getUserDetails(this.selectedUserId).pipe(take(1)).subscribe((res: IUser) => {
       this.firstName = res.firstName;
       this.profileUrl = res.profileUrl;

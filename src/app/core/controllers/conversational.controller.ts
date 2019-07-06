@@ -28,6 +28,7 @@ import {BehaviorSubject, combineLatest, Observable, forkJoin} from 'rxjs';
 import {IRoom} from '@ec-shared/models/room';
 import {of} from 'rxjs';
 import {NotificationService} from '@ec-core/services/notification.service';
+import {IUser} from '@ec-shared/models/users';
 
 @Injectable({
   providedIn: 'root'
@@ -154,13 +155,20 @@ export class ConversationalController {
   }
 
   async createRoom(): Promise<string> {
+    let selectedUserDetails: IUser;
+    let loggedInUserDetails: IUser;
     let selectedUserId: string;
     let roomId: string;
     const loggedInUserId = this.apiService.getItem(Constants.USER_UID);
     this.getSelectedUserId().pipe(take(1)).subscribe(id => selectedUserId = id);
+    this.apiService.getUserDetails(selectedUserId).subscribe((res:IUser) => {
+      selectedUserDetails = res
+    });
+    this.apiService.getUserDetails(loggedInUserId).subscribe((res:IUser) => {
+      loggedInUserDetails = res});
     const room: IRoom = {
       id: uuid(),
-      participants: [loggedInUserId, selectedUserId]
+      participants: [loggedInUserDetails, selectedUserDetails]
     };
     try {
       roomId = await this.setRoomDetails(loggedInUserId, room);
