@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
-import {AngularFireAuth} from '@angular/fire/auth';
-import {from} from 'rxjs';
-import {IUser} from '@ec-shared/models/users';
-import {AngularFireDatabase} from '@angular/fire/database';
-import {auth} from 'firebase';
-import {IProduct} from '@ec-shared/models/product';
-import {AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask} from '@angular/fire/storage';
-import {IMessage} from '@ec-shared/models/message';
-import {IRoom} from '@ec-shared/models/room';
+import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { from, Observable } from 'rxjs';
+import { IUser } from '@ec-shared/models/users';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { auth } from 'firebase';
+import { IProduct } from '@ec-shared/models/product';
+import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from '@angular/fire/storage';
+import { IMessage } from '@ec-shared/models/message';
+import { IRoom } from '@ec-shared/models/room';
 
 @Injectable({
   providedIn: 'root',
@@ -48,7 +48,6 @@ export class ApiService {
 
   getUserDetails(id: string) {
     return this.angularFireDb.object(`user/${id}`).valueChanges();
-
   }
 
   setItem(key: string, value: any) {

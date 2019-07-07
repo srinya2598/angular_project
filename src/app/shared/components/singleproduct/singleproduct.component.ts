@@ -1,10 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ISingleProduct} from '../../models/single-product';
-import {Router} from '@angular/router';
-import {ConversationalController} from '@ec-core/controllers/conversational.controller';
-import {ApiService} from '@ec-core/services/api.service';
-import {Constants} from '@ec-shared/utils/constants';
-import {CommonUtils} from '@ec-shared/utils/common.utils';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ISingleProduct } from '../../models/single-product';
+import { Router } from '@angular/router';
+import { ConversationalController } from '@ec-core/controllers/conversational.controller';
+import { ApiService } from '@ec-core/services/api.service';
+import { Constants } from '@ec-shared/utils/constants';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
 
 @Component({
   selector: 'app-singleproduct',

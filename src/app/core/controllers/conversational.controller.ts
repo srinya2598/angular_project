@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
-import {DbService, RxCollections} from '@ec-core/services/database.service';
+import { Injectable } from '@angular/core';
+import { DbService, RxCollections } from '@ec-core/services/database.service';
 import {
   CreateRoom,
-  FetchMessage, FetchRooms,
+  FetchMessage, FetchRooms, FetchRoomsFailed,
   FetchRoomSuccess,
   SendMessage,
   SetSelectedRoomId,
   SetSelectedUserId
 } from '../../chat/actions/message';
-import {select, Store} from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import {
   getIsLoaded,
   getIsRoomsLoaded,
@@ -20,16 +20,18 @@ import {
   State
 } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
-import {IMessage} from '@ec-shared/models/message';
-import {catchError, concatMap, filter, map, reduce, switchMap, take, tap} from 'rxjs/operators';
-import {Constants, MessageType} from '@ec-shared/utils/constants';
-import {ApiService} from '@ec-core/services/api.service';
-import {BehaviorSubject, combineLatest, Observable, forkJoin} from 'rxjs';
-import {IRoom} from '@ec-shared/models/room';
-import {of} from 'rxjs';
-import {NotificationService} from '@ec-core/services/notification.service';
-import {getLoggedInUser} from '../../auth/reducer';
-import  {State} from '../../auth/reducer/';
+import { IMessage } from '@ec-shared/models/message';
+import { catchError, concatMap, filter, map, reduce, switchMap, take, tap } from 'rxjs/operators';
+import { Constants, MessageType } from '@ec-shared/utils/constants';
+import { ApiService } from '@ec-core/services/api.service';
+import { BehaviorSubject, combineLatest, Observable, forkJoin } from 'rxjs';
+import { IRoom } from '@ec-shared/models/room';
+import { of } from 'rxjs';
+import { NotificationService } from '@ec-core/services/notification.service';
+import { getLoggedInUser } from '../../auth/reducer';
+import { State as AuthState } from '../../auth/reducer/';
+import { getSelectedProductUserDetails, State as ProductState } from '../../dashboard/reducers/';
+import { IUser } from '@ec-shared/models/users';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +41,8 @@ export class ConversationalController {
               private chatStore: Store<State>,
               private apiService: ApiService,
               private notificationService: NotificationService,
-              private authStore: Store<State>) {
+              private authStore: Store<AuthState>,
+              private productState: Store<ProductState>) {
     this.setUpMessageChannel();
     this.fetchMessage();
     this.fetchRooms();
@@ -81,6 +84,10 @@ export class ConversationalController {
         return this.apiService.fetchUserRooms(userId);
       })
     ).pipe(take(1)).subscribe((res: string[]) => {
+      if (!res || res.length <= 0) {
+        this.chatStore.dispatch(new FetchRoomsFailed());
+        return;
+      }
       let rooms = res;
       const trigger = new BehaviorSubject<string>(rooms.shift());
       trigger.asObservable().pipe(
@@ -122,10 +129,11 @@ export class ConversationalController {
     this.chatStore.select(getRoomsList).subscribe((rooms: IRoom[]) => {
       if (rooms && rooms.length) {
         for (let iterator = 0; iterator < rooms.length; iterator++) {
-          // if (rooms[iterator].participants.includes(id)) {
-          // roomId = rooms[iterator].id;
-          // break;
-          // }
+          let participants = rooms[iterator].participants;
+          if (participants[0].id === id || participants[1].id === id) {
+            roomId = rooms[iterator].id;
+            break;
+          }
         }
       }
     });
@@ -156,21 +164,22 @@ export class ConversationalController {
     return this.chatStore.select(getSelectedRoomId);
   }
 
+  getIsRoomsLoading(): Observable<boolean> {
+    return this.chatStore.select(getIsRoomsLoading);
+  }
+
   async createRoom(): Promise<string> {
-    let selectedUserId: string;
+    let loggedInUser: IUser;
+    let selectedUser: IUser;
     let roomId: string;
     let room: IRoom;
     const loggedInUserId = this.apiService.getItem(Constants.USER_UID);
-    this.getSelectedUserId().pipe(take(1)).subscribe(id => selectedUserId = id);
-    let selectedUserDetails$ = this.apiService.getUserDetails(selectedUserId);
-    let loggedInUserDetails$ = this.authStore.select(getLoggedInUser);
-    forkJoin(loggedInUserDetails$, selectedUserDetails$).subscribe(([loggedInUserDetails, selectedUserDetails]) => {
-      room = {
-        id: uuid(),
-        participants: [loggedInUserDetails, selectedUserDetails]
-      };
-
-    });
+    this.authStore.select(getLoggedInUser).subscribe((user: IUser) => loggedInUser = user);
+    this.productState.select(getSelectedProductUserDetails).pipe(take(1)).subscribe((user: IUser) => selectedUser = user);
+    room = {
+      id: uuid(),
+      participants: [selectedUser, loggedInUser]
+    };
     try {
       roomId = await this.setRoomDetails(loggedInUserId, room);
       this.notificationService.success('Room created!');
@@ -178,8 +187,6 @@ export class ConversationalController {
       this.notificationService.error('An error was encountered in creating the room!');
     }
     return roomId;
-
-
   }
 
   private setRoomDetails(id: string, room: IRoom): Promise<string> {
@@ -211,7 +218,7 @@ export class ConversationalController {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({$or: [{sender: userId}, {receiver: userId}]})
+          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -234,20 +241,17 @@ export class ConversationalController {
             return this.apiService.setUserRooms([...ids, message.roomId], userId);
 
           })).subscribe(() => {
-
+            this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+            this.chatStore.dispatch(new SendMessage(message));
           });
-
         }
-        this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
-        this.chatStore.dispatch(new SendMessage(message));
       }
-
     });
   }
 
   fetchRoomMessages(roomId: string): Observable<IMessage[]> {
     if (!roomId) {
-      return;
+      return of([]);
     }
     return this.chatStore.select(state => getRoomMessages(state, roomId));
   }

@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {ConversationalController} from '@ec-core/controllers/conversational.controller';
-import {IRoom} from '@ec-shared/models/room';
+import { Component, OnInit } from '@angular/core';
+import { ConversationalController } from '@ec-core/controllers/conversational.controller';
+import { IRoom } from '@ec-shared/models/room';
 
 
 @Component({
@@ -10,7 +10,7 @@ import {IRoom} from '@ec-shared/models/room';
 })
 export class ChatscreenComponent implements OnInit {
   userRooms: IRoom[];
-  isLoaded: boolean;
+  isLoading = true;
 
   constructor(private conversationalController: ConversationalController) {
     this.conversationalController.fetchRooms();
@@ -18,7 +18,7 @@ export class ChatscreenComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.conversationalController.getIsLoaded().subscribe(res1 => this.isLoaded = res1);
+    this.conversationalController.getIsRoomsLoading().subscribe(res => this.isLoading = res);
     this.conversationalController.getRoomLists().subscribe(res => {
         this.userRooms = res;
       }

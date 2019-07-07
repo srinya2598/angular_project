@@ -1,10 +1,10 @@
-import {AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {ConversationalController} from '@ec-core/controllers/conversational.controller';
-import {IUser} from '@ec-shared/models/users';
-import {take} from 'rxjs/operators';
-import {ApiService} from '@ec-core/services/api.service';
-import {IMessage} from '@ec-shared/models/message';
+import { AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ConversationalController } from '@ec-core/controllers/conversational.controller';
+import { IUser } from '@ec-shared/models/users';
+import { switchMap, take } from 'rxjs/operators';
+import { ApiService } from '@ec-core/services/api.service';
+import { IMessage } from '@ec-shared/models/message';
 
 @Component({
   selector: 'app-chat-window',
@@ -12,7 +12,6 @@ import {IMessage} from '@ec-shared/models/message';
   styleUrls: ['./chat-window.component.scss']
 })
 export class ChatWindowComponent implements OnInit, AfterViewChecked {
-  @Input() selectedUser: IUser;
   message: FormControl;
   showSendMessageButton = false;
   firstName: string;
@@ -31,17 +30,13 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.message = new FormControl(null);
 
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
-
-
       this.apiService.getUserDetails(id).pipe(take(1)).subscribe((res: IUser) => {
+        console.log('User', res);
         this.firstName = res.firstName;
         this.lastName = res.lastName;
         this.profileUrl = res.profileUrl;
-
       });
-
     });
-
   }
 
   ngOnInit() {
@@ -53,10 +48,12 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       this.showSendMessageButton = true;
     });
 
-    let roomId: string;
-    this.conversationalController.getSelectedRoomId().subscribe(res => roomId = res);
-    this.conversationalController.getSelectedUserId();
-    this.conversationalController.fetchRoomMessages(roomId).subscribe((res: IMessage[]) => {
+    this.conversationalController.getSelectedRoomId().pipe(
+      switchMap(roomId => {
+        return this.conversationalController.fetchRoomMessages(roomId);
+      })
+    ).subscribe((res: IMessage[]) => {
+      console.log('Message', res);
       this.isScrollUpdateNeeded = true;
       this.autoScrollDown = true;
       this.messages = res;

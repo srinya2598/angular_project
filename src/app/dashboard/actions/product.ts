@@ -1,6 +1,7 @@
 import { IProduct } from '@ec-shared/models/product';
 import { IProductCategory } from '@ec-shared/models/category';
 import { Action } from '@ec-core/actions';
+import { IUser } from '@ec-shared/models/users';
 
 export enum DashboardActions {
   ADD_PRODUCT = '[dashboard] add product',
@@ -10,6 +11,7 @@ export enum DashboardActions {
   ADD_CART = '[dashboard] add to cart',
   REMOVE_CART = '[dashboard] remove from cart',
   FETCH_CART_PRODUCT_SUCCESS = '[dashboard] fetch cart product success',
+  SET_SELECTED_PRODUCT_USER_DETAILS = '[dashboard] set selected product user details'
 }
 
 export class AddProduct implements Action {
@@ -57,8 +59,6 @@ export class RemoveCart implements Action {
   constructor(public payload: string) {
 
   }
-
-
 }
 
 export class FetchCartProductSuccess implements Action {
@@ -67,6 +67,13 @@ export class FetchCartProductSuccess implements Action {
   constructor(public payload: string[]) {
 
   }
+}
 
+export class SetSelectedProductUserDetails implements Action {
+  readonly type = DashboardActions.SET_SELECTED_PRODUCT_USER_DETAILS;
+
+  constructor(public payload: IUser) {
+
+  }
 }
 
