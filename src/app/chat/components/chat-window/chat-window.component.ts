@@ -54,10 +54,13 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
         return this.conversationalController.fetchRoomMessages(roomId);
       })
     ).subscribe((res: IMessage[]) => {
+      const roomMessages = res.sort((a, b) => {
+        return a.timestamp - b.timestamp;
+      });
       console.log('Message', res);
       this.isScrollUpdateNeeded = true;
       this.autoScrollDown = true;
-      this.messages = res;
+      this.messages = roomMessages;
     });
   }
 
