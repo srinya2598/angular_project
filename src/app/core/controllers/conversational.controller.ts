@@ -228,7 +228,7 @@ export class ConversationalController {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
+          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {

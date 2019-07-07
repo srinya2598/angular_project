@@ -1,4 +1,29 @@
-<p *ngIf="userId===msg.sender" class="from-me">{{msg.text}} <span id="stamp">{{time | date: 'shortTime'}}</span></p>
-<p  *ngIf="userId!==msg.sender" class="from-them">{{msg.text}} <span id="stamp">{{time | date: 'shortTime'}}</span></p>
+<p *ngIf="userId===msg.sender" class="from-me">
+  {{msg.text}}
+  <span id="stamp">
+    {{time | date: 'shortTime'}}
+  </span>
+    <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
+     <mat-icon>keyboard_arrow_down</mat-icon>
+   </button>
+</p>
+<p *ngIf="userId!==msg.sender" class="from-them">
+    {{msg.text}}
+  <span id="stamp">
+      {{time | date: 'shortTime'}}
+  </span>
+   <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>keyboard_arrow_down</mat-icon>
+   </button>
+</p>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <span>Delete Message</span>
+      </button>
+      <button mat-menu-item>
+        <span>Forward Message</span>
+      </button>
+    </mat-menu>
 
 
