@@ -11,12 +11,9 @@ export const message = (message: IMessage) => message.id;
 
 export const messageAdapter: EntityAdapter<IMessage> = createEntityAdapter<IMessage>({
   selectId: message,
-  sortComparer: sortByTimeStamp
+
 });
 
-export function sortByTimeStamp(message1: IMessage, message2: IMessage): number {
-  return message1.timestamp - message2.timestamp;
-}
 
 export const initialState = messageAdapter.getInitialState({
   isLoaded: false
