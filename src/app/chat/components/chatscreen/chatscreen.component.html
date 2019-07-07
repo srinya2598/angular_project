@@ -5,6 +5,7 @@
   <mat-spinner class="conversation-container__spinner" *ngIf="isLoading">
   </mat-spinner>
   <div class="conversation-container__content">
+    <p *ngIf="userRooms && userRooms.length == 0">No conversations!</p>
     <ng-container *ngFor="let userRoom of userRooms">
       <app-chat-layout  [userRoom]="userRoom"></app-chat-layout>
     </ng-container>

@@ -1,3 +1,5 @@
+@import "~src/variables";
+
 .chat-element {
   padding: 20px;
 
@@ -39,7 +41,7 @@ hr {
 
 .conversation-container {
   &__header {
-    background-color: #24252a;
+    background-color: $color-primary;
     padding-bottom: 13px;
     padding-top: 13px;
     padding-left: 35px;
