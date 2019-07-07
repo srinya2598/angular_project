@@ -30,6 +30,7 @@ import {of} from 'rxjs';
 import {NotificationService} from '@ec-core/services/notification.service';
 import {IUser} from '@ec-shared/models/users';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -161,11 +162,12 @@ export class ConversationalController {
     let roomId: string;
     const loggedInUserId = this.apiService.getItem(Constants.USER_UID);
     this.getSelectedUserId().pipe(take(1)).subscribe(id => selectedUserId = id);
-    this.apiService.getUserDetails(selectedUserId).subscribe((res:IUser) => {
-      selectedUserDetails = res
+    this.apiService.getUserDetails(selectedUserId).subscribe((res: IUser) => {
+      selectedUserDetails = res;
     });
-    this.apiService.getUserDetails(loggedInUserId).subscribe((res:IUser) => {
-      loggedInUserDetails = res});
+    this.apiService.getUserDetails(loggedInUserId).subscribe((res: IUser) => {
+      loggedInUserDetails = res;
+    });
     const room: IRoom = {
       id: uuid(),
       participants: [loggedInUserDetails, selectedUserDetails]
@@ -205,6 +207,7 @@ export class ConversationalController {
   private fetchMessage() {
     this.store.select(getIsLoaded).pipe(take(1)).subscribe(isLoaded => {
       if (!isLoaded) {
+
         this.dbService.getCollection(RxCollections.MESSAGES)
           .find()
           .$
@@ -216,7 +219,7 @@ export class ConversationalController {
     });
   }
 
-  private setUpMessageChannel(): Observable<Object> {
+  private setUpMessageChannel() {
     const userId = this.apiService.getItem(Constants.USER_UID);
     if (!userId) {
       return;
@@ -259,10 +262,13 @@ export class ConversationalController {
     this.fetchRoomMessages(roomId).subscribe(res => {
       if (res.length > 0) {
         const length = res.length;
-        const textMessage: string = res[length - 1].text;
-        const time: any = new Date(res[length - 1].timestamp);
-        return [textMessage, time];
+        const message: IMessage = {
+          text: res[length - 1].text,
+          timestamp: res[length - 1].timestamp
+        };
+return  message;
       }
+
 
     });
   }

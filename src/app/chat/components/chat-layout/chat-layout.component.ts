@@ -19,7 +19,7 @@ export class ChatLayoutComponent implements OnInit {
   firstName: string;
   profileUrl: string;
   message: string;
-  selectedUserId: string;
+  selectedUser: IUser;
   time: any;
 
 
@@ -32,22 +32,27 @@ export class ChatLayoutComponent implements OnInit {
   ngOnInit() {
     let participants: IUser[] = this.userRoom.participants;
     const userId = this.apiService.getItem(Constants.USER_UID);
-    this.selectedUser = participants.filter(item => item !== userId)[0];
-    this.apiService.getUserDetails(this.selectedUserId).pipe(take(1)).subscribe((res: IUser) => {
-      this.firstName = res.firstName;
-      this.profileUrl = res.profileUrl;
-    });
+    for (let iterator = 0; iterator < participants.length; iterator++) {
+      if (participants[iterator].id !== userId) {
+        this.selectedUser = participants[iterator];
+      }
+    }
 
-    const lastMessage = this.conversationalController.fetchLastMessage(this.userRoom.id);
+
+    this.firstName = this.selectedUser.firstName;
+    this.profileUrl = this.selectedUser.profileUrl;
+
+
+    const lastMessage: IMessage = this.conversationalController.fetchLastMessage(this.userRoom.id);
     console.log(typeof lastMessage, lastMessage, 'last message');
-    this.message = lastMessage[0];
-    this.time = lastMessage[1];
+this.message = lastMessage.text;
+this.time = new Date(lastMessage.timestamp);
 
 
   }
 
   visitChat() {
-    this.conversationalController.setSelectedUserId(this.selectedUserId);
+    this.conversationalController.setSelectedUserId(this.selectedUser.id);
     this.conversationalController.setSelectedRoomId(this.userRoom.id);
     this.router.navigate(['dashboard/chat', CommonUtils.getRoutePath(this.userRoom.id)]);
   }
