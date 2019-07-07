@@ -21,7 +21,7 @@ import {
 } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
 import { IMessage } from '@ec-shared/models/message';
-import { catchError, concatMap, filter, map, reduce, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, reduce, skip, switchMap, take, tap } from 'rxjs/operators';
 import { Constants, MessageType } from '@ec-shared/utils/constants';
 import { ApiService } from '@ec-core/services/api.service';
 import { BehaviorSubject, combineLatest, Observable, forkJoin } from 'rxjs';
@@ -45,6 +45,8 @@ export class ConversationalController {
               private notificationService: NotificationService,
               private authStore: Store<AuthState>,
               private productState: Store<ProductState>) {
+    this.fetchMessages();
+    this.setUpMessageChannel();
   }
 
   sendMessage(body: string) {
@@ -69,23 +71,8 @@ export class ConversationalController {
 
   }
 
-  fetchMessages() {
-    const userId = this.apiService.getItem(Constants.USER_UID);
-    this.chatStore.select(getIsMessagesLoaded).pipe(take(1)).subscribe(isLoaded => {
-      if (!isLoaded) {
-
-        this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
-          .$
-          .pipe(take(1))
-          .subscribe((res: IMessage[]) => {
-            this.chatStore.dispatch(new FetchMessage(res));
-          });
-      }
-    });
-  }
-
-  fetchRooms() {
+   fetchRooms() {
+    console.log("fetch rooms");
     let rooms: IRoom[] = [];
     const userId = this.apiService.getItem(Constants.USER_UID);
     let isRoomsLoaded$ = this.chatStore.select(getIsRoomsLoaded);
@@ -104,6 +91,7 @@ export class ConversationalController {
         return;
       }
       let rooms = res;
+      console.log("Null rooms",rooms);
       const trigger = new BehaviorSubject<string>(rooms.shift());
       trigger.asObservable().pipe(
         concatMap((r: string) => {
@@ -204,38 +192,12 @@ export class ConversationalController {
       if (res.length > 0) {
         const length = res.length;
         message = {
-          text: res[length - 1].text,
-          timestamp: res[length - 1].timestamp
+          text: res[length - 1].text || '',
+          timestamp: res[length - 1].timestamp || 0
         };
       }
     });
     return message;
-  }
-
-  setUpMessageChannel() {
-    if (this.isChannelSetup) {
-      return;
-    }
-
-    const userId = this.apiService.getItem(Constants.USER_UID);
-    if (!userId) {
-      return;
-    }
-
-    this.apiService.getMessageStream(userId).subscribe((message: IMessage) => {
-      if (message) {
-        let roomId = this.isRoomsExisting(userId);
-        if (!roomId) {
-          this.chatStore.select(getUserRoomIds).pipe(switchMap((ids: string[]) => {
-            return this.apiService.setUserRooms([...ids, message.roomId], userId);
-
-          })).subscribe(() => {
-            this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
-            this.chatStore.dispatch(new SendMessage(message));
-          });
-        }
-      }
-    });
   }
 
   async createRoom(): Promise<string> {
@@ -257,6 +219,50 @@ export class ConversationalController {
       this.notificationService.error('An error was encountered in creating the room!');
     }
     return roomId;
+  }
+
+  private fetchMessages() {
+    console.log("fetch msg");
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    this.chatStore.select(getIsMessagesLoaded).pipe(take(1)).subscribe(isLoaded => {
+      if (!isLoaded) {
+
+        this.dbService.getCollection(RxCollections.MESSAGES)
+          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
+          .$
+          .pipe(take(1))
+          .subscribe((res: IMessage[]) => {
+            this.chatStore.dispatch(new FetchMessage(res));
+          });
+      }
+    });
+  }
+
+  private setUpMessageChannel() {
+    console.log("setup");
+    if (this.isChannelSetup) {
+      return;
+    }
+
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    if (!userId) {
+      return;
+    }
+
+    this.apiService.getMessageStream(userId).pipe(skip(1)).subscribe((message: IMessage) => {
+      if (message) {
+        let roomId = this.isRoomsExisting(userId);
+        if (!roomId) {
+          this.chatStore.select(getUserRoomIds).pipe(switchMap((ids: string[]) => {
+            return this.apiService.setUserRooms([...ids, message.roomId], userId);
+
+          })).subscribe(() => {
+            this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+            this.chatStore.dispatch(new SendMessage(message));
+          });
+        }
+      }
+    });
   }
 
   private setRoomDetails(id: string, room: IRoom): Promise<string> {

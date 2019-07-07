@@ -66,7 +66,7 @@ export const {
 export const getIsRoomsLoaded = createSelector(getRoomState, _getIsRoomsLoaded);
 export const getIsRoomsLoading = createSelector(getRoomState, _getIsRoomsLoading);
 export const getRoomsList = (state: State) => getAllRooms(state);
-export const getUserRoomIds = (state: State) => getRoomIds(state);
+export const getUserRoomIds = (state: State) => getRoomIds(state) || [];
 export const getRoomMessageIds = (state: State, convId: string) => _getRoomMessageIds(
   getRoomMessageState(state),
   convId

@@ -30,7 +30,7 @@ export class ChatLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.userRoom.participants)
+    console.log(this.userRoom.participants);
     let participants: IUser[] = this.userRoom.participants;
     const userId = this.apiService.getItem(Constants.USER_UID);
     for (let iterator = 0; iterator < participants.length; iterator++) {
