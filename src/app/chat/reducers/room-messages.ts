@@ -1,21 +1,14 @@
 import {Action} from '@ec-core/actions';
 import {ChatActions} from '../actions/message';
-import {combineAll} from 'rxjs/operators';
 
 export interface RoomMessageState {
-  isLoading: boolean;
-  isLoaded: boolean;
   ids: { [convId: string]: string[] };
-  rooms: string[];
   selectedUserId: string;
   selectedRoomId: string;
 }
 
 export const initialRoomMessagesState: RoomMessageState = {
-  isLoading: false,
-  isLoaded: false,
   ids: {},
-  rooms: [],
   selectedUserId: null,
   selectedRoomId: null
 };
@@ -74,9 +67,6 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
 }
 
 
-export const _getIsLoading = (state: RoomMessageState) => state.isLoading;
-export const _getIsLoaded = (state: RoomMessageState) => state.isLoaded;
 export const _getRoomMessageIds = (state: RoomMessageState, convId: string) => state.ids[convId] || [];
 export const _getSelectedUserId = (state: RoomMessageState) => state.selectedUserId;
 export const _getSelectedRoomId = (state: RoomMessageState) => state.selectedRoomId;
-export const _getRooms = (state: RoomMessageState) => state.rooms;

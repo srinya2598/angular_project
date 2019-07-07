@@ -28,7 +28,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   constructor(private conversationalController: ConversationalController,
               private apiService: ApiService) {
     this.message = new FormControl(null);
-
+    this.conversationalController.fetchMessages();
+    this.conversationalController.setUpMessageChannel();
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
       this.apiService.getUserDetails(id).pipe(take(1)).subscribe((res: IUser) => {
         console.log('User', res);

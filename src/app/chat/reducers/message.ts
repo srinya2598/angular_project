@@ -1,10 +1,10 @@
-import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
-import {IMessage} from '@ec-shared/models/message';
-import {Action} from '@ec-core/actions';
-import {ChatActions} from '../actions/message';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+import { IMessage } from '@ec-shared/models/message';
+import { Action } from '@ec-core/actions';
+import { ChatActions } from '../actions/message';
 
 export interface MessageState extends EntityState<IMessage> {
-
+  isLoaded: boolean;
 }
 
 export const message = (message: IMessage) => message.id;
@@ -18,7 +18,9 @@ export function sortByTimeStamp(message1: IMessage, message2: IMessage): number 
   return message1.timestamp - message2.timestamp;
 }
 
-export const initialState = messageAdapter.getInitialState();
+export const initialState = messageAdapter.getInitialState({
+  isLoaded: false
+});
 
 export function messageReducer(state: MessageState = initialState, action: Action) {
   switch (action.type) {
@@ -28,10 +30,13 @@ export function messageReducer(state: MessageState = initialState, action: Actio
 
     case ChatActions.FETCH_MESSAGE:
       console.log('message fetched');
-      return messageAdapter.addMany(action.payload, state);
+      return {
+        ...messageAdapter.addMany(action.payload, state),
+        isLoaded:true
+      };
 
     default:
       return state;
   }
-
 }
+export const _getIsMessagesLoaded = (state:MessageState) => state.isLoaded;

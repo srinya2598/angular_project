@@ -1,10 +1,8 @@
-import { messageAdapter, messageReducer, MessageState } from './message';
+import { _getIsMessagesLoaded, messageAdapter, messageReducer, MessageState } from './message';
 import { RootState } from '@ec-core/reducers';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   _getRoomMessageIds,
-  _getIsLoaded,
-  _getIsLoading,
   _getSelectedRoomId,
   _getSelectedUserId,
   roomMessagesReducer,
@@ -43,11 +41,14 @@ export const {
   selectTotal: getTotalMessages
 } = messageAdapter.getSelectors(getMessageState);
 
+export const getIsMessagesLoaded = createSelector(
+  getMessageState,
+  _getIsMessagesLoaded
+);
+
 // Room-Message Selectors
 export const getRoomMessageState = createSelector(getMessageRootState, (state) => state.roomMessages);
 
-export const getIsLoading = createSelector(getRoomMessageState, _getIsLoading);
-export const getIsLoaded = createSelector(getRoomMessageState, _getIsLoaded);
 export const getSelectedUserId = createSelector(getRoomMessageState, _getSelectedUserId);
 export const getSelectedRoomId = createSelector(getRoomMessageState, _getSelectedRoomId);
 
