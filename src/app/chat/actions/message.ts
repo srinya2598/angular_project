@@ -1,6 +1,6 @@
-import { Action } from '@ec-core/actions';
-import { IMessage } from '@ec-shared/models/message';
-import { IRoom } from '@ec-shared/models/room';
+import {Action} from '@ec-core/actions';
+import {IMessage} from '@ec-shared/models/message';
+import {IRoom} from '@ec-shared/models/room';
 
 export enum ChatActions {
 
@@ -12,6 +12,8 @@ export enum ChatActions {
   SET_SELECTED_USER_ID = '[chat] set select user id',
   SET_SELECTED_ROOM_ID = '[chat] set select room id',
   CREATE_ROOM = '[chat] create room',
+  REMOVE_MESSAGE = '[chat] remove message',
+
 }
 
 export class SendMessage implements Action {
@@ -62,5 +64,13 @@ export class CreateRoom implements Action {
   readonly type = ChatActions.CREATE_ROOM;
 
   constructor(public payload: IRoom) {
+  }
+}
+
+export class RemoveMessage implements Action {
+  readonly type: ChatActions.REMOVE_MESSAGE;
+
+  constructor(public payload: IMessage) {
+
   }
 }

@@ -12,7 +12,7 @@ import {ConversationalController} from '@ec-core/controllers/conversational.cont
 export class ChatBubbleComponent implements OnInit {
   @Input() msg: IMessage;
   time: any;
-  userId: string
+  userId: string;
 
   constructor(private apiService: ApiService,
               private conversationalController: ConversationalController) {
@@ -26,5 +26,7 @@ export class ChatBubbleComponent implements OnInit {
     this.time = new Date(this.msg.timestamp);
   }
 
-
+  removeMessage() {
+    this.conversationalController.removeMessage(this.msg);
+  }
 }

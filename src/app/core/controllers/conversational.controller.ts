@@ -4,6 +4,7 @@ import {
   CreateRoom,
   FetchMessage, FetchRooms, FetchRoomsFailed,
   FetchRoomSuccess,
+  RemoveMessage,
   SendMessage,
   SetSelectedRoomId,
   SetSelectedUserId
@@ -286,6 +287,20 @@ export class ConversationalController {
           reject('Something went wrong');
         });
     });
+  }
+
+  removeMessage(message: IMessage) {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    if (!message || !userId) {
+      return;
+    }
+    this.chatStore.dispatch(new RemoveMessage(message));
+    const query = this.dbService.getCollection(RxCollections.MESSAGES).find().where('message').lt(message);
+    const removedMessage = this.dbService.remove().then(() => {
+      this.chatStore.dispatch(new RemoveMessage(message));
+    });
+
+
   }
 }
 

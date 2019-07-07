@@ -29,9 +29,11 @@ export function messageReducer(state: MessageState = initialState, action: Actio
       console.log('message fetched');
       return {
         ...messageAdapter.addMany(action.payload, state),
-        isLoaded:true
+        isLoaded: true
       };
-
+    case ChatActions.REMOVE_MESSAGE:
+      let message = action.payload;
+      return messageAdapter.removeOne(action.payload, state);
     default:
       return state;
   }

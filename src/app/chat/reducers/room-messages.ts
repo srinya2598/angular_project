@@ -55,15 +55,24 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
         let newIds = [...oldIds, id];
         tempState = {
           ...tempState,
-          ids: { ...tempState.ids, [roomId]: newIds }
+          ids: {...tempState.ids, [roomId]: newIds}
         };
       });
       return tempState;
     }
+    case ChatActions.REMOVE_MESSAGE:
+      const messageId = action.payload.id;
+      let roomId = state.selectedRoomId;
+      let messages = state.ids[roomId];
+      messages = messages.filter(item => item !== messageId);
+      return {
+        ...state,
+        ids[roomId] = messages
+  };
 
-    default:
-      return state;
-  }
+default:
+  return state;
+}
 }
 
 
