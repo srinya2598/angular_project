@@ -1,7 +1,29 @@
-<p class="from-me">Hey there! What's up</p>
-<p class="from-them">Checking out iOS7 you know..</p>
-<p class="from-me">Check out this bubble!</p>
-<p class="from-them">It's pretty cool!</p>
-<p class="from-me">Yeah it's pure CSS &amp; HTML</p>
-<p class="from-them">Wow that's impressive. But what's even more impressive is that this bubble is really high.</p>
+<p *ngIf="userId===message.sender" class="from-me">
+  {{message.text}}
+  <span id="stamp">
+    {{time | date: 'shortTime'}}
+  </span>
+    <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
+     <mat-icon>keyboard_arrow_down</mat-icon>
+   </button>
+</p>
+<p *ngIf="userId!==message.sender" class="from-them">
+    {{message.text}}
+  <span id="stamp">
+      {{time | date: 'shortTime'}}
+  </span>
+   <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>keyboard_arrow_down</mat-icon>
+   </button>
+</p>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="deleteMessage()">
+        <span>Delete Message</span>
+      </button>
+      <button mat-menu-item>
+        <span>Forward Message</span>
+      </button>
+    </mat-menu>
+
 

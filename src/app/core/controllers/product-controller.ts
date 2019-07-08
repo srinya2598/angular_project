@@ -21,7 +21,15 @@ import {
   getWomenCloathings,
   State
 } from '../../dashboard/reducers';
-import { AddCart, AddProduct, FetchCartProductSuccess, FetchSuccess, RemoveCart, SelectCategory } from '../../dashboard/actions/product';
+import {
+  AddCart,
+  AddProduct,
+  FetchCartProductSuccess,
+  FetchSuccess,
+  RemoveCart,
+  SelectCategory,
+  SetSelectedProductUserDetails
+} from '../../dashboard/actions/product';
 import { ApiService } from '../services/api.service';
 import { NotificationService } from '../services/notification.service';
 import { BehaviorSubject, fromEvent, Observable, of } from 'rxjs';
@@ -29,6 +37,7 @@ import { finalize, map, switchMap, take } from 'rxjs/operators';
 import { IProductCategory } from '@ec-shared/models/category';
 import { BroadcasterConstants, Constants } from '@ec-shared/utils/constants';
 import { BroadcasterService } from '@ec-core/services/broadcaster.service';
+import { IUser } from '@ec-shared/models/users';
 
 @Injectable({
   providedIn: 'root'
@@ -151,11 +160,10 @@ export class ProductController {
         data = { ...res };
         return this.apiService.getUserDetails(res.userId);
       }),
-      map(res => {
+      map((res: IUser) => {
+        this.store.dispatch(new SetSelectedProductUserDetails(res));
         // @ts-ignore
         userId = res.id;
-        delete res['id'];
-        delete data['userId'];
         data = { ...data, ...res, id: productId, userId: userId };
         return data;
       })

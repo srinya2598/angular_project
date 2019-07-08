@@ -1,19 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import {ConversationalController} from '@ec-core/controllers/conversational.controller';
+import { ConversationalController } from '@ec-core/controllers/conversational.controller';
+import { IUser } from '@ec-shared/models/users';
+import { switchMap, take } from 'rxjs/operators';
+import { ApiService } from '@ec-core/services/api.service';
+import { IMessage } from '@ec-shared/models/message';
 
 @Component({
   selector: 'app-chat-window',
   templateUrl: './chat-window.component.html',
   styleUrls: ['./chat-window.component.scss']
 })
-export class ChatWindowComponent implements OnInit {
-
+export class ChatWindowComponent implements OnInit, AfterViewChecked {
   message: FormControl;
   showSendMessageButton = false;
+  firstName: string;
+  lastName: string;
+  profileUrl: string;
+  messages: IMessage[];
+  private isScrollUpdateNeeded = true;
+  private scrollHeight: number;
+  private scrollTop: number;
+  private autoScrollDown = true;
+  @ViewChild('chatContainer') chatContainer: ElementRef;
 
-  constructor(private conversationalController: ConversationalController) {
+
+  constructor(private conversationalController: ConversationalController,
+              private apiService: ApiService) {
     this.message = new FormControl(null);
+    this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
+      this.apiService.getUserDetails(id).pipe(take(1)).subscribe((res: IUser) => {
+        console.log('User', res);
+        this.firstName = res.firstName;
+        this.lastName = res.lastName;
+        this.profileUrl = res.profileUrl;
+      });
+    });
   }
 
   ngOnInit() {
@@ -24,11 +46,59 @@ export class ChatWindowComponent implements OnInit {
       }
       this.showSendMessageButton = true;
     });
+
+    this.conversationalController.getSelectedRoomId().pipe(
+      switchMap(roomId => {
+        return this.conversationalController.fetchRoomMessages(roomId);
+      })
+    ).subscribe((res: IMessage[]) => {
+      const roomMessages = res.sort((a, b) => {
+        return a.timestamp - b.timestamp;
+      });
+      console.log('Message', res);
+      let something = res.sort((a, b) => {
+        return a.timestamp - b.timestamp;
+      });
+      this.isScrollUpdateNeeded = true;
+      this.autoScrollDown = true;
+      this.messages = roomMessages;
+    });
+  }
+
+  ngAfterViewChecked(): void {
+    this.updateScroll();
   }
 
   sendMessage() {
     this.conversationalController.sendMessage(this.message.value);
-    console.log('01');
   }
+
+  removeMessage(message:IMessage) {
+    this.conversationalController.removeMessage(message);
+  }
+
+  private updateScroll(): void {
+    if (!this.isScrollUpdateNeeded) {
+      return;
+    }
+    const element = this.chatContainer.nativeElement;
+
+    if (this.autoScrollDown) {
+      try {
+        element.scrollTop = element.scrollHeight;
+      } catch (err) {
+      }
+    } else {
+      try {
+        element.scrollTop = this.scrollTop + (element.scrollHeight - this.scrollHeight);
+      } catch (err) {
+      }
+    }
+
+    this.scrollHeight = element.scrollHeight;
+    this.scrollTop = element.scrollTop;
+    this.isScrollUpdateNeeded = true;
+  }
+
 }
 

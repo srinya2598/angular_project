@@ -1,8 +1,9 @@
 <div class="chat-window">
   <div class="chat-window__menu-bar" fxLayout="row" fxLayoutAlign="space-between">
     <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
-      <img src="/assets/oneplus.jpg" alt="image"/>
-      <h3>Manvi</h3>
+      <avatar *ngIf="!profileUrl" size="50" [name]="firstName" [displayType]="'circle'"></avatar>
+      <img *ngIf="profileUrl" [src] = "profileUrl">
+      <h3>{{firstName}} {{lastName}}</h3>
     </div>
     <div>
       <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
@@ -16,18 +17,15 @@
     </div>
 
   </div>
-  <div class="chat-window__message-area">
-    <ec-chatbox [userType]="'from-me'">Check out this bubble!</ec-chatbox>
-    <ec-chatbox [userType]="'from-them'">Checking out iOS7 you know..</ec-chatbox>
-    <ec-chatbox [userType]="'from-me'">Check out this bubble!</ec-chatbox>
-    <ec-chatbox [userType]="'from-them'">It's pretty cool!</ec-chatbox>
-    <!--<ec-chatbox><div class="from-me">Yeah it's pure CSS &amp; HTML</div></ec-chatbox>-->
-    <!--<ec-chatbox><div class="from-them">Wow that's impressive. But what's even more impressive is that this bubble is really high.</div></ec-chatbox>-->
+    <div #chatContainer class="chat-window__message-area">
+      <ng-container *ngFor="let msg of messages">
+        <app-chat-bubble (removeMessage)="removeMessage($event)" [message]="msg"></app-chat-bubble>
+      </ng-container>
+    </div>
   <div class="chat-window__input-area" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
     <input fxFlex="1 1 auto" type="text" placeholder="Type a message..." class="form-control" [formControl]="message">
     <button *ngIf="showSendMessageButton" mat-icon-button (click)="sendMessage()">
       <mat-icon>send</mat-icon>
     </button>
   </div>
-</div>
 </div>

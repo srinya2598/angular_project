@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { from } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { IUser } from '@ec-shared/models/users';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { auth } from 'firebase';
@@ -48,7 +48,6 @@ export class ApiService {
 
   getUserDetails(id: string) {
     return this.angularFireDb.object(`user/${id}`).valueChanges();
-
   }
 
   setItem(key: string, value: any) {
@@ -106,6 +105,10 @@ export class ApiService {
     return this.angularFireDb.object<IMessage>(`chat/${userId}`).valueChanges();
   }
 
+  sendMessage(id: string, message: IMessage) {
+    return from(this.angularFireDb.database.ref(`chat/${id}`).set(message));
+  }
+
   fetchUserRooms(userId: string) {
     return this.angularFireDb.object(`user_rooms/${userId}`).valueChanges();
   }
@@ -120,6 +123,10 @@ export class ApiService {
 
   setRoomDetails(room: IRoom) {
     return from(this.angularFireDb.database.ref(`rooms/${room.id}`).set(room));
+  }
+
+  setUserRooms(ids: string[], userId: string) {
+    return from(this.angularFireDb.database.ref(`user_rooms/${userId}`).set(ids));
   }
 }
 
