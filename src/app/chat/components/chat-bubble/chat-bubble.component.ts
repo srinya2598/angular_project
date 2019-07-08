@@ -1,8 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {IMessage} from '@ec-shared/models/message';
-import {ApiService} from '@ec-core/services/api.service';
-import {Constants} from '@ec-shared/utils/constants';
-import {ConversationalController} from '@ec-core/controllers/conversational.controller';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IMessage } from '@ec-shared/models/message';
 
 @Component({
   selector: 'app-chat-bubble',
@@ -10,23 +7,21 @@ import {ConversationalController} from '@ec-core/controllers/conversational.cont
   styleUrls: ['./chat-bubble.component.scss']
 })
 export class ChatBubbleComponent implements OnInit {
-  @Input() msg: IMessage;
+  @Input() message: IMessage;
+  @Output() removeMessage: EventEmitter<IMessage>;
   time: any;
-  userId: string;
 
-  constructor(private apiService: ApiService,
-              private conversationalController: ConversationalController) {
-     this.userId = this.apiService.getItem(Constants.USER_UID);
-
+  constructor() {
+    this.removeMessage = new EventEmitter();
 
   }
 
 
   ngOnInit() {
-    this.time = new Date(this.msg.timestamp);
+    this.time = new Date(this.message.timestamp);
   }
 
-  removeMessage() {
-    this.conversationalController.removeMessage(this.msg);
+  deleteMessage() {
+    this.removeMessage.emit(this.message);
   }
 }

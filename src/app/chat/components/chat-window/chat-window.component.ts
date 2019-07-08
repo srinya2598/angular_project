@@ -56,8 +56,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
         return a.timestamp - b.timestamp;
       });
       console.log('Message', res);
-     let something= res.sort((a,b)=>{
-       return a.timestamp-b.timestamp
+      let something = res.sort((a, b) => {
+        return a.timestamp - b.timestamp;
       });
       this.isScrollUpdateNeeded = true;
       this.autoScrollDown = true;
@@ -71,6 +71,10 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
 
   sendMessage() {
     this.conversationalController.sendMessage(this.message.value);
+  }
+
+  removeMessage(message:IMessage) {
+    this.conversationalController.removeMessage(message);
   }
 
   private updateScroll(): void {

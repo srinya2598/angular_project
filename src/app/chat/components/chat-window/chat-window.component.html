@@ -19,7 +19,7 @@
   </div>
     <div #chatContainer class="chat-window__message-area">
       <ng-container *ngFor="let msg of messages">
-        <app-chat-bubble [msg]="msg"></app-chat-bubble>
+        <app-chat-bubble (removeMessage)="removeMessage($event)" [message]="msg"></app-chat-bubble>
       </ng-container>
     </div>
   <div class="chat-window__input-area" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">

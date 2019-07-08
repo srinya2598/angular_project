@@ -68,7 +68,7 @@ export class CreateRoom implements Action {
 }
 
 export class RemoveMessage implements Action {
-  readonly type: ChatActions.REMOVE_MESSAGE;
+  readonly type = ChatActions.REMOVE_MESSAGE;
 
   constructor(public payload: IMessage) {
 

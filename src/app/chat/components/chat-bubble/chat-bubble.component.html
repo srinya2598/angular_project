@@ -1,5 +1,5 @@
-<p *ngIf="userId===msg.sender" class="from-me">
-  {{msg.text}}
+<p *ngIf="userId===message.sender" class="from-me">
+  {{message.text}}
   <span id="stamp">
     {{time | date: 'shortTime'}}
   </span>
@@ -7,8 +7,8 @@
      <mat-icon>keyboard_arrow_down</mat-icon>
    </button>
 </p>
-<p *ngIf="userId!==msg.sender" class="from-them">
-    {{msg.text}}
+<p *ngIf="userId!==message.sender" class="from-them">
+    {{message.text}}
   <span id="stamp">
       {{time | date: 'shortTime'}}
   </span>
@@ -18,7 +18,7 @@
 </p>
 
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="removeMessage()">
+      <button mat-menu-item (click)="deleteMessage()">
         <span>Delete Message</span>
       </button>
       <button mat-menu-item>
