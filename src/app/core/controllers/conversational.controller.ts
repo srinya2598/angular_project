@@ -262,6 +262,10 @@ export class ConversationalController {
             this.chatStore.dispatch(new SendMessage(message));
           });
         }
+        else {
+          this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+          this.chatStore.dispatch(new SendMessage(message));
+        }
       }
     });
   }
