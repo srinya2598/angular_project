@@ -4,6 +4,10 @@
   position: relative;
   height: 100%;
   &__menu-bar {
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 1;
+    top: 0;
     background: linear-gradient(to right, lighten($color-primary, 5), lighten($color-primary, 15));
     color: white;
     padding: 10px 5px;
@@ -17,14 +21,20 @@
     }
   }
   &__message-area {
-    height: -webkit-fill-available;
+    height: calc(100% - 128px);
+    padding: 0 15px;
+    overflow: auto;
     background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.12), lighten($color-primary, 0.9)),
     url("../../../../assets/chat.png");
+    background-attachment: fixed;
+    background-size: cover;
   }
 
   &__input-area {
+    //position: -webkit-sticky;
     position: absolute;
     bottom: 0;
+    z-index: 1;
     width: 100%;
     padding: 10px;
     background: lighten($color-primary, 5);

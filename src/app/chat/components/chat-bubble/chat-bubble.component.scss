@@ -9,24 +9,49 @@ body {
   flex-direction: column;
 }
 
-p {
+.from-me {
+  color:white;
+  background:$color-primary;
+  border-radius:25px 25px 5px 25px;
   max-width: 255px;
   word-wrap: break-word;
   margin-bottom: 12px;
   line-height: 24px;
   position:relative;
   padding:10px 20px;
-
-}
-
-.from-me {
-  color:white;
-  background:$color-primary;
-  align-self: flex-end;
-  border-radius:25px 25px 5px 25px;
+  float: right;
+  margin-right: 20px;
+  clear: both;
+  margin-top: 10px;
 }
 .from-them {
   background:#E5E5EA;
   color:black;
   border-radius: 5px 25px 25px 25px;
+  max-width: 255px;
+  word-wrap: break-word;
+  margin-bottom: 12px;
+  line-height: 24px;
+  position:relative;
+  padding:10px 20px;
+  margin-left: 20px;
+  clear: both;
+  margin-top: 10px;
+}
+
+
+#stamp {
+  font-size: 10px;
+  float: right;
+  margin-left: 10px;
+  margin-top: 5px;
+  position: absolute;
+}
+
+.menu-button {
+  margin-bottom: 5px;
+  font-size: 5px;
+  float: right;
+  //margin-left: 10px;
+  position: relative;
 }

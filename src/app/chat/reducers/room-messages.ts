@@ -1,21 +1,14 @@
-import { Action } from '@ec-core/actions';
-import { ChatActions } from '../actions/message';
-import { combineAll } from 'rxjs/operators';
+import {Action} from '@ec-core/actions';
+import {ChatActions} from '../actions/message';
 
 export interface RoomMessageState {
-  isLoading: boolean;
-  isLoaded: boolean;
   ids: { [convId: string]: string[] };
-  rooms: string[];
   selectedUserId: string;
   selectedRoomId: string;
 }
 
 export const initialRoomMessagesState: RoomMessageState = {
-  isLoading: false,
-  isLoaded: false,
   ids: {},
-  rooms: [],
   selectedUserId: null,
   selectedRoomId: null
 };
@@ -26,7 +19,7 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
 
     case ChatActions.SEND_MESSAGE: {
       const message = action.payload;
-      let oldId = state.ids[message.roomId];
+      let oldId = state.ids[message.roomId] || [];
       let newIds = [...oldId, message.id];
       return {
         ...state,
@@ -51,7 +44,7 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
       };
     }
     case ChatActions.FETCH_MESSAGE : {
-      let tempState = { ...state };
+      let tempState = {...state};
       let messages = action.payload;
 
       console.log(messages);
@@ -62,11 +55,22 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
         let newIds = [...oldIds, id];
         tempState = {
           ...tempState,
-          ids: { ...tempState.ids, [roomId]: newIds }
+          ids: {...tempState.ids, [roomId]: newIds}
         };
       });
       return tempState;
     }
+    case ChatActions.REMOVE_MESSAGE:
+      const messageId = action.payload.id;
+      let messages = state.ids[action.payload.roomId];
+      messages = messages.filter(item => item !== messageId);
+      return {
+        ...state,
+        ids: {
+          ...state.ids,
+          [action.payload.roomId]: messages
+        }
+      };
 
     default:
       return state;
@@ -74,8 +78,6 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
 }
 
 
-export const _getIsLoading = (state: RoomMessageState) => state.isLoading;
-export const _getIsLoaded = (state: RoomMessageState) => state.isLoaded;
-export const _getRoomMessageIds = (state: RoomMessageState, convId: string) => state.ids[convId];
+export const _getRoomMessageIds = (state: RoomMessageState, convId: string) => state.ids[convId] || [];
 export const _getSelectedUserId = (state: RoomMessageState) => state.selectedUserId;
 export const _getSelectedRoomId = (state: RoomMessageState) => state.selectedRoomId;

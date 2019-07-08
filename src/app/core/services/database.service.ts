@@ -19,10 +19,6 @@ export class DbService {
   private readonly _useAdapter = 'idb';
   private _db: RxDatabase;
   private _isDbResolved = false;
-
-  constructor(private apiService: ApiService) {
-  }
-
   async init() {
     if (!this._isDbResolved) {
       RxDB.plugin(PouchdbAdapterIdb);

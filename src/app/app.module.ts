@@ -46,6 +46,7 @@ export class AppModule {
 export function reset(reducer) {
   return function (state, action) {
     if (action.type === AuthActions.LOGOUT) {
+      console.log("meta reducer");
       state = undefined;
     }
     return reducer(state, action);

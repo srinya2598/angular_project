@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IMessage } from '@ec-shared/models/message';
 
 @Component({
   selector: 'app-chat-bubble',
@@ -6,10 +7,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat-bubble.component.scss']
 })
 export class ChatBubbleComponent implements OnInit {
+  @Input() message: IMessage;
+  @Output() removeMessage: EventEmitter<IMessage>;
+  time: any;
 
-  constructor() { }
+  constructor() {
+    this.removeMessage = new EventEmitter();
 
-  ngOnInit() {
   }
 
+
+  ngOnInit() {
+    this.time = new Date(this.message.timestamp);
+  }
+
+  deleteMessage() {
+    this.removeMessage.emit(this.message);
+  }
 }

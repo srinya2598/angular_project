@@ -27,7 +27,7 @@ import {
   _getWomenids,
   productCategoryReducer,
   ProductCategoryState,
-  _getCartProductIds
+  _getCartProductIds, _getSelectedProductUserDetails
 } from './product-category';
 import { RootState } from '@ec-core/reducers';
 
@@ -219,8 +219,12 @@ export const getCartProducts = createSelector(
   getCartProductIds,
   getEntities,
   (ids, entities) => {
-    return ids.map(id => entities[id])
-
+    return ids.map(id => entities[id]);
   }
+);
+
+export const getSelectedProductUserDetails = createSelector(
+  getProductCategoryState,
+  _getSelectedProductUserDetails
 );
 

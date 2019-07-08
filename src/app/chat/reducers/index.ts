@@ -1,10 +1,8 @@
-import { messageAdapter, messageReducer, MessageState } from './message';
+import { _getIsMessagesLoaded, messageAdapter, messageReducer, MessageState } from './message';
 import { RootState } from '@ec-core/reducers';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
   _getRoomMessageIds,
-  _getIsLoaded,
-  _getIsLoading,
   _getSelectedRoomId,
   _getSelectedUserId,
   roomMessagesReducer,
@@ -43,11 +41,14 @@ export const {
   selectTotal: getTotalMessages
 } = messageAdapter.getSelectors(getMessageState);
 
+export const getIsMessagesLoaded = createSelector(
+  getMessageState,
+  _getIsMessagesLoaded
+);
+
 // Room-Message Selectors
 export const getRoomMessageState = createSelector(getMessageRootState, (state) => state.roomMessages);
 
-export const getIsLoading = createSelector(getRoomMessageState, _getIsLoading);
-export const getIsLoaded = createSelector(getRoomMessageState, _getIsLoaded);
 export const getSelectedUserId = createSelector(getRoomMessageState, _getSelectedUserId);
 export const getSelectedRoomId = createSelector(getRoomMessageState, _getSelectedRoomId);
 
@@ -64,9 +65,8 @@ export const {
 
 export const getIsRoomsLoaded = createSelector(getRoomState, _getIsRoomsLoaded);
 export const getIsRoomsLoading = createSelector(getRoomState, _getIsRoomsLoading);
-
 export const getRoomsList = (state: State) => getAllRooms(state);
-export const getUserRoomIds = (state:State) => getRoomIds(state);
+export const getUserRoomIds = (state: State) => getRoomIds(state) || [];
 export const getRoomMessageIds = (state: State, convId: string) => _getRoomMessageIds(
   getRoomMessageState(state),
   convId
@@ -74,7 +74,9 @@ export const getRoomMessageIds = (state: State, convId: string) => _getRoomMessa
 
 export const getRoomMessages = (state: State, convId: string) => {
   const messageIds = getRoomMessageIds(state, convId);
+  console.log(messageIds);
   const entities = getMessageEntities(state);
+  console.log(entities);
   return messageIds.map(id => entities[id]);
 };
 

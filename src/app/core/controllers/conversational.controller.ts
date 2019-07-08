@@ -2,43 +2,52 @@ import { Injectable } from '@angular/core';
 import { DbService, RxCollections } from '@ec-core/services/database.service';
 import {
   CreateRoom,
-  FetchMessage, FetchRooms,
+  FetchMessage, FetchRooms, FetchRoomsFailed,
   FetchRoomSuccess,
+  RemoveMessage,
   SendMessage,
   SetSelectedRoomId,
   SetSelectedUserId
 } from '../../chat/actions/message';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import {
-  getIsLoaded,
+  getIsMessagesLoaded,
   getIsRoomsLoaded,
-  getIsRoomsLoading,
+  getIsRoomsLoading, getRoomMessages,
   getRoomsList,
   getSelectedRoomId,
-  getSelectedUserId, getUserRoomIds,
+  getSelectedUserId,
+  getUserRoomIds,
   State
 } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
 import { IMessage } from '@ec-shared/models/message';
-import { catchError, concatMap, filter, map, reduce, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, concatMap, filter, map, reduce, skip, switchMap, take, tap } from 'rxjs/operators';
 import { Constants, MessageType } from '@ec-shared/utils/constants';
 import { ApiService } from '@ec-core/services/api.service';
-import { BehaviorSubject, combineLatest, forkJoin, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, forkJoin } from 'rxjs';
 import { IRoom } from '@ec-shared/models/room';
 import { of } from 'rxjs';
 import { NotificationService } from '@ec-core/services/notification.service';
+import { getLoggedInUser } from '../../auth/reducer';
+import { State as AuthState } from '../../auth/reducer/';
+import { getSelectedProductUserDetails, State as ProductState } from '../../dashboard/reducers/';
+import { IUser } from '@ec-shared/models/users';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConversationalController {
+  isChannelSetup = false;
+
   constructor(private dbService: DbService,
-              private store: Store<State>,
+              private chatStore: Store<State>,
               private apiService: ApiService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private authStore: Store<AuthState>,
+              private productState: Store<ProductState>) {
     this.setUpMessageChannel();
     this.fetchMessage();
-    this.fetchRooms();
   }
 
   sendMessage(body: string) {
@@ -55,26 +64,35 @@ export class ConversationalController {
       text: body || '',
       timestamp: new Date().getTime()
     };
-    this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
-      this.store.dispatch(new SendMessage(message));
+    this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
+      this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
+        this.chatStore.dispatch(new SendMessage(message));
+      });
     });
+
   }
 
-  fetchRooms() {
+   fetchRooms() {
+    console.log("fetch rooms");
     let rooms: IRoom[] = [];
     const userId = this.apiService.getItem(Constants.USER_UID);
-    let isRoomsLoaded$ = this.store.select(getIsRoomsLoaded);
-    let isRoomsLoading$ = this.store.select(getIsRoomsLoading);
+    let isRoomsLoaded$ = this.chatStore.select(getIsRoomsLoaded);
+    let isRoomsLoading$ = this.chatStore.select(getIsRoomsLoading);
     combineLatest(isRoomsLoaded$, isRoomsLoading$).pipe(
       take(1),
       map(([isLoaded, isLoading]) => isLoaded || isLoading),
       filter(res => !res),
       switchMap(() => {
-        this.store.dispatch(new FetchRooms());
+        this.chatStore.dispatch(new FetchRooms());
         return this.apiService.fetchUserRooms(userId);
       })
     ).pipe(take(1)).subscribe((res: string[]) => {
+      if (!res || res.length <= 0) {
+        this.chatStore.dispatch(new FetchRoomsFailed());
+        return;
+      }
       let rooms = res;
+      console.log("Null rooms",rooms);
       const trigger = new BehaviorSubject<string>(rooms.shift());
       trigger.asObservable().pipe(
         concatMap((r: string) => {
@@ -85,8 +103,7 @@ export class ConversationalController {
                 tap((room) => {
                   if (rooms && rooms.length > 0) {
                     trigger.next(rooms.shift());
-                  }
-                  else {
+                  } else {
                     trigger.complete();
                   }
                 }),
@@ -102,7 +119,8 @@ export class ConversationalController {
           return [...accumulator, room];
         }, [])
       ).subscribe((rooms: IRoom[]) => {
-        this.store.dispatch(new FetchRoomSuccess(rooms));
+        this.chatStore.dispatch(new FetchRoomSuccess(rooms));
+
       });
     });
   }
@@ -112,10 +130,11 @@ export class ConversationalController {
     if (!id) {
       return false;
     }
-    this.store.select(getRoomsList).subscribe((rooms: IRoom[]) => {
+    this.chatStore.select(getRoomsList).subscribe((rooms: IRoom[]) => {
       if (rooms && rooms.length) {
         for (let iterator = 0; iterator < rooms.length; iterator++) {
-          if (rooms[iterator].participants.includes(id)) {
+          let participants = rooms[iterator].participants;
+          if (participants[0].id === id || participants[1].id === id) {
             roomId = rooms[iterator].id;
             break;
           }
@@ -130,33 +149,69 @@ export class ConversationalController {
     if (!userId) {
       return;
     }
-    this.store.dispatch(new SetSelectedUserId(userId));
+    this.chatStore.dispatch(new SetSelectedUserId(userId));
   }
 
   setSelectedRoomId(roomId: string) {
     if (!roomId) {
       return;
     }
-    this.store.dispatch(new SetSelectedRoomId(roomId));
+    this.chatStore.dispatch(new SetSelectedRoomId(roomId));
   }
 
 
-  getSelectedUserId() {
-    return this.store.select(getSelectedUserId);
+  getSelectedUserId(): Observable<string> {
+    return this.chatStore.select(getSelectedUserId);
   }
 
-  getSelectedRoomId() {
-    return this.store.select(getSelectedRoomId);
+  getSelectedRoomId(): Observable<string> {
+    return this.chatStore.select(getSelectedRoomId);
+  }
+
+  getIsRoomsLoading(): Observable<boolean> {
+    return this.chatStore.select(getIsRoomsLoading);
+  }
+
+  fetchRoomMessages(roomId: string): Observable<IMessage[]> {
+    if (!roomId) {
+      return of([]);
+    }
+    return this.chatStore.select(state => getRoomMessages(state, roomId));
+  }
+
+  getIsLoaded(): Observable<boolean> {
+    return this.chatStore.select(getIsRoomsLoaded);
+  }
+
+  getRoomLists() {
+    return this.chatStore.select(getRoomsList);
+  }
+
+  fetchLastMessage(roomId: string) {
+    let message;
+    this.fetchRoomMessages(roomId).subscribe(res => {
+      if (res.length > 0) {
+        const length = res.length;
+        message = {
+          text: res[length - 1].text || '',
+          timestamp: res[length - 1].timestamp || 0
+        };
+      }
+    });
+    return message;
   }
 
   async createRoom(): Promise<string> {
-    let selectedUserId: string;
+    let loggedInUser: IUser;
+    let selectedUser: IUser;
     let roomId: string;
+    let room: IRoom;
     const loggedInUserId = this.apiService.getItem(Constants.USER_UID);
-    this.getSelectedUserId().pipe(take(1)).subscribe(id => selectedUserId = id);
-    const room: IRoom = {
+    this.authStore.select(getLoggedInUser).subscribe((user: IUser) => loggedInUser = user);
+    this.productState.select(getSelectedProductUserDetails).pipe(take(1)).subscribe((user: IUser) => selectedUser = user);
+    room = {
       id: uuid(),
-      participants: [loggedInUserId, selectedUserId]
+      participants: [selectedUser, loggedInUser]
     };
     try {
       roomId = await this.setRoomDetails(loggedInUserId, room);
@@ -167,6 +222,54 @@ export class ConversationalController {
     return roomId;
   }
 
+  private fetchMessages() {
+    console.log("fetch msg");
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    this.chatStore.select(getIsMessagesLoaded).pipe(take(1)).subscribe(isLoaded => {
+      if (!isLoaded) {
+
+        this.dbService.getCollection(RxCollections.MESSAGES)
+          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
+          .$
+          .pipe(take(1))
+          .subscribe((res: IMessage[]) => {
+            this.chatStore.dispatch(new FetchMessage(res));
+          });
+      }
+    });
+  }
+
+  private setUpMessageChannel() {
+    console.log("setup");
+    if (this.isChannelSetup) {
+      return;
+    }
+
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    if (!userId) {
+      return;
+    }
+
+    this.apiService.getMessageStream(userId).pipe(skip(1)).subscribe((message: IMessage) => {
+      if (message) {
+        let roomId = this.isRoomsExisting(userId);
+        if (!roomId) {
+          this.chatStore.select(getUserRoomIds).pipe(switchMap((ids: string[]) => {
+            return this.apiService.setUserRooms([...ids, message.roomId], userId);
+
+          })).subscribe(() => {
+            this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+            this.chatStore.dispatch(new SendMessage(message));
+          });
+        }
+        else {
+          this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+          this.chatStore.dispatch(new SendMessage(message));
+        }
+      }
+    });
+  }
+
   private setRoomDetails(id: string, room: IRoom): Promise<string> {
     const userId = this.apiService.getItem(Constants.USER_UID);
     return new Promise((resolve, reject) => {
@@ -174,43 +277,30 @@ export class ConversationalController {
         reject('Invalid id');
       }
       let roomIds: string[];
-      this.store.select(getUserRoomIds).subscribe((ids: string[]) => roomIds = ids);
-      let userEvent$ = this.apiService.setUserRooms([...roomIds, id], userId);
+      this.chatStore.select(getUserRoomIds).subscribe((ids: string[]) => {
+          roomIds = ids;
+        }
+      );
+      let userEvent$ = this.apiService.setUserRooms([...roomIds, room.id], userId);
       let roomEvent$ = this.apiService.setRoomDetails(room);
       forkJoin(userEvent$, roomEvent$).subscribe(() => {
-        this.store.dispatch(new CreateRoom(room));
-        resolve(room.id);
-      }, () => {
-        reject('Something went wrong');
-      });
+          this.chatStore.dispatch(new CreateRoom(room));
+          resolve(room.id);
+        },
+        () => {
+          reject('Something went wrong');
+        });
     });
   }
 
-  private fetchMessage() {
-    this.store.select(getIsLoaded).pipe(take(1)).subscribe(isLoaded => {
-      if (!isLoaded) {
-        this.dbService.getCollection(RxCollections.MESSAGES)
-          .find()
-          .$
-          .subscribe((res: IMessage[]) => {
-            this.store.dispatch(new FetchMessage(res));
-          });
-      }
-    });
-  }
-
-  private setUpMessageChannel() {
-    const userId = this.apiService.getItem(Constants.USER_UID);
-    if (!userId) {
+  removeMessage(message: IMessage) {
+    if (!message.id) {
       return;
     }
-    this.apiService.getMessageStream(userId).subscribe((message: IMessage) => {
-      // TODO: check if the room already exist... if not, first create the room and then store the message.
-      if (message) {
-        this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
-        this.store.dispatch(new SendMessage(message));
-      }
-
+    const query = this.dbService.getCollection(RxCollections.MESSAGES).find().where('id').eq(message.id);
+    query.remove().then(() => {
+      this.chatStore.dispatch(new RemoveMessage(message));
     });
   }
 }
+

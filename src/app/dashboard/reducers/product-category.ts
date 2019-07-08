@@ -1,7 +1,8 @@
-import {DashboardActions} from '../actions/product';
-import {IProductCategory} from '@ec-shared/models/category';
-import {IProduct} from '@ec-shared/models/product';
-import {Action} from '@ec-core/actions';
+import { DashboardActions } from '../actions/product';
+import { IProductCategory } from '@ec-shared/models/category';
+import { IProduct } from '@ec-shared/models/product';
+import { Action } from '@ec-core/actions';
+import { IUser } from '@ec-shared/models/users';
 
 export interface ProductCategoryState {
   productsLoaded: boolean;
@@ -20,6 +21,7 @@ export interface ProductCategoryState {
   loggedInUserProductId: string[],
   loading: boolean,
   cartProducts: string[],
+  selectedProductUserDetails: IUser;
 }
 
 export const initialProductCategoryState: ProductCategoryState = {
@@ -39,7 +41,7 @@ export const initialProductCategoryState: ProductCategoryState = {
   loading: false,
   loggedInUserProductId: [],
   cartProducts: [],
-
+  selectedProductUserDetails: null
 };
 
 
@@ -47,7 +49,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
 
   switch (action.type) {
     case DashboardActions.ADD_PRODUCT:
-      let tempState = {...state, loggedInUserProductId: [...state.loggedInUserProductId, action.payload.id]};
+      let tempState = { ...state, loggedInUserProductId: [...state.loggedInUserProductId, action.payload.id] };
       if (action.payload.category == IProductCategory.MOBILE_COMPUTER) {
         tempState = {
           ...tempState,
@@ -222,6 +224,11 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
         ...state,
         cartProducts: action.payload
       };
+    case DashboardActions.SET_SELECTED_PRODUCT_USER_DETAILS:
+      return {
+        ...state,
+        selectedProductUserDetails: action.payload
+      };
 
 
     default:
@@ -244,3 +251,4 @@ export const _getOthersids = (state: ProductCategoryState) => state.others;
 export const _getSelectedCategory = (state: ProductCategoryState) => state.selectedCategory;
 export const _getLoggedInUserProductsId = (state: ProductCategoryState) => state.loggedInUserProductId;
 export const _getCartProductIds = (state: ProductCategoryState) => state.cartProducts;
+export const _getSelectedProductUserDetails = (state: ProductCategoryState) => state.selectedProductUserDetails;

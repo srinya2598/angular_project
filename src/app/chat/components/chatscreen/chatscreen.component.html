@@ -1,48 +1,13 @@
-<div class="fluid-container">
-  <div class="row">
+<div class="conversation-container">
+  <div class="conversation-container__header">
     Conversations
   </div>
-  <div class="chat-container" fxLayout="row">
-    <div class="chat-element" fxLayout="row">
-      <div class="profile-image">
-        <img src = '/assets/oneplus.jpg'>
-      </div>
-      <div class="element-container" fxLayout="column">
-        <div class="element-name">Manvi</div>
-        <div class="element-text">How you doin?</div>
-      </div>
-    </div>
-    <div class="element-time">2:31 AM</div>
+  <mat-spinner class="conversation-container__spinner" *ngIf="isLoading">
+  </mat-spinner>
+  <div class="conversation-container__content">
+    <p *ngIf="userRooms && userRooms.length == 0">No conversations!</p>
+    <ng-container *ngFor="let userRoom of userRooms">
+      <app-chat-layout  [userRoom]="userRoom"></app-chat-layout>
+    </ng-container>
   </div>
-  <hr>
-
-  <div class="chat-container" fxLayout="row">
-    <div class="chat-element" fxLayout="row">
-      <div class="profile-image">
-        <img src = '/assets/mobile05.jpeg'>
-      </div>
-      <div class="element-container" fxLayout="column">
-        <div class="element-name">Tanya</div>
-        <div class="element-text">Heyaaaa</div>
-      </div>
-    </div>
-    <div class="element-time">12:40 AM</div>
-  </div>
-  <hr>
-
-  <div class="chat-container" fxLayout="row">
-    <div class="chat-element" fxLayout="row">
-      <div class="profile-image">
-        <img src = '/assets/home-bg.jpg'>
-      </div>
-      <div class="element-container" fxLayout="column">
-        <div class="element-name">Naimish</div>
-        <div class="element-text">How's the josh??</div>
-      </div>
-    </div>
-    <div class="element-time">MON</div>
-  </div>
-  <hr>
-
-
 </div>

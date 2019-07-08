@@ -1,0 +1,14 @@
+<div class="chat-container" fxLayout="row" fxLayoutAlign="space-between start" (click)="visitChat()">
+  <div class="chat-element" fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
+    <div class="profile-image">
+      <avatar *ngIf="!profileUrl" size="50" [name]="firstName" [displayType]="'circle'"></avatar>
+      <img *ngIf="profileUrl" [src] = "profileUrl">
+    </div>
+    <div class="element-container" fxLayout="column">
+      <div class="element-name">{{firstName}}</div>
+      <div class="element-text">{{message}}</div>
+    </div>
+  </div>
+  <div class="element-time">{{time | date:'shortTime'}}</div>
+</div>
+<hr>
