@@ -290,13 +290,8 @@ export class ConversationalController {
   }
 
   removeMessage(message: IMessage) {
-    const userId = this.apiService.getItem(Constants.USER_UID);
-    if (!message || !userId) {
-      return;
-    }
-    this.chatStore.dispatch(new RemoveMessage(message));
-    const query = this.dbService.getCollection(RxCollections.MESSAGES).find().where('message').lt(message);
-    const removedMessage = this.dbService.remove().then(() => {
+    const query = this.dbService.getCollection(RxCollections.MESSAGES).find().where('message').eq(message);
+    const removedMessage = query.remove().then(() => {
       this.chatStore.dispatch(new RemoveMessage(message));
     });
 
