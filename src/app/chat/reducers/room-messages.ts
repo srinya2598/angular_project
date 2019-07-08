@@ -82,6 +82,20 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
 
     default:
       return state;
+
+    case ChatActions.FORWARD_MESSAGE: {
+      const message = action.payload;
+      let oldId = state.ids[message.roomId] || [];
+      let newIds = [...oldId, message.id];
+      return {
+        ...state,
+        ids: {
+          ...state.ids,
+          [message.roomId]: newIds
+        }
+      };
+    }
+
   }
 }
 

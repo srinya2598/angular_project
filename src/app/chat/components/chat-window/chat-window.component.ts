@@ -65,6 +65,14 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       this.autoScrollDown = true;
       this.messages = roomMessages;
     });
+
+    this.conversationalController.getSelectedMessage().subscribe((selectedMessage) => {
+      if (!selectedMessage)
+      {
+        return;
+      }
+      this.conversationalController.forwardMessage(selectedMessage);
+    })
   }
 
   ngAfterViewChecked(): void {
