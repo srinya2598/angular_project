@@ -316,7 +316,6 @@ export class ConversationalController {
 
   getSelectedMessage() {
     return this.chatStore.select(getSelectedMessage);
-    console.log('heyooooo!!');
   }
 
   forwardMessage(selectedMessage: string) {
@@ -335,7 +334,8 @@ export class ConversationalController {
     };
     this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
       this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
-        this.chatStore.dispatch(new ForwardMessage(message));
+        this.chatStore.dispatch(new SendMessage(message));
+        this.chatStore.dispatch(new SetSelectedMessage(null));
         console.log(message.text);
       });
     });
