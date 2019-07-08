@@ -27,9 +27,12 @@ import {
   _getWomenids,
   productCategoryReducer,
   ProductCategoryState,
-  _getCartProductIds, _getSelectedProductUserDetails
+  _getCartProductIds,
+  _getSelectedProductUserDetails
 } from './product-category';
 import { RootState } from '@ec-core/reducers';
+import { getRoomMessageState } from '../../chat/reducers';
+import {_getSelectedMessage} from '../../chat/reducers/room-messages';
 
 export interface State {
   product: ProductState;
@@ -226,5 +229,10 @@ export const getCartProducts = createSelector(
 export const getSelectedProductUserDetails = createSelector(
   getProductCategoryState,
   _getSelectedProductUserDetails
+);
+
+export const getSelectedMessage = createSelector(
+  getRoomMessageState,
+  _getSelectedMessage
 );
 

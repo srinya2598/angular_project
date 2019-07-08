@@ -13,6 +13,7 @@ export enum ChatActions {
   SET_SELECTED_ROOM_ID = '[chat] set select room id',
   CREATE_ROOM = '[chat] create room',
   REMOVE_MESSAGE = '[chat] remove message',
+  SET_SELECTED_MESSAGE = '[chat] set selected message',
 
 }
 
@@ -73,4 +74,13 @@ export class RemoveMessage implements Action {
   constructor(public payload: IMessage) {
 
   }
+}
+
+export class SetSelectedMessage implements Action {
+  readonly type = ChatActions.SET_SELECTED_MESSAGE;
+
+  constructor( public payload: string ) {
+
+  }
+
 }

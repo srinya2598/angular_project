@@ -5,7 +5,7 @@ import {
   FetchMessage, FetchRooms, FetchRoomsFailed,
   FetchRoomSuccess,
   RemoveMessage,
-  SendMessage,
+  SendMessage, SetSelectedMessage,
   SetSelectedRoomId,
   SetSelectedUserId
 } from '../../chat/actions/message';
@@ -304,6 +304,14 @@ export class ConversationalController {
     }).catch((e) => {
       this.notificationService.error('Some error encountered while deleting the message!');
     });
+  }
+
+  setSelectedMessage(forwardText: string) {
+    if (!forwardText){
+      return;
+    }
+    this.chatStore.dispatch(new SetSelectedMessage(forwardText));
+    console.log(forwardText);
   }
 }
 
