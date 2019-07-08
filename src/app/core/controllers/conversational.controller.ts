@@ -47,7 +47,7 @@ export class ConversationalController {
               private authStore: Store<AuthState>,
               private productState: Store<ProductState>) {
     this.setUpMessageChannel();
-    this.fetchMessage();
+    this.fetchMessages();
   }
 
   sendMessage(body: string) {
@@ -300,7 +300,8 @@ export class ConversationalController {
     const query = this.dbService.getCollection(RxCollections.MESSAGES).find().where('id').eq(message.id);
     query.remove().then(() => {
       this.chatStore.dispatch(new RemoveMessage(message));
-    });
+      this.notificationService.success('Message deleted successfully!');
+    }).catch((e) => { this.notificationService.error('Message cannot be displayed!') });
   }
 }
 
