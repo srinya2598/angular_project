@@ -10,9 +10,10 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <span>Attach a File</span>
-        </button>
+        <label mat-menu-item>
+          Attach a File
+          <input type="file" (change)="attachImage($event)">
+        </label>
       </mat-menu>
     </div>
 

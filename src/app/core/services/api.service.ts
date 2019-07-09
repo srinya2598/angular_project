@@ -124,5 +124,14 @@ export class ApiService {
   setRoomDetails(room: IRoom) {
     return from(this.angularFireDb.database.ref(`rooms/${room.id}`).set(room));
   }
+
+  uploadAttachedFile(fileName: string, file: File, ref: AngularFireStorageReference): AngularFireUploadTask {
+
+    return ref.put(file);
+  }
+
+  getAttachedFileRef(roomId: string, fileName: string): AngularFireStorageReference {
+    return this.storage.ref(`chat-images/${roomId}/${fileName}`);
+  }
 }
 

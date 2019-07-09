@@ -60,3 +60,7 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+input[type = file] {
+  display: none;
+}

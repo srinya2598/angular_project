@@ -6,6 +6,8 @@ import { switchMap, take } from 'rxjs/operators';
 import { ApiService } from '@ec-core/services/api.service';
 import { IMessage } from '@ec-shared/models/message';
 import { Router } from '@angular/router';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
+import { NotificationService } from '@ec-core/services/notification.service';
 
 @Component({
   selector: 'app-chat-window',
@@ -24,11 +26,14 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   private scrollTop: number;
   private autoScrollDown = true;
   @ViewChild('chatContainer') chatContainer: ElementRef;
+  uploadPercent = 0;
+  downloadUrl = null;
 
 
   constructor(private conversationalController: ConversationalController,
               private apiService: ApiService,
-              private router: Router) {
+              private router: Router,
+              private notificationService: NotificationService) {
     this.message = new FormControl(null);
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
       this.apiService.getUserDetails(id).pipe(take(1)).subscribe((res: IUser) => {
@@ -108,6 +113,22 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.scrollHeight = element.scrollHeight;
     this.scrollTop = element.scrollTop;
     this.isScrollUpdateNeeded = true;
+  }
+
+  attachImage(event) {
+    if (!event) {
+      this.notificationService.error('Please select an image');
+      return;
+    }
+    if (!CommonUtils.isImage(event.target.files[0].type)) {
+      this.notificationService.error('File type not supported');
+      return;
+    }
+
+    const response = this.conversationalController.attachImageFile(event.target.files[0]);
+    response[0].subscribe(percent => this.uploadPercent = percent);
+    response[1].subscribe(res => this.downloadUrl = res);
+    console.log(this.downloadUrl);
   }
 }
 
