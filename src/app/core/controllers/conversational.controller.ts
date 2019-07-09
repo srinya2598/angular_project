@@ -1,19 +1,23 @@
-import { Injectable } from '@angular/core';
-import { DbService, RxCollections } from '@ec-core/services/database.service';
+import {Injectable} from '@angular/core';
+import {DbService, RxCollections} from '@ec-core/services/database.service';
 import {
   CreateRoom,
-  FetchMessage, FetchRooms, FetchRoomsFailed,
-  FetchRoomSuccess, ForwardMessage,
+  FetchMessage,
+  FetchRooms,
+  FetchRoomsFailed,
+  FetchRoomSuccess,
   RemoveMessage,
-  SendMessage, SetSelectedMessage,
+  SendMessage,
+  SetSelectedMessage,
   SetSelectedRoomId,
   SetSelectedUserId
 } from '../../chat/actions/message';
-import { select, Store } from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {
   getIsMessagesLoaded,
   getIsRoomsLoaded,
-  getIsRoomsLoading, getRoomMessages,
+  getIsRoomsLoading,
+  getRoomMessages,
   getRoomsList,
   getSelectedRoomId,
   getSelectedUserId,
@@ -21,18 +25,17 @@ import {
   State
 } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
-import { IMessage } from '@ec-shared/models/message';
-import { catchError, concatMap, filter, finalize, map, reduce, skip, switchMap, take, tap } from 'rxjs/operators';
-import { Constants, MessageType } from '@ec-shared/utils/constants';
-import { ApiService } from '@ec-core/services/api.service';
-import { BehaviorSubject, combineLatest, Observable, forkJoin } from 'rxjs';
-import { IRoom } from '@ec-shared/models/room';
-import { of } from 'rxjs';
-import { NotificationService } from '@ec-core/services/notification.service';
-import { getLoggedInUser } from '../../auth/reducer';
-import { State as AuthState } from '../../auth/reducer/';
-import { getSelectedMessage, getSelectedProductUserDetails, State as ProductState } from '../../dashboard/reducers/';
-import { IUser } from '@ec-shared/models/users';
+import {IMessage} from '@ec-shared/models/message';
+import {catchError, concatMap, filter, finalize, map, reduce, skip, switchMap, take, tap} from 'rxjs/operators';
+import {Constants, MessageType} from '@ec-shared/utils/constants';
+import {ApiService} from '@ec-core/services/api.service';
+import {BehaviorSubject, combineLatest, forkJoin, Observable, of} from 'rxjs';
+import {IRoom} from '@ec-shared/models/room';
+import {NotificationService} from '@ec-core/services/notification.service';
+import {getLoggedInUser} from '../../auth/reducer';
+import {State as AuthState} from '../../auth/reducer/';
+import {getSelectedMessage, getSelectedProductUserDetails, State as ProductState} from '../../dashboard/reducers/';
+import {IUser} from '@ec-shared/models/users';
 
 @Injectable({
   providedIn: 'root'
@@ -195,7 +198,7 @@ export class ConversationalController {
     let message;
     this.fetchRoomMessages(roomId).subscribe(res => {
       if (res.length > 0) {
-        res = res.sort((a,b) =>a.timestamp - b.timestamp );
+        res = res.sort((a, b) => a.timestamp - b.timestamp);
         const length = res.length;
         message = {
           text: res[length - 1].text || '',
@@ -234,7 +237,7 @@ export class ConversationalController {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
+          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -266,8 +269,7 @@ export class ConversationalController {
             this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
             this.chatStore.dispatch(new SendMessage(message));
           });
-        }
-        else {
+        } else {
           this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
           this.chatStore.dispatch(new SendMessage(message));
         }
@@ -312,7 +314,7 @@ export class ConversationalController {
   }
 
   setSelectedMessage(forwardText: string) {
-    if (!forwardText){
+    if (!forwardText) {
       return;
     }
     this.chatStore.dispatch(new SetSelectedMessage(forwardText));
