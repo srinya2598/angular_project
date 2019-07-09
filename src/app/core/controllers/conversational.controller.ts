@@ -3,9 +3,9 @@ import { DbService, RxCollections } from '@ec-core/services/database.service';
 import {
   CreateRoom,
   FetchMessage, FetchRooms, FetchRoomsFailed,
-  FetchRoomSuccess,
+  FetchRoomSuccess, ForwardMessage,
   RemoveMessage,
-  SendMessage,
+  SendMessage, SetSelectedMessage,
   SetSelectedRoomId,
   SetSelectedUserId
 } from '../../chat/actions/message';
@@ -31,7 +31,7 @@ import { of } from 'rxjs';
 import { NotificationService } from '@ec-core/services/notification.service';
 import { getLoggedInUser } from '../../auth/reducer';
 import { State as AuthState } from '../../auth/reducer/';
-import { getSelectedProductUserDetails, State as ProductState } from '../../dashboard/reducers/';
+import {getSelectedMessage, getSelectedProductUserDetails, State as ProductState} from '../../dashboard/reducers/';
 import { IUser } from '@ec-shared/models/users';
 
 @Injectable({
@@ -191,6 +191,7 @@ export class ConversationalController {
     let message;
     this.fetchRoomMessages(roomId).subscribe(res => {
       if (res.length > 0) {
+        res = res.sort((a,b) =>a.timestamp - b.timestamp );
         const length = res.length;
         message = {
           text: res[length - 1].text || '',
@@ -303,6 +304,41 @@ export class ConversationalController {
       this.notificationService.success('Message deleted successfully!');
     }).catch((e) => {
       this.notificationService.error('Some error encountered while deleting the message!');
+    });
+  }
+
+  setSelectedMessage(forwardText: string) {
+    if (!forwardText){
+      return;
+    }
+    this.chatStore.dispatch(new SetSelectedMessage(forwardText));
+    console.log(forwardText);
+  }
+
+  getSelectedMessage() {
+    return this.chatStore.select(getSelectedMessage);
+  }
+
+  forwardMessage(selectedMessage: string) {
+    let selectedUserId: string;
+    let selectedRoomId: string;
+    this.getSelectedUserId().pipe(take(1)).subscribe(id => selectedUserId = id);
+    this.getSelectedRoomId().pipe(take(1)).subscribe(id => selectedRoomId = id);
+    const message: IMessage = {
+      id: uuid(),
+      type: MessageType.TEXT,
+      roomId: selectedRoomId,
+      sender: this.apiService.getItem(Constants.USER_UID),
+      receiver: selectedUserId,
+      text: selectedMessage || '',
+      timestamp: new Date().getTime()
+    };
+    this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
+      this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
+        this.chatStore.dispatch(new SendMessage(message));
+        this.chatStore.dispatch(new SetSelectedMessage(null));
+        console.log(message.text);
+      });
     });
   }
 }
