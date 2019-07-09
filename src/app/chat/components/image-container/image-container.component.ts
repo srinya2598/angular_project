@@ -24,7 +24,5 @@ export class ImageContainerComponent implements OnInit {
 
   sendFile() {
     this.conversationalController.sendFile(this.downloadUrl, this.message.value);
-
-
   }
 }

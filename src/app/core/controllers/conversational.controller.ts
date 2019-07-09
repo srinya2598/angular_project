@@ -379,7 +379,7 @@ export class ConversationalController {
       receiver: selectedUserId,
       image: {
         image_url: downloadUrl,
-        caption: caption || ''
+        caption: caption || ' '
       }
     };
     this.apiService.sendMessage(userId, message).subscribe(() => {
