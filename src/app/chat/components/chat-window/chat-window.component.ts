@@ -6,6 +6,7 @@ import { switchMap, take } from 'rxjs/operators';
 import { ApiService } from '@ec-core/services/api.service';
 import { IMessage } from '@ec-shared/models/message';
 import { Router } from '@angular/router';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
 
 @Component({
   selector: 'app-chat-window',
@@ -54,12 +55,9 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
         return this.conversationalController.fetchRoomMessages(roomId);
       })
     ).subscribe((res: IMessage[]) => {
-      const roomMessages = res.sort((a, b) => {
-        return a.timestamp - b.timestamp;
-      });
       this.isScrollUpdateNeeded = true;
       this.autoScrollDown = true;
-      this.messages = roomMessages;
+      this.messages = CommonUtils.mapMessages(res);
     });
 
     this.conversationalController.getSelectedMessage().pipe(take(1)).subscribe((selectedMessage) => {

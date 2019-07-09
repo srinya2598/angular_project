@@ -1,5 +1,4 @@
-<p *ngIf="userId===message.sender" class="from-me">
-  {{message.text}}
+<p *ngIf="userId===message.sender" class="from-me" [innerHtml]="message.text">
   <span id="stamp">
     {{time | date: 'shortTime'}}
   </span>
@@ -7,8 +6,7 @@
      <mat-icon>keyboard_arrow_down</mat-icon>
    </button>
 </p>
-<p *ngIf="userId!==message.sender" class="from-them">
-    {{message.text}}
+<p *ngIf="userId!==message.sender" class="from-them" [innerHtml]="message.text">
   <span id="stamp">
       {{time | date: 'shortTime'}}
   </span>

@@ -1,4 +1,5 @@
 import { IProductCategory } from '../models/category';
+import { IMessage } from '@ec-shared/models/message';
 
 export class CommonUtils {
   static imagesExtensions = ['jpeg', 'jpg', 'gif', 'png', 'bmp', 'svg'];
@@ -267,5 +268,31 @@ export class CommonUtils {
   static isOnMobile() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+  }
+
+  static mapMessages(messages: IMessage[]) {
+    let mappedMessages = [];
+    const sEmailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    messages.forEach((message) => {
+      let sMessage: IMessage = {
+        id: message.id,
+        roomId: message.roomId,
+        text: message.text,
+        sender: message.sender,
+        receiver: message.receiver,
+        type: message.type,
+        timestamp: message.timestamp
+      };
+      if (sEmailRegex.test(message.text)) {
+        console.log('Matched');
+        sMessage.text = message.text.replace(sEmailRegex, '<a href="mailto:$&">$&</a>').toString();
+      }
+      mappedMessages.push(sMessage);
+    });
+    mappedMessages = mappedMessages.sort((message_one: IMessage, message_two: IMessage) => {
+      return message_one.timestamp - message_two.timestamp;
+    });
+
+    return mappedMessages;
   }
 }
