@@ -11,9 +11,9 @@ import { Constants } from '@ec-shared/utils/constants';
 export class ChatBubbleComponent implements OnInit {
   @Input() message: IMessage;
   @Output() removeMessage: EventEmitter<IMessage>;
-  userId: string;
   @Output() forwardMessage: EventEmitter<string>;
   time: any;
+  userId: string;
 
   constructor(private apiService: ApiService) {
     this.removeMessage = new EventEmitter();

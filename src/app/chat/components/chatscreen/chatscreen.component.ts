@@ -22,9 +22,5 @@ export class ChatscreenComponent implements OnInit {
         this.userRooms = res;
       }
     );
-
-
   }
-
-
 }

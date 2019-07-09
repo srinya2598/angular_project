@@ -191,6 +191,7 @@ export class ConversationalController {
     let message;
     this.fetchRoomMessages(roomId).subscribe(res => {
       if (res.length > 0) {
+        res = res.sort((a,b) =>a.timestamp - b.timestamp );
         const length = res.length;
         message = {
           text: res[length - 1].text || '',

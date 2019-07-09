@@ -5,7 +5,7 @@ import { IUser } from '@ec-shared/models/users';
 import { switchMap, take } from 'rxjs/operators';
 import { ApiService } from '@ec-core/services/api.service';
 import { IMessage } from '@ec-shared/models/message';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat-window',
@@ -57,22 +57,17 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       const roomMessages = res.sort((a, b) => {
         return a.timestamp - b.timestamp;
       });
-      console.log('Message', res);
-      let something = res.sort((a, b) => {
-        return a.timestamp - b.timestamp;
-      });
       this.isScrollUpdateNeeded = true;
       this.autoScrollDown = true;
       this.messages = roomMessages;
     });
 
-    this.conversationalController.getSelectedMessage().subscribe((selectedMessage) => {
-      if (!selectedMessage)
-      {
-        return;
+    this.conversationalController.getSelectedMessage().pipe(take(1)).subscribe((selectedMessage) => {
+      console.log('[Selected message] ', selectedMessage);
+      if (selectedMessage) {
+        this.conversationalController.forwardMessage(selectedMessage);
       }
-      this.conversationalController.forwardMessage(selectedMessage);
-    })
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -83,7 +78,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.conversationalController.sendMessage(this.message.value);
   }
 
-  removeMessage(message:IMessage) {
+  removeMessage(message: IMessage) {
     this.conversationalController.removeMessage(message);
   }
 
@@ -114,6 +109,5 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.scrollTop = element.scrollTop;
     this.isScrollUpdateNeeded = true;
   }
-
 }
 
