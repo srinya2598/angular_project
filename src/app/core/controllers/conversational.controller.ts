@@ -22,7 +22,7 @@ import {
 } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
 import { IMessage } from '@ec-shared/models/message';
-import { catchError, concatMap, filter, map, reduce, skip, switchMap, take, tap } from 'rxjs/operators';
+import { catchError, concatMap, filter, finalize, map, reduce, skip, switchMap, take, tap } from 'rxjs/operators';
 import { Constants, MessageType } from '@ec-shared/utils/constants';
 import { ApiService } from '@ec-core/services/api.service';
 import { BehaviorSubject, combineLatest, Observable, forkJoin } from 'rxjs';
@@ -31,7 +31,7 @@ import { of } from 'rxjs';
 import { NotificationService } from '@ec-core/services/notification.service';
 import { getLoggedInUser } from '../../auth/reducer';
 import { State as AuthState } from '../../auth/reducer/';
-import {getSelectedMessage, getSelectedProductUserDetails, State as ProductState} from '../../dashboard/reducers/';
+import { getSelectedMessage, getSelectedProductUserDetails, State as ProductState } from '../../dashboard/reducers/';
 import { IUser } from '@ec-shared/models/users';
 
 @Injectable({
@@ -39,6 +39,8 @@ import { IUser } from '@ec-shared/models/users';
 })
 export class ConversationalController {
   isChannelSetup = false;
+  uploadPercent: BehaviorSubject<number>;
+  downloadUrlSubject: BehaviorSubject<string>;
 
   constructor(private dbService: DbService,
               private chatStore: Store<State>,
@@ -48,6 +50,8 @@ export class ConversationalController {
               private productState: Store<ProductState>) {
     this.setUpMessageChannel();
     this.fetchMessages();
+    this.uploadPercent = new BehaviorSubject<number>(0);
+    this.downloadUrlSubject = new BehaviorSubject('null');
   }
 
   sendMessage(body: string) {
@@ -340,6 +344,20 @@ export class ConversationalController {
         console.log(message.text);
       });
     });
+  }
+
+  attachImageFile(file: File): BehaviorSubject<any>[] {
+    const fileName = file.name;
+    let roomId = this.getSelectedRoomId().subscribe( res => roomId = res);
+    const ref = this.apiService.getAttachedFileRef(roomId, fileName);
+    const task = this.apiService.uploadAttachedFile(fileName, file, ref);
+    task.percentageChanges().subscribe(percent => this.uploadPercent.next(percent));
+    task.snapshotChanges().pipe(
+      finalize(() => ref.getDownloadURL().subscribe(url => this.downloadUrlSubject.next(url)))
+    ).subscribe(null, (error) => {
+      this.notificationService.error(error.message);
+    });
+    return [this.uploadPercent, this.downloadUrlSubject];
   }
 }
 
