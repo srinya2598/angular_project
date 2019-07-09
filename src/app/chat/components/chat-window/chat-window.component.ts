@@ -131,6 +131,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     const response = this.conversationalController.attachImageFile(event.target.files[0]);
     response[0].subscribe(percent => this.uploadPercent = percent);
     response[1].subscribe(res => this.downloadUrl = res);
+    console.log(this.uploadPercent);
     console.log(this.downloadUrl);
     this.dialog.open(ImageContainerComponent, {
       width: '50%',

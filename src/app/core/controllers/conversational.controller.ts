@@ -350,7 +350,8 @@ export class ConversationalController {
 
   attachImageFile(file: File): BehaviorSubject<any>[] {
     const fileName = file.name;
-    let roomId = this.getSelectedRoomId().subscribe(res => roomId = res);
+    let roomId: string;
+    this.getSelectedRoomId().subscribe(res => roomId = res);
     const ref = this.apiService.getAttachedFileRef(roomId, fileName);
     const task = this.apiService.uploadAttachedFile(fileName, file, ref);
     task.percentageChanges().subscribe(percent => this.uploadPercent.next(percent));
@@ -363,6 +364,9 @@ export class ConversationalController {
   }
 
   sendFile(downloadUrl: string, caption: string) {
+    if (!downloadUrl) {
+      return;
+    }
     let selectedUserId: string;
     let selectedRoomId: string;
     const userId = this.apiService.getItem(Constants.USER_UID);
@@ -379,7 +383,7 @@ export class ConversationalController {
       receiver: selectedUserId,
       image: {
         image_url: downloadUrl,
-        caption: caption || ' '
+        caption: caption || ''
       }
     };
     this.apiService.sendMessage(userId, message).subscribe(() => {

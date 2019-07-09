@@ -11,18 +11,19 @@ import {ConversationalController} from '@ec-core/controllers/conversational.cont
 export class ImageContainerComponent implements OnInit {
   downloadUrl: string;
   uploadPercentage = 0;
-  message: FormControl;
+  caption: FormControl;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data,
               private conversationalController: ConversationalController) {
     this.downloadUrl = data.imageUrl;
     this.uploadPercentage = data.uploadPercent;
+    this.caption = new FormControl(null);
   }
 
   ngOnInit() {
   }
 
   sendFile() {
-    this.conversationalController.sendFile(this.downloadUrl, this.message.value);
+    this.conversationalController.sendFile(this.downloadUrl, this.caption.value);
   }
 }

@@ -131,7 +131,7 @@ export class ApiService {
   }
 
   getAttachedFileRef(roomId: string, fileName: string): AngularFireStorageReference {
-    return this.storage.ref(`chat-images/${roomId}/${fileName}`);
+    return this.storage.ref(`chat-images/${roomId + fileName}`);
   }
 }
 
