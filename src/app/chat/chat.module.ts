@@ -7,6 +7,7 @@ import { ChatWindowComponent } from './components/chat-window/chat-window.compon
 import { ChatBubbleComponent } from './components/chat-bubble/chat-bubble.component';
 import { ChatLayoutComponent } from './components/chat-layout/chat-layout.component';
 import { ChatContainerComponent } from './components/chat-container/chat-container.component';
+import { ImageContainerComponent } from './components/image-container/image-container.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ChatContainerComponent } from './components/chat-container/chat-contain
     ChatWindowComponent,
     ChatBubbleComponent,
     ChatLayoutComponent,
-    ChatContainerComponent
+    ChatContainerComponent,
+    ImageContainerComponent
   ],
   imports: [
     SharedModule,

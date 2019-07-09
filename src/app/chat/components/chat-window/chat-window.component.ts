@@ -1,13 +1,15 @@
-import { AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ConversationalController } from '@ec-core/controllers/conversational.controller';
-import { IUser } from '@ec-shared/models/users';
-import { switchMap, take } from 'rxjs/operators';
-import { ApiService } from '@ec-core/services/api.service';
-import { IMessage } from '@ec-shared/models/message';
-import { Router } from '@angular/router';
-import { CommonUtils } from '@ec-shared/utils/common.utils';
-import { NotificationService } from '@ec-core/services/notification.service';
+import {AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {ConversationalController} from '@ec-core/controllers/conversational.controller';
+import {IUser} from '@ec-shared/models/users';
+import {switchMap, take} from 'rxjs/operators';
+import {ApiService} from '@ec-core/services/api.service';
+import {IMessage} from '@ec-shared/models/message';
+import {Router} from '@angular/router';
+import {CommonUtils} from '@ec-shared/utils/common.utils';
+import {NotificationService} from '@ec-core/services/notification.service';
+import {MatDialog} from '@angular/material';
+import {ImageContainerComponent} from '../image-container/image-container.component';
 
 @Component({
   selector: 'app-chat-window',
@@ -33,7 +35,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   constructor(private conversationalController: ConversationalController,
               private apiService: ApiService,
               private router: Router,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private dialog: MatDialog) {
     this.message = new FormControl(null);
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
       this.apiService.getUserDetails(id).pipe(take(1)).subscribe((res: IUser) => {
@@ -129,6 +132,18 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     response[0].subscribe(percent => this.uploadPercent = percent);
     response[1].subscribe(res => this.downloadUrl = res);
     console.log(this.downloadUrl);
+    this.dialog.open(ImageContainerComponent, {
+      width: '90%',
+      data: {
+        imageUrl: this.downloadUrl,
+        uploadPercent: this.uploadPercent
+      }
+    });
+
+
+
   }
+
+
 }
 

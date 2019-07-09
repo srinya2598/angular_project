@@ -348,7 +348,7 @@ export class ConversationalController {
 
   attachImageFile(file: File): BehaviorSubject<any>[] {
     const fileName = file.name;
-    let roomId = this.getSelectedRoomId().subscribe( res => roomId = res);
+    let roomId = this.getSelectedRoomId().subscribe(res => roomId = res);
     const ref = this.apiService.getAttachedFileRef(roomId, fileName);
     const task = this.apiService.uploadAttachedFile(fileName, file, ref);
     task.percentageChanges().subscribe(percent => this.uploadPercent.next(percent));
@@ -358,6 +358,36 @@ export class ConversationalController {
       this.notificationService.error(error.message);
     });
     return [this.uploadPercent, this.downloadUrlSubject];
+  }
+
+  sendFile(downloadUrl: string, caption: string) {
+    let selectedUserId: string;
+    let selectedRoomId: string;
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    this.getSelectedUserId().subscribe(res => selectedUserId = res
+    );
+    this.getSelectedRoomId().subscribe(res => selectedRoomId = res);
+    const message: IMessage = {
+      id: uuid(),
+      type: MessageType.IMAGE,
+      roomId: selectedRoomId,
+      timestamp: new Date().getTime(),
+      sender: userId,
+      text: null,
+      receiver: selectedUserId,
+      image: {
+        image_url: downloadUrl,
+        caption: caption || ''
+      }
+    };
+    this.apiService.sendMessage(userId, message).subscribe(() => {
+      this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
+        this.chatStore.dispatch(new SendMessage(message));
+      });
+    })
+
+
+    ;
   }
 }
 
