@@ -222,7 +222,7 @@ export function productCategoryReducer(state: ProductCategoryState = initialProd
     case DashboardActions.FETCH_CART_PRODUCT_SUCCESS:
       return {
         ...state,
-        cartProducts: action.payload
+        cartProducts: action.payload || []
       };
     case DashboardActions.SET_SELECTED_PRODUCT_USER_DETAILS:
       return {

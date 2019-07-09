@@ -11,12 +11,14 @@ import { Constants } from '@ec-shared/utils/constants';
 export class ChatBubbleComponent implements OnInit {
   @Input() message: IMessage;
   @Output() removeMessage: EventEmitter<IMessage>;
-  userId: string;
+  @Output() forwardMessage: EventEmitter<string>;
   time: any;
+  userId: string;
 
   constructor(private apiService: ApiService) {
     this.removeMessage = new EventEmitter();
     this.userId = this.apiService.getItem(Constants.USER_UID);
+    this.forwardMessage = new EventEmitter();
   }
 
 
@@ -26,5 +28,9 @@ export class ChatBubbleComponent implements OnInit {
 
   deleteMessage() {
     this.removeMessage.emit(this.message);
+  }
+
+  forward() {
+    this.forwardMessage.emit(this.message.text);
   }
 }
