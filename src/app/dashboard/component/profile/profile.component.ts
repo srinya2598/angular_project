@@ -99,6 +99,5 @@ export class ProfileComponent implements OnInit, OnDestroy {
 export enum ButtonText {
   EDIT = 'Edit',
   SUBMIT = 'Submit'
-
 }
 

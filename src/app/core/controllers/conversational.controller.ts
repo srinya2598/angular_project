@@ -354,7 +354,11 @@ export class ConversationalController {
     this.getSelectedRoomId().subscribe(res => roomId = res);
     const ref = this.apiService.getAttachedFileRef(roomId, fileName);
     const task = this.apiService.uploadAttachedFile(fileName, file, ref);
-    task.percentageChanges().subscribe(percent => this.uploadPercent.next(percent));
+    task.percentageChanges().subscribe(percent =>
+    {
+      this.uploadPercent.next(percent);
+      console.log(this.uploadPercent);
+    });
     task.snapshotChanges().pipe(
       finalize(() => ref.getDownloadURL().subscribe(url => this.downloadUrlSubject.next(url)))
     ).subscribe(null, (error) => {
