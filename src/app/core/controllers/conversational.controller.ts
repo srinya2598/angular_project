@@ -47,7 +47,7 @@ export class ConversationalController {
               private authStore: Store<AuthState>,
               private productState: Store<ProductState>) {
     this.setUpMessageChannel();
-    this.fetchMessage();
+    this.fetchMessages();
   }
 
   sendMessage(body: string) {
@@ -72,8 +72,8 @@ export class ConversationalController {
 
   }
 
-   fetchRooms() {
-    console.log("fetch rooms");
+  fetchRooms() {
+    console.log('fetch rooms');
     let rooms: IRoom[] = [];
     const userId = this.apiService.getItem(Constants.USER_UID);
     let isRoomsLoaded$ = this.chatStore.select(getIsRoomsLoaded);
@@ -92,7 +92,7 @@ export class ConversationalController {
         return;
       }
       let rooms = res;
-      console.log("Null rooms",rooms);
+      console.log('Null rooms', rooms);
       const trigger = new BehaviorSubject<string>(rooms.shift());
       trigger.asObservable().pipe(
         concatMap((r: string) => {
@@ -223,13 +223,13 @@ export class ConversationalController {
   }
 
   private fetchMessages() {
-    console.log("fetch msg");
+    console.log('fetch msg');
     const userId = this.apiService.getItem(Constants.USER_UID);
     this.chatStore.select(getIsMessagesLoaded).pipe(take(1)).subscribe(isLoaded => {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
+          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -240,7 +240,7 @@ export class ConversationalController {
   }
 
   private setUpMessageChannel() {
-    console.log("setup");
+    console.log('setup');
     if (this.isChannelSetup) {
       return;
     }
@@ -300,6 +300,9 @@ export class ConversationalController {
     const query = this.dbService.getCollection(RxCollections.MESSAGES).find().where('id').eq(message.id);
     query.remove().then(() => {
       this.chatStore.dispatch(new RemoveMessage(message));
+      this.notificationService.success('Message deleted successfully!');
+    }).catch((e) => {
+      this.notificationService.error('Some error encountered while deleting the message!');
     });
   }
 }

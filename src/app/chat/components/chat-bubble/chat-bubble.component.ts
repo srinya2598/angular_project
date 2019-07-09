@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IMessage } from '@ec-shared/models/message';
+import { ApiService } from '@ec-core/services/api.service';
+import { Constants } from '@ec-shared/utils/constants';
 
 @Component({
   selector: 'app-chat-bubble',
@@ -9,11 +11,12 @@ import { IMessage } from '@ec-shared/models/message';
 export class ChatBubbleComponent implements OnInit {
   @Input() message: IMessage;
   @Output() removeMessage: EventEmitter<IMessage>;
+  userId: string;
   time: any;
 
-  constructor() {
+  constructor(private apiService: ApiService) {
     this.removeMessage = new EventEmitter();
-
+    this.userId = this.apiService.getItem(Constants.USER_UID);
   }
 
 
