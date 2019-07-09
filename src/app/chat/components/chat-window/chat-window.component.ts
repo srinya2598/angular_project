@@ -133,7 +133,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     response[1].subscribe(res => this.downloadUrl = res);
     console.log(this.downloadUrl);
     this.dialog.open(ImageContainerComponent, {
-      width: '50%',
+      width: '60%',
       data: {
         imageUrl: this.downloadUrl,
         uploadPercent: this.uploadPercent
