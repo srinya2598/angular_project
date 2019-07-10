@@ -54,7 +54,7 @@ export class ConversationalController {
     this.setUpMessageChannel();
     this.fetchMessages();
     this.uploadPercent = new BehaviorSubject<number>(0);
-    this.downloadUrlSubject = new BehaviorSubject('null');
+    this.downloadUrlSubject = new BehaviorSubject(null);
   }
 
   sendMessage(body: string) {
@@ -357,8 +357,7 @@ export class ConversationalController {
     task.percentageChanges().subscribe(percent =>
     {
       this.uploadPercent.next(percent);
-      console.log(this.uploadPercent);
-    });
+      });
     task.snapshotChanges().pipe(
       finalize(() => ref.getDownloadURL().subscribe(url => this.downloadUrlSubject.next(url)))
     ).subscribe(null, (error) => {
@@ -383,7 +382,6 @@ export class ConversationalController {
       roomId: selectedRoomId,
       timestamp: new Date().getTime(),
       sender: userId,
-      text: null,
       receiver: selectedUserId,
       image: {
         image_url: downloadUrl,

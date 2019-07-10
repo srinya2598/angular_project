@@ -31,6 +31,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   @ViewChild('chatContainer') chatContainer: ElementRef;
   uploadPercent = 0;
   downloadUrl = null;
+  showSpinner = false;
 
 
   constructor(private conversationalController: ConversationalController,
@@ -128,20 +129,40 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       this.notificationService.error('File type not supported');
       return;
     }
-
+    this.showSpinner = true;
     const response = this.conversationalController.attachImageFile(event.target.files[0]);
-    response[0].subscribe(percent => this.uploadPercent = percent);
-    response[1].subscribe(res => this.downloadUrl = res);
-    console.log(this.downloadUrl);
-    this.dialog.open(ImageContainerComponent, {
-      width: '60%',
-      data: {
-        imageUrl: this.downloadUrl,
-        uploadPercent: this.uploadPercent
+    response[0].subscribe(percent => {
+        this.uploadPercent = percent,
+
+          console.log(this.uploadPercent);
       }
+    );
+    response[1].subscribe(res => {
+      this.downloadUrl = res,
+        console.log(this.downloadUrl);
+      if (res) {
+        this.showSpinner = false;
+        if(CommonUtils.isOnMobile()){
+          this.dialog.open(ImageContainerComponent, {
+            width: '100%',
+            data: {
+              imageUrl: this.downloadUrl,
+              uploadPercent: this.uploadPercent
+            }
+          });
+        } else {
+          this.dialog.open(ImageContainerComponent, {
+            width: '60%',
+            data: {
+              imageUrl: this.downloadUrl,
+              uploadPercent: this.uploadPercent
+            }
+          });
+        }
+
+      }
+
     });
-
-
 
   }
 

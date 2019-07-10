@@ -1,5 +1,5 @@
 @import "~src/variables";
-
+@import  url(https://fonts.googleapis.com/css?family=Montserrat);
 .chat-element {
   padding: 20px;
 
@@ -55,8 +55,60 @@ hr {
     margin-top: 5px;
   }
 
- &__spinner {
-   color: #10A881;
-   position: center;
- }
+
 }
+$width: 35px;
+$height: 35px;
+$bounce_height: 50px;
+body {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  font-family: Montserrat;
+}
+.wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.text {
+  color: #192A56;
+  display: inline-block;
+  margin-left: 5px;
+}
+.bounceball {
+  position: relative;
+  display: inline-block;
+  height: 57px;
+  width: $width;
+  &:before {
+    position: absolute;
+    content: '';
+    display: block;
+    top: 0;
+    width: $width;
+    height: $height;
+    border-radius: 50%;
+    background-color: #192A56;
+    transform-origin: 50%;
+    animation: bounce 500ms alternate infinite ease;
+  }
+}
+@keyframes bounce {
+  0% {
+    top: $bounce_height;
+    height: 15px;
+    border-radius: 60px 60px 20px 20px;
+    transform: scaleX(2);
+  }
+  35% {
+    height: $height;
+    border-radius: 50%;
+    transform: scaleX(1);
+  }
+  100% {
+    top: 0;
+  }
+}
+

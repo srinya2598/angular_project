@@ -3,7 +3,7 @@ export interface IMessage {
   roomId: string;
   type: string;
   timestamp: number;
-  text: string;
+  text?: string;
   sender: string;
   receiver: string;
   audio?: IAudio;
