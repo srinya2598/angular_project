@@ -19,7 +19,12 @@
 
   </div>
     <div #chatContainer class="chat-window__message-area">
-      <mat-spinner  *ngIf="showSpinner"></mat-spinner>
+      <div class="wrap" *ngIf="showSpinner">
+        <div class="loading">
+          <div class="bounceball"></div>
+          <div class="text">LOADING</div>
+        </div>
+      </div>
       <ng-container *ngFor="let msg of messages">
         <app-chat-bubble (removeMessage)="removeMessage($event)" (forwardMessage)="forward($event)" [message]="msg"></app-chat-bubble>
       </ng-container>

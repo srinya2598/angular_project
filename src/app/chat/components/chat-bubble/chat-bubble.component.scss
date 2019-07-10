@@ -9,53 +9,128 @@ body {
   flex-direction: column;
 }
 
-.from-me {
+.text_from-me {
   color:white;
   background:$color-primary;
-  border-radius:25px 25px 5px 25px;
+  border-radius:20px 20px 5px 20px;
   max-width: 255px;
   word-wrap: break-word;
   margin-bottom: 12px;
   line-height: 24px;
   position:relative;
-  padding:10px 20px;
+  padding:10px 15px;
   float: right;
   margin-right: 20px;
   clear: both;
   margin-top: 10px;
+  .stamp {
+    font-size: 8px;
+    float: right;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+  .buttonx {
+    size: 2px;
+    float: right;
+    padding-top: 0;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
-.from-them {
+.text_from-them {
   background:#E5E5EA;
   color:black;
-  border-radius: 5px 25px 25px 25px;
+  border-radius: 5px 20px 20px 20px;
   max-width: 255px;
   word-wrap: break-word;
   margin-bottom: 12px;
   line-height: 24px;
   position:relative;
-  padding:10px 20px;
+  padding:10px 15px;
   margin-left: 20px;
   clear: both;
   margin-top: 10px;
+  .stamp {
+    font-size: 8px;
+    float: right;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+  .buttonx {
+    size: 2px;
+    float: right;
+    padding-top: 0;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
 
-
-#stamp {
-  font-size: 10px;
-  float: right;
-  margin-left: 10px;
-  margin-top: 5px;
-  position: absolute;
-}
-
-.menu-button {
-  margin-bottom: 5px;
-  font-size: 5px;
-  float: right;
-  //margin-left: 10px;
-  position: relative;
-}
 img{
   height: 75%;
   width: 75%;
+}
+.caption {
+  align-content: start;
+}
+
+.image_from-me {
+  color:white;
+  background:$color-primary;
+  border-radius:8px 8px 5px 8px;
+  max-width: 255px;
+  word-wrap: break-word;
+  margin-bottom: 12px;
+  position:relative;
+  padding:10px 15px;
+  float: right;
+  margin-right: 20px;
+  clear: both;
+  margin-top: 10px;
+  .stamp {
+    font-size: 8px;
+    float: right;
+    margin-left: 0;
+  }
+  .buttonx {
+    size: 2px;
+    float: right;
+    padding-top: 0;
+    padding-bottom: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+.image_from-them {
+  background:#E5E5EA;
+  color:black;
+  border-radius: 5px 8px 8px 8px;
+  max-width: 255px;
+  word-wrap: break-word;
+  margin-bottom: 12px;
+  position:relative;
+  padding:10px 15px;
+  margin-left: 20px;
+  clear: both;
+  margin-top: 10px;
+  .stamp {
+    font-size: 8px;
+    float: right;
+    margin-left: 0;
+  }
+  .buttonx {
+    size: 2px;
+    float: right;
+    padding-top: 0;
+    padding-bottom: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }

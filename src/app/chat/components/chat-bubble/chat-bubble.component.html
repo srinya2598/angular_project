@@ -1,43 +1,55 @@
-<p *ngIf="userId===message.sender && message.type==textMessage" class="from-me">
+<div *ngIf="userId===message.sender && message.type==textMessage" class="text_from-me">
   {{message.text}}
-  <span id="stamp">
+  <span class="stamp">
     {{time | date: 'shortTime'}}
   </span>
+  <span class="buttonx">
     <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
-     <mat-icon>keyboard_arrow_down</mat-icon>
-   </button>
-</p>
-<p *ngIf="userId!==message.sender && message.type==textMessage" class="from-them">
-    {{message.text}}
-  <span id="stamp">
-      {{time | date: 'shortTime'}}
-  </span>
-   <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>keyboard_arrow_down</mat-icon>
    </button>
-</p>
+  </span>
+</div>
+<div *ngIf="userId!==message.sender && message.type==textMessage" class="text_from-them">
+    {{message.text}}
+  <span class="stamp">
+      {{time | date: 'shortTime'}}
+  </span>
+  <span class="buttonx">
+    <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>keyboard_arrow_down</mat-icon>
+   </button>
+  </span>
+</div>
 
 
-<p *ngIf="userId==message.sender && message.type==imageMessage" class="from-me">
+<div *ngIf="userId==message.sender && message.type==imageMessage" class="image_from-me">
   <img [src] = "message.image.image_url">
+  <div class="caption">
   {{message.image.caption}}
-  <span id="stamp">
+  </div>
+  <span class="stamp">
     {{time | date: 'shortTime'}}
   </span>
-  <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
+  <span class="buttonx">
+    <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>keyboard_arrow_down</mat-icon>
-  </button>
-</p>
-<p *ngIf="userId!==message.sender && message.type==imageMessage" class="from-them">
+   </button>
+  </span>
+</div>
+<div *ngIf="userId!==message.sender && message.type==imageMessage" class="image_from-them">
   <img [src] = "message.image.image_url">
+  <div class="caption">
   {{message.image.caption}}
-  <span id="stamp">
+  </div>
+  <span class="stamp">
       {{time | date: 'shortTime'}}
   </span>
-  <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
+  <span class="buttonx">
+    <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>keyboard_arrow_down</mat-icon>
-  </button>
-</p>
+   </button>
+  </span>
+</div>
 
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="deleteMessage()">
