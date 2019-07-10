@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {FormControl} from '@angular/forms';
 import {ConversationalController} from '@ec-core/controllers/conversational.controller';
 
@@ -12,10 +12,12 @@ export class ImageContainerComponent implements OnInit {
   downloadUrl: string;
   uploadPercentage = 0;
   caption: FormControl;
+  imageSent = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data,
               private conversationalController: ConversationalController,
-              private dialog: MatDialog) {
+              public dialogRef: MatDialogRef<ImageContainerComponent>,
+  ) {
     this.downloadUrl = data.imageUrl;
     this.uploadPercentage = data.uploadPercent;
     this.caption = new FormControl(null);
@@ -26,6 +28,12 @@ export class ImageContainerComponent implements OnInit {
 
   sendFile() {
     this.conversationalController.sendFile(this.downloadUrl, this.caption.value);
-    this.dialog.closeAll();
+    this.imageSent = true;
+    this.dialogRef.close(this.imageSent);
+
+  }
+  imageNotUploaded() {
+
+    this.dialogRef.close(this.imageSent);
   }
 }

@@ -1,4 +1,9 @@
+
+<button class="close-button" mat-icon-button (click)="imageNotUploaded()" >
+  <mat-icon>highlight_off</mat-icon>
+</button>
 <div class="container">
+
   <img class="attached-file" [src]="downloadUrl" alt="File not uploaded!">
   <div class="caption" fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
     <input fxFlex="1 1 auto" type="text" placeholder="Add a caption" [formControl]="caption">

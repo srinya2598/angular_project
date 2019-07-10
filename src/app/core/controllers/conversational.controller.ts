@@ -397,5 +397,18 @@ export class ConversationalController {
 
     ;
   }
+
+  deleteAttachtedFile(file: File) {
+    const fileName = file.name;
+    let roomId: string;
+    this.getSelectedRoomId().subscribe(res => roomId = res);
+    const ref = this.apiService.getAttachedFileRef(roomId, fileName);
+    this.apiService.deleteAttachedFile(ref).then(() => {
+      console.log('image not uploaded');
+    }).catch(() => {
+      console.log('image uploaded successfully');
+    })
+    ;
+  }
 }
 

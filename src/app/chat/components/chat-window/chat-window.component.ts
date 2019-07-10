@@ -8,7 +8,7 @@ import {IMessage} from '@ec-shared/models/message';
 import {Router} from '@angular/router';
 import {CommonUtils} from '@ec-shared/utils/common.utils';
 import {NotificationService} from '@ec-core/services/notification.service';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatDialogRef} from '@angular/material';
 import {ImageContainerComponent} from '../image-container/image-container.component';
 import { MessageType } from '@ec-shared/utils/constants';
 
@@ -32,13 +32,13 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   uploadPercent = 0;
   downloadUrl = null;
   showSpinner = false;
-
+  dialogRef: MatDialogRef<ImageContainerComponent>;
 
   constructor(private conversationalController: ConversationalController,
               private apiService: ApiService,
               private router: Router,
               private notificationService: NotificationService,
-              private dialog: MatDialog) {
+              public dialog: MatDialog) {
     this.message = new FormControl(null);
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
       this.apiService.getUserDetails(id).pipe(take(1)).subscribe((res: IUser) => {
@@ -78,6 +78,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
         this.conversationalController.forwardMessage(selectedMessage);
       }
     });
+
   }
 
   ngAfterViewChecked(): void {
@@ -142,8 +143,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
         console.log(this.downloadUrl);
       if (res) {
         this.showSpinner = false;
-        if(CommonUtils.isOnMobile()){
-          this.dialog.open(ImageContainerComponent, {
+        if (CommonUtils.isOnMobile()) {
+          this.dialogRef = this.dialog.open(ImageContainerComponent, {
             width: '100%',
             data: {
               imageUrl: this.downloadUrl,
@@ -151,7 +152,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
             }
           });
         } else {
-          this.dialog.open(ImageContainerComponent, {
+          this.dialogRef = this.dialog.open(ImageContainerComponent, {
             width: '60%',
             data: {
               imageUrl: this.downloadUrl,
@@ -163,6 +164,14 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       }
 
     });
+    this.dialogRef.afterClosed().subscribe((res) => {
+        this.downloadUrl = null;
+        console.log(this.downloadUrl, 'download url is null');
+        if (!res) {
+          this.conversationalController.deleteAttachtedFile(event);
+        }
+      }
+    );
 
   }
 

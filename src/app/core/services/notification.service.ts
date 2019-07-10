@@ -9,7 +9,7 @@ export class NotificationService {
   constructor(private snackBar: MatSnackBar) {
   }
 
-  success(message: string, duration = 3000) {
+  success(message: string, duration = 7000) {
     this.snackBar.openFromComponent(NotificationComponent, {
       data: {
         message: message,
