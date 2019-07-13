@@ -373,8 +373,7 @@ export class ConversationalController {
     let selectedUserId: string;
     let selectedRoomId: string;
     const userId = this.apiService.getItem(Constants.USER_UID);
-    this.getSelectedUserId().subscribe(res => selectedUserId = res
-    );
+    this.getSelectedUserId().subscribe(res => selectedUserId = res);
     this.getSelectedRoomId().subscribe(res => selectedRoomId = res);
     const message: IMessage = {
       id: uuid(),
@@ -389,26 +388,9 @@ export class ConversationalController {
       }
     };
     this.apiService.sendMessage(userId, message).subscribe(() => {
-      this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
-        this.chatStore.dispatch(new SendMessage(message));
-      });
-    })
-
-
-    ;
-  }
-
-  deleteAttachtedFile(file: File) {
-    const fileName = file.name;
-    let roomId: string;
-    this.getSelectedRoomId().subscribe(res => roomId = res);
-    const ref = this.apiService.getAttachedFileRef(roomId, fileName);
-    this.apiService.deleteAttachedFile(ref).then(() => {
-      console.log('image not uploaded');
-    }).catch(() => {
-      console.log('image uploaded successfully');
-    })
-    ;
+      this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+      this.chatStore.dispatch(new SendMessage(message));
+    });
   }
 }
 

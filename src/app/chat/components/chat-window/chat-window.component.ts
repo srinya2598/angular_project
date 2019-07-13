@@ -143,14 +143,21 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.dialogRef = this.dialog.open(ImageContainerComponent, dialogData);
     this.dialogRef.afterClosed().subscribe((data: { send: boolean, caption: string }) => {
       console.log('closed', data);
-
-    });
-    // this.showSpinner = true;
-    const response = this.conversationalController.attachImageFile(event.target.files[0]);
-    response[0].subscribe(percent => {
-        this.uploadPercent = percent;
+      if (data && data.send) {
+        this.sendImage(dialogData.data.file, data.caption);
       }
-    );
+    });
+  }
+
+  private sendImage(file: File, caption: string = '') {
+    this.showSpinner = true;
+    let response = this.conversationalController.attachImageFile(file);
+    response[1].subscribe((downloadUrl: string) => {
+      if (downloadUrl) {
+        this.conversationalController.sendFile(downloadUrl, caption);
+        this.showSpinner = false;
+      }
+    });
   }
 
 
