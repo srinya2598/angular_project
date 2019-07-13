@@ -281,7 +281,11 @@ export class CommonUtils {
         sender: message.sender,
         receiver: message.receiver,
         type: message.type,
-        timestamp: message.timestamp
+        timestamp: message.timestamp,
+        image: {
+          image_url: message.image.image_url || '',
+          caption: message.image.caption || ''
+        }
       };
       if (sEmailRegex.test(message.text)) {
         console.log('Matched');

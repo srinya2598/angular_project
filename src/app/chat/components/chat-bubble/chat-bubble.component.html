@@ -1,4 +1,4 @@
-<ng-container *ngIf="message.type == MessageType.TEXT">
+<div *ngIf="message.type === MessageType.TEXT">
   <div *ngIf="userId===message.sender" class="text_from-me" [innerHTML]="message.text">
     <span class="stamp">
     {{time | date: 'shortTime'}}
@@ -19,9 +19,9 @@
    </button>
   </span>
   </div>
-</ng-container>
+</div>
 
-<ng-container *ngIf="message.type == MessageType.IMAGE">
+<div *ngIf="message.type === MessageType.IMAGE">
   <div *ngIf="userId==message.sender" class="image_from-me">
     <img [src]="message.image.image_url">
     <div class="caption">
@@ -50,7 +50,7 @@
    </button>
   </span>
   </div>
-</ng-container>
+</div>
 
 
 <mat-menu #menu="matMenu">
