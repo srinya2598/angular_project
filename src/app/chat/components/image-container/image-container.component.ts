@@ -21,7 +21,7 @@ export class ImageContainerComponent implements OnInit {
     let reader = new FileReader();
     reader.readAsDataURL(this.file);
     reader.onload = (event) => {
-      this.imageUrl = event.target.result;
+      this.imageUrl = event.target['result'];
     };
   }
 
