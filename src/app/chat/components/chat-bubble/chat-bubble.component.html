@@ -1,6 +1,5 @@
 <ng-container *ngIf="message.type == MessageType.TEXT">
-  <div *ngIf="userId===message.sender" class="text_from-me">
-    {{message.text}}
+  <div *ngIf="userId===message.sender" class="text_from-me" [innerHTML]="message.text">
     <span class="stamp">
     {{time | date: 'shortTime'}}
   </span>
@@ -10,8 +9,7 @@
    </button>
   </span>
   </div>
-  <div *ngIf="userId!==message.sender" class="text_from-them">
-    {{message.text}}
+  <div *ngIf="userId!==message.sender" class="text_from-them" [innerHTML]="message.text">
     <span class="stamp">
       {{time | date: 'shortTime'}}
   </span>
@@ -63,5 +61,3 @@
     <span>Forward Message</span>
   </button>
 </mat-menu>
-
-
