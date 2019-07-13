@@ -1,7 +1,7 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
-import {FormControl} from '@angular/forms';
-import {ConversationalController} from '@ec-core/controllers/conversational.controller';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
+import { FormControl } from '@angular/forms';
+import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 
 @Component({
   selector: 'app-image-container',
@@ -9,31 +9,32 @@ import {ConversationalController} from '@ec-core/controllers/conversational.cont
   styleUrls: ['./image-container.component.scss']
 })
 export class ImageContainerComponent implements OnInit {
-  downloadUrl: string;
-  uploadPercentage = 0;
+  file: File;
+  imageUrl: string;
   caption: FormControl;
-  imageSent = false;
+  send = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data,
-              private conversationalController: ConversationalController,
-              public dialogRef: MatDialogRef<ImageContainerComponent>,
+              private dialogRef: MatDialogRef<ImageContainerComponent>
   ) {
-    this.downloadUrl = data.imageUrl;
-    this.uploadPercentage = data.uploadPercent;
     this.caption = new FormControl(null);
+    this.file = data.file;
+    let reader = new FileReader();
+    reader.readAsDataURL(this.file);
+    reader.onload = (event) => {
+      this.imageUrl = event.target.result;
+    };
   }
 
   ngOnInit() {
   }
 
   sendFile() {
-    this.conversationalController.sendFile(this.downloadUrl, this.caption.value);
-    this.imageSent = true;
-    this.dialogRef.close(this.imageSent);
-
+    this.send = true;
+    this.closeDialog();
   }
-  imageNotUploaded() {
 
-    this.dialogRef.close(this.imageSent);
+  closeDialog() {
+    this.dialogRef.close({ send: this.send, caption: this.caption.value });
   }
 }

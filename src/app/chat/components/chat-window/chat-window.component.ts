@@ -1,15 +1,15 @@
-import {AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {ConversationalController} from '@ec-core/controllers/conversational.controller';
-import {IUser} from '@ec-shared/models/users';
-import {switchMap, take} from 'rxjs/operators';
-import {ApiService} from '@ec-core/services/api.service';
-import {IMessage} from '@ec-shared/models/message';
-import {Router} from '@angular/router';
-import {CommonUtils} from '@ec-shared/utils/common.utils';
-import {NotificationService} from '@ec-core/services/notification.service';
-import {MatDialog, MatDialogRef} from '@angular/material';
-import {ImageContainerComponent} from '../image-container/image-container.component';
+import { AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ConversationalController } from '@ec-core/controllers/conversational.controller';
+import { IUser } from '@ec-shared/models/users';
+import { switchMap, take } from 'rxjs/operators';
+import { ApiService } from '@ec-core/services/api.service';
+import { IMessage } from '@ec-shared/models/message';
+import { Router } from '@angular/router';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
+import { NotificationService } from '@ec-core/services/notification.service';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ImageContainerComponent } from '../image-container/image-container.component';
 import { MessageType } from '@ec-shared/utils/constants';
 
 @Component({
@@ -130,49 +130,27 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       this.notificationService.error('File type not supported');
       return;
     }
-    this.showSpinner = true;
+    console.log(event.target.files);
+    let dialogData = {
+      width: '60%',
+      data: {
+        file: event.target.files[0]
+      }
+    };
+    if (CommonUtils.isOnMobile()) {
+      dialogData.width = '100%';
+    }
+    this.dialogRef = this.dialog.open(ImageContainerComponent, dialogData);
+    this.dialogRef.afterClosed().subscribe((data: { send: boolean, caption: string }) => {
+      console.log('closed', data);
+
+    });
+    // this.showSpinner = true;
     const response = this.conversationalController.attachImageFile(event.target.files[0]);
     response[0].subscribe(percent => {
         this.uploadPercent = percent;
-
-          console.log(this.uploadPercent);
       }
     );
-    response[1].subscribe(res => {
-      this.downloadUrl = res;
-        console.log(this.downloadUrl);
-      if (res) {
-        this.showSpinner = false;
-        if (CommonUtils.isOnMobile()) {
-          this.dialogRef = this.dialog.open(ImageContainerComponent, {
-            width: '100%',
-            data: {
-              imageUrl: this.downloadUrl,
-              uploadPercent: this.uploadPercent
-            }
-          });
-        } else {
-          this.dialogRef = this.dialog.open(ImageContainerComponent, {
-            width: '60%',
-            data: {
-              imageUrl: this.downloadUrl,
-              uploadPercent: this.uploadPercent
-            }
-          });
-        }
-
-      }
-
-    });
-    this.dialogRef.afterClosed().subscribe((res) => {
-        this.downloadUrl = null;
-        console.log(this.downloadUrl, 'download url is null');
-        if (!res) {
-          this.conversationalController.deleteAttachtedFile(event);
-        }
-      }
-    );
-
   }
 
 
