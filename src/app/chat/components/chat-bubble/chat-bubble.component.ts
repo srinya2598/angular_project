@@ -17,8 +17,8 @@ export class ChatBubbleComponent implements OnInit {
   MessageType = MessageType;
 
   constructor(private apiService: ApiService) {
-    this.removeMessage = new EventEmitter();
     this.userId = this.apiService.getItem(Constants.USER_UID);
+    this.removeMessage = new EventEmitter();
     this.forwardMessage = new EventEmitter();
   }
 

@@ -10,7 +10,6 @@ import { CommonUtils } from '@ec-shared/utils/common.utils';
 import { NotificationService } from '@ec-core/services/notification.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ImageContainerComponent } from '../image-container/image-container.component';
-import { MessageType } from '@ec-shared/utils/constants';
 
 @Component({
   selector: 'app-chat-window',
@@ -29,8 +28,6 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   private scrollTop: number;
   private autoScrollDown = true;
   @ViewChild('chatContainer') chatContainer: ElementRef;
-  uploadPercent = 0;
-  downloadUrl = null;
   showSpinner = false;
   dialogRef: MatDialogRef<ImageContainerComponent>;
 
