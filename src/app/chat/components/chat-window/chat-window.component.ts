@@ -2,7 +2,7 @@ import { AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild } fro
 import { FormControl } from '@angular/forms';
 import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 import { IUser } from '@ec-shared/models/users';
-import { switchMap, take } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, take } from 'rxjs/operators';
 import { ApiService } from '@ec-core/services/api.service';
 import { IMessage } from '@ec-shared/models/message';
 import { Router } from '@angular/router';
@@ -58,6 +58,12 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       }
       this.showSendMessageButton = true;
     });
+
+    this.searchControl.valueChanges.pipe(
+      filter(value => !!value),
+      distinctUntilChanged(),
+      debounceTime(1000))
+      .subscribe(searchText => console.log(searchText));
 
     this.conversationalController.getSelectedRoomId().pipe(
       switchMap(roomId => {

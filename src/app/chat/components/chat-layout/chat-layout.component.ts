@@ -47,7 +47,6 @@ export class ChatLayoutComponent implements OnInit {
   }
 
   visitChat() {
-    console.log(this.selectedUser);
     this.conversationalController.setSelectedUserId(this.selectedUser.id);
     this.conversationalController.setSelectedRoomId(this.userRoom.id);
     this.router.navigate(['dashboard/chat', CommonUtils.getRoutePath(this.userRoom.id)]);
