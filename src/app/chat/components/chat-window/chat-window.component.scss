@@ -7,6 +7,7 @@
     position: -webkit-sticky;
     position: sticky;
     z-index: 1;
+    height: 70px;
     top: 0;
     background: linear-gradient(to right, lighten($color-primary, 5), lighten($color-primary, 15));
     color: white;
@@ -18,6 +19,10 @@
       border-radius: 50px;
       width: 50px;
       height: 50px;
+    }
+    .search-control {
+      background-color: $color-primary;
+      color: $color-white;
     }
   }
   &__message-area {
@@ -43,6 +48,9 @@
       box-sizing: border-box;
       border: none;
       padding: 8px;
+      &:focus {
+        outline: none;
+      }
     }
     mat-icon {
       color: $color-white;
@@ -50,6 +58,7 @@
     }
   }
 }
+
 body {
   font-family: "Helvetica Neue";
   font-size: 20px;
@@ -64,7 +73,7 @@ input[type = file] {
   display: none;
 }
 
-@import  url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
 $width: 35px;
 $height: 35px;
 $bounce_height: 50px;
@@ -74,17 +83,20 @@ body {
   height: 100vh;
   font-family: Montserrat;
 }
+
 .wrap {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .text {
   color: white;
   display: inline-block;
   margin-left: 5px;
 }
+
 .bounceball {
   position: relative;
   display: inline-block;
@@ -103,6 +115,7 @@ body {
     animation: bounce 500ms alternate infinite ease;
   }
 }
+
 @keyframes bounce {
   0% {
     top: $bounce_height;

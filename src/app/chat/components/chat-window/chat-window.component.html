@@ -1,5 +1,5 @@
 <div class="chat-window">
-  <div class="chat-window__menu-bar" fxLayout="row" fxLayoutAlign="space-between">
+  <div *ngIf="!showSearch" class="chat-window__menu-bar" fxLayout="row" fxLayoutAlign="space-between">
     <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center">
       <avatar *ngIf="!profileUrl" size="50" [name]="firstName" [displayType]="'circle'"></avatar>
       <img *ngIf="profileUrl" [src] = "profileUrl">
@@ -14,10 +14,15 @@
           Attach a File
           <input type="file" (change)="attachImage($event)" >
         </label>
-        <button mat-menu-item>Search</button>
+        <button (click)="searchMessage()" mat-menu-item>Search</button>
       </mat-menu>
     </div>
-
+  </div>
+  <div *ngIf="showSearch" class="chat-window__menu-bar" fxLayout="row">
+    <input fxFlex="1 1 auto" type="text" placeholder="Enter search text" class="form-control search-control" [formControl]="searchControl">
+    <button mat-icon-button>
+      <mat-icon>search</mat-icon>
+    </button>
   </div>
     <div #chatContainer class="chat-window__message-area">
       <div class="wrap" *ngIf="showSpinner">

@@ -42,7 +42,7 @@ export class ChatLayoutComponent implements OnInit {
     this.firstName = this.selectedUser.firstName;
     this.profileUrl = this.selectedUser.profileUrl;
     const lastMessage = this.conversationalController.fetchLastMessage(this.userRoom.id);
-    this.message = lastMessage.text;
+    this.message = lastMessage.text ;
     this.time = new Date(lastMessage.timestamp);
   }
 

@@ -18,11 +18,13 @@ import { ImageContainerComponent } from '../image-container/image-container.comp
 })
 export class ChatWindowComponent implements OnInit, AfterViewChecked {
   message: FormControl;
+  searchControl: FormControl;
   showSendMessageButton = false;
   firstName: string;
   lastName: string;
   profileUrl: string;
   messages: IMessage[];
+  showSearch = false;
   private isScrollUpdateNeeded = true;
   private scrollHeight: number;
   private scrollTop: number;
@@ -37,6 +39,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
               private notificationService: NotificationService,
               public dialog: MatDialog) {
     this.message = new FormControl(null);
+    this.searchControl = new FormControl(null);
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
       this.apiService.getUserDetails(id).pipe(take(1)).subscribe((res: IUser) => {
         console.log('User', res);
@@ -92,27 +95,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.router.navigate(['dashboard/chat/conversations']);
   }
 
-  private updateScroll(): void {
-    if (!this.isScrollUpdateNeeded) {
-      return;
-    }
-    const element = this.chatContainer.nativeElement;
-
-    if (this.autoScrollDown) {
-      try {
-        element.scrollTop = element.scrollHeight;
-      } catch (err) {
-      }
-    } else {
-      try {
-        element.scrollTop = this.scrollTop + (element.scrollHeight - this.scrollHeight);
-      } catch (err) {
-      }
-    }
-
-    this.scrollHeight = element.scrollHeight;
-    this.scrollTop = element.scrollTop;
-    this.isScrollUpdateNeeded = true;
+  searchMessage() {
+    this.showSearch = true;
   }
 
   attachImage(event) {
@@ -154,6 +138,28 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  private updateScroll(): void {
+    if (!this.isScrollUpdateNeeded) {
+      return;
+    }
+    const element = this.chatContainer.nativeElement;
+
+    if (this.autoScrollDown) {
+      try {
+        element.scrollTop = element.scrollHeight;
+      } catch (err) {
+      }
+    } else {
+      try {
+        element.scrollTop = this.scrollTop + (element.scrollHeight - this.scrollHeight);
+      } catch (err) {
+      }
+    }
+
+    this.scrollHeight = element.scrollHeight;
+    this.scrollTop = element.scrollTop;
+    this.isScrollUpdateNeeded = true;
+  }
 
 }
 
