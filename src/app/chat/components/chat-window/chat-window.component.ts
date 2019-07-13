@@ -133,13 +133,13 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.showSpinner = true;
     const response = this.conversationalController.attachImageFile(event.target.files[0]);
     response[0].subscribe(percent => {
-        this.uploadPercent = percent,
+        this.uploadPercent = percent;
 
           console.log(this.uploadPercent);
       }
     );
     response[1].subscribe(res => {
-      this.downloadUrl = res,
+      this.downloadUrl = res;
         console.log(this.downloadUrl);
       if (res) {
         this.showSpinner = false;

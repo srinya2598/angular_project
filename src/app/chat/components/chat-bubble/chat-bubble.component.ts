@@ -14,15 +14,12 @@ export class ChatBubbleComponent implements OnInit {
   @Output() forwardMessage: EventEmitter<string>;
   time: any;
   userId: string;
-  textMessage: string;
-  imageMessage: string;
+  MessageType = MessageType;
 
   constructor(private apiService: ApiService) {
     this.removeMessage = new EventEmitter();
     this.userId = this.apiService.getItem(Constants.USER_UID);
     this.forwardMessage = new EventEmitter();
-    this.textMessage = MessageType.TEXT;
-    this.imageMessage = MessageType.IMAGE;
   }
 
 

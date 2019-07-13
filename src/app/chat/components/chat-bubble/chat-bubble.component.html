@@ -1,63 +1,67 @@
-<div *ngIf="userId===message.sender && message.type==textMessage" class="text_from-me">
-  {{message.text}}
-  <span class="stamp">
-    {{time | date: 'shortTime'}}
-  </span>
-  <span class="buttonx">
-    <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
-    <mat-icon>keyboard_arrow_down</mat-icon>
-   </button>
-  </span>
-</div>
-<div *ngIf="userId!==message.sender && message.type==textMessage" class="text_from-them">
+<ng-container *ngIf="message.type == MessageType.TEXT">
+  <div *ngIf="userId===message.sender" class="text_from-me">
     {{message.text}}
-  <span class="stamp">
-      {{time | date: 'shortTime'}}
-  </span>
-  <span class="buttonx">
-    <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
-    <mat-icon>keyboard_arrow_down</mat-icon>
-   </button>
-  </span>
-</div>
-
-
-<div *ngIf="userId==message.sender && message.type==imageMessage" class="image_from-me">
-  <img [src] = "message.image.image_url">
-  <div class="caption">
-  {{message.image.caption}}
-  </div>
-  <span class="stamp">
+    <span class="stamp">
     {{time | date: 'shortTime'}}
   </span>
-  <span class="buttonx">
+    <span class="buttonx">
     <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>keyboard_arrow_down</mat-icon>
    </button>
   </span>
-</div>
-<div *ngIf="userId!==message.sender && message.type==imageMessage" class="image_from-them">
-  <img [src] = "message.image.image_url">
-  <div class="caption">
-  {{message.image.caption}}
   </div>
-  <span class="stamp">
+  <div *ngIf="userId!==message.sender" class="text_from-them">
+    {{message.text}}
+    <span class="stamp">
       {{time | date: 'shortTime'}}
   </span>
-  <span class="buttonx">
+    <span class="buttonx">
     <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>keyboard_arrow_down</mat-icon>
    </button>
   </span>
-</div>
+  </div>
+</ng-container>
 
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="deleteMessage()">
-        <span>Delete Message</span>
-      </button>
-      <button mat-menu-item (click)="forward()">
-        <span>Forward Message</span>
-      </button>
-    </mat-menu>
+<ng-container *ngIf="message.type == MessageType.IMAGE">
+  <div *ngIf="userId==message.sender" class="image_from-me">
+    <img [src]="message.image.image_url">
+    <div class="caption">
+      {{message.image.caption}}
+    </div>
+    <span class="stamp">
+    {{time | date: 'shortTime'}}
+  </span>
+    <span class="buttonx">
+    <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>keyboard_arrow_down</mat-icon>
+   </button>
+  </span>
+  </div>
+  <div *ngIf="userId!==message.sender" class="image_from-them">
+    <img [src]="message.image.image_url">
+    <div class="caption">
+      {{message.image.caption}}
+    </div>
+    <span class="stamp">
+      {{time | date: 'shortTime'}}
+  </span>
+    <span class="buttonx">
+    <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>keyboard_arrow_down</mat-icon>
+   </button>
+  </span>
+  </div>
+</ng-container>
+
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="deleteMessage()">
+    <span>Delete Message</span>
+  </button>
+  <button mat-menu-item (click)="forward()">
+    <span>Forward Message</span>
+  </button>
+</mat-menu>
 
 
