@@ -2,7 +2,7 @@ import { AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild } fro
 import { FormControl } from '@angular/forms';
 import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 import { IUser } from '@ec-shared/models/users';
-import { debounceTime, distinctUntilChanged, switchMap, take } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap, take } from 'rxjs/operators';
 import { ApiService } from '@ec-core/services/api.service';
 import { IMessage } from '@ec-shared/models/message';
 import { Router } from '@angular/router';
@@ -24,6 +24,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   lastName: string;
   profileUrl: string;
   messages: IMessage[];
+  searchMessages: IMessage[];
   showSearch = false;
   private isScrollUpdateNeeded = true;
   private scrollHeight: number;
@@ -59,12 +60,6 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       this.showSendMessageButton = true;
     });
 
-    this.searchControl.valueChanges.pipe(
-      filter(value => !!value),
-      distinctUntilChanged(),
-      debounceTime(1000))
-      .subscribe(searchText => console.log(searchText));
-
     this.conversationalController.getSelectedRoomId().pipe(
       switchMap(roomId => {
         return this.conversationalController.fetchRoomMessages(roomId);
@@ -80,6 +75,16 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       if (selectedMessage) {
         this.conversationalController.forwardMessage(selectedMessage);
       }
+    });
+
+    this.searchControl.valueChanges.pipe(
+      filter(value => !!value),
+      distinctUntilChanged(),
+      debounceTime(1000)
+    ).subscribe(searchText => {
+      this.searchMessages = CommonUtils.getSearchMessages(this.messages, searchText);
+      this.isScrollUpdateNeeded = true;
+      this.autoScrollDown = true;
     });
 
   }

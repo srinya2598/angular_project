@@ -299,4 +299,11 @@ export class CommonUtils {
 
     return mappedMessages;
   }
+
+  static getSearchMessages(messages: IMessage[], searchText: string) {
+    messages.forEach(message => {
+      message.text = message.text.replace(searchText, '<span class="highlight">$&</span>');
+    });
+    return messages;
+  }
 }
