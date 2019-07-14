@@ -11,6 +11,7 @@ import { NotificationService } from '@ec-core/services/notification.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ImageContainerComponent } from '../image-container/image-container.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MessageType } from '@ec-shared/utils/constants';
 
 @Component({
   selector: 'app-chat-window',
@@ -39,7 +40,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
               private apiService: ApiService,
               private router: Router,
               private notificationService: NotificationService,
-              public dialog: MatDialog) {
+              private dialog: MatDialog,
+              private sanitizer: DomSanitizer) {
     this.message = new FormControl(null);
     this.searchControl = new FormControl(null);
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
@@ -83,8 +85,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(searchText => {
-      this.zone.run(() => this.searchMessages = CommonUtils.getSearchMessages(this.messages, searchText));
-
+      const msg = CommonUtils.getSearchMessages(this.messages.slice(),searchText);
+      this.searchMessages = msg
       this.isScrollUpdateNeeded = true;
       this.autoScrollDown = true;
     });
@@ -138,6 +140,18 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
         this.sendImage(dialogData.data.file, data.caption);
       }
     });
+  }
+
+  private sanitizeHTML(messages:IMessage[]) {
+    let sanitizedMessages = [...messages];
+    sanitizedMessages.forEach(message => {
+      if(message.type === MessageType.TEXT){
+        message.text = this.sanitizer.bypassSecurityTrustHtml(message.text);
+      } else {
+        message.image.caption = this.sanitizer.bypassSecurityTrustHtml(message.image.caption);
+      }
+    });
+    return [...sanitizedMessages];
   }
 
 

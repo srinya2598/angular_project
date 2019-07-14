@@ -295,7 +295,7 @@ export class CommonUtils {
       }
       if (sEmailRegex.test(message.text)) {
         console.log('Matched');
-        sMessage.text = message.text.replace(sEmailRegex, '<a href="mailto:$&">$&</a>').toString();
+        sMessage.text = message.text.toString().replace(sEmailRegex, '<a href="mailto:$&">$&</a>').toString();
       }
       mappedMessages.push(sMessage);
     });
@@ -307,14 +307,16 @@ export class CommonUtils {
   }
 
   static getSearchMessages(messages: IMessage[], searchText: string) {
-    console.log(messages);
-    messages.forEach(message => {
+    let searchMessages: IMessage[] =[...messages];
+    console.log("Naimish", searchMessages);
+    console.log("Naimish test", searchText);
+    searchMessages.forEach(message => {
       if (message.type === MessageType.TEXT) {
         message.text = message.text.replace(searchText, '<span class="highlight">$&</span>');
       } else {
         message.image.caption = message.image.caption.replace(searchText, '<span class="highlight">$&</span>');
       }
     });
-    return messages;
+    return [...searchMessages];
   }
 }
