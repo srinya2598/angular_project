@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 import { IUser } from '@ec-shared/models/users';
@@ -10,6 +10,7 @@ import { CommonUtils } from '@ec-shared/utils/common.utils';
 import { NotificationService } from '@ec-core/services/notification.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ImageContainerComponent } from '../image-container/image-container.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-chat-window',
@@ -82,7 +83,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       distinctUntilChanged(),
       debounceTime(1000)
     ).subscribe(searchText => {
-      this.searchMessages = CommonUtils.getSearchMessages(this.messages, searchText);
+      this.zone.run(() => this.searchMessages = CommonUtils.getSearchMessages(this.messages, searchText));
+
       this.isScrollUpdateNeeded = true;
       this.autoScrollDown = true;
     });
@@ -137,6 +139,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       }
     });
   }
+
 
   private sendImage(file: File, caption: string = '') {
     this.showSpinner = true;

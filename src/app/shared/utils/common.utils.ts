@@ -1,5 +1,6 @@
 import { IProductCategory } from '../models/category';
 import { IMessage } from '@ec-shared/models/message';
+import { MessageType } from '@ec-shared/utils/constants';
 
 export class CommonUtils {
   static imagesExtensions = ['jpeg', 'jpg', 'gif', 'png', 'bmp', 'svg'];
@@ -281,12 +282,17 @@ export class CommonUtils {
         sender: message.sender,
         receiver: message.receiver,
         type: message.type,
-        timestamp: message.timestamp,
-        image: {
-          image_url: message.image.image_url || '',
-          caption: message.image.caption || ''
-        }
+        timestamp: message.timestamp
       };
+      if (message.type === MessageType.IMAGE) {
+        sMessage = {
+          ...sMessage,
+          image: {
+            image_url: message.image.image_url,
+            caption: message.image.caption
+          }
+        };
+      }
       if (sEmailRegex.test(message.text)) {
         console.log('Matched');
         sMessage.text = message.text.replace(sEmailRegex, '<a href="mailto:$&">$&</a>').toString();
@@ -301,8 +307,13 @@ export class CommonUtils {
   }
 
   static getSearchMessages(messages: IMessage[], searchText: string) {
+    console.log(messages);
     messages.forEach(message => {
-      message.text = message.text.replace(searchText, '<span class="highlight">$&</span>');
+      if (message.type === MessageType.TEXT) {
+        message.text = message.text.replace(searchText, '<span class="highlight">$&</span>');
+      } else {
+        message.image.caption = message.image.caption.replace(searchText, '<span class="highlight">$&</span>');
+      }
     });
     return messages;
   }

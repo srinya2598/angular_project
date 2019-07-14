@@ -24,8 +24,7 @@
 <div *ngIf="message.type === MessageType.IMAGE">
   <div *ngIf="userId==message.sender" class="image_from-me">
     <img [src]="message.image.image_url">
-    <div class="caption">
-      {{message.image.caption}}
+    <div class="caption" [innerHTML]="message.image.caption">
     </div>
     <span class="stamp">
     {{time | date: 'shortTime'}}
@@ -38,8 +37,7 @@
   </div>
   <div *ngIf="userId!==message.sender" class="image_from-them">
     <img [src]="message.image.image_url">
-    <div class="caption">
-      {{message.image.caption}}
+    <div class="caption" [innerHTML]="message.image.caption">
     </div>
     <span class="stamp">
       {{time | date: 'shortTime'}}

@@ -31,9 +31,16 @@
           <div class="text">LOADING</div>
         </div>
       </div>
-      <ng-container *ngFor="let msg of messages">
-        <app-chat-bubble (removeMessage)="removeMessage($event)" (forwardMessage)="forward($event)" [message]="msg"></app-chat-bubble>
-      </ng-container>
+      <div *ngIf="!showSearch">
+        <ng-container *ngFor="let msg of messages">
+          <app-chat-bubble (removeMessage)="removeMessage($event)" (forwardMessage)="forward($event)" [message]="msg"></app-chat-bubble>
+        </ng-container>
+      </div>
+      <div *ngIf="showSearch">
+        <ng-container *ngFor="let msg of searchMessages">
+          <app-chat-bubble (removeMessage)="removeMessage($event)" (forwardMessage)="forward($event)" [message]="msg"></app-chat-bubble>
+        </ng-container>
+      </div>
     </div>
   <div class="chat-window__input-area" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
     <input fxFlex="1 1 auto" type="text" placeholder="Type a message..." class="form-control" [formControl]="message">
