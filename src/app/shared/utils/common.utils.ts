@@ -305,18 +305,4 @@ export class CommonUtils {
 
     return mappedMessages;
   }
-
-  static getSearchMessages(messages: IMessage[], searchText: string) {
-    let searchMessages: IMessage[] =[...messages];
-    console.log("Naimish", searchMessages);
-    console.log("Naimish test", searchText);
-    searchMessages.forEach(message => {
-      if (message.type === MessageType.TEXT) {
-        message.text = message.text.replace(searchText, '<span class="highlight">$&</span>');
-      } else {
-        message.image.caption = message.image.caption.replace(searchText, '<span class="highlight">$&</span>');
-      }
-    });
-    return [...searchMessages];
-  }
 }

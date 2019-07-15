@@ -80,17 +80,6 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       }
     });
 
-    this.searchControl.valueChanges.pipe(
-      filter(value => !!value),
-      distinctUntilChanged(),
-      debounceTime(1000)
-    ).subscribe(searchText => {
-      const msg = CommonUtils.getSearchMessages(this.messages.slice(),searchText);
-      this.searchMessages = msg
-      this.isScrollUpdateNeeded = true;
-      this.autoScrollDown = true;
-    });
-
   }
 
   ngAfterViewChecked(): void {
@@ -141,19 +130,6 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       }
     });
   }
-
-  private sanitizeHTML(messages:IMessage[]) {
-    let sanitizedMessages = [...messages];
-    sanitizedMessages.forEach(message => {
-      if(message.type === MessageType.TEXT){
-        message.text = this.sanitizer.bypassSecurityTrustHtml(message.text);
-      } else {
-        message.image.caption = this.sanitizer.bypassSecurityTrustHtml(message.image.caption);
-      }
-    });
-    return [...sanitizedMessages];
-  }
-
 
   private sendImage(file: File, caption: string = '') {
     this.showSpinner = true;
