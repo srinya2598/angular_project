@@ -20,8 +20,8 @@
   </div>
   <div *ngIf="showSearch" class="chat-window__menu-bar" fxLayout="row">
     <input #searchInput fxFlex="1 1 auto" type="text" placeholder="Enter search text" class="form-control search-control" [formControl]="searchControl">
-    <button mat-icon-button>
-      <mat-icon>search</mat-icon>
+    <button mat-icon-button (click)="toggleSearch()">
+      <mat-icon>close</mat-icon>
     </button>
   </div>
     <div #chatContainer class="chat-window__message-area">

@@ -1,5 +1,5 @@
 <div *ngIf="message.type === MessageType.TEXT">
-  <div *ngIf="userId===message.sender" class="text_from-me" [innerHTML]="message.text">
+  <div *ngIf="userId===message.sender" class="text_from-me" [innerHTML]="messageBody">
     <span class="stamp">
     {{time | date: 'shortTime'}}
   </span>
@@ -9,7 +9,7 @@
    </button>
   </span>
   </div>
-  <div *ngIf="userId!==message.sender" class="text_from-them" [innerHTML]="message.text">
+  <div *ngIf="userId!==message.sender" class="text_from-them" [innerHTML]="messageBody">
     <span class="stamp">
       {{time | date: 'shortTime'}}
   </span>
@@ -24,7 +24,7 @@
 <div *ngIf="message.type === MessageType.IMAGE">
   <div *ngIf="userId==message.sender" class="image_from-me">
     <img [src]="message.image.image_url">
-    <div class="caption" [innerHTML]="message.image.caption">
+    <div class="caption" [innerHTML]="imageCaption">
     </div>
     <span class="stamp">
     {{time | date: 'shortTime'}}
@@ -37,7 +37,7 @@
   </div>
   <div *ngIf="userId!==message.sender" class="image_from-them">
     <img [src]="message.image.image_url">
-    <div class="caption" [innerHTML]="message.image.caption">
+    <div class="caption" [innerHTML]="imageCaption">
     </div>
     <span class="stamp">
       {{time | date: 'shortTime'}}

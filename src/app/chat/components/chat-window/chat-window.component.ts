@@ -94,6 +94,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
         return !!r && r.trim();
       })
     ).subscribe(keyword => this.searchController.setSearchKeyword(keyword));
+
+    this.searchController.getSearchMessages().subscribe(messages => this.searchMessages = messages);
   }
 
   ngAfterViewChecked(): void {
@@ -114,12 +116,12 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   }
 
   toggleSearch() {
-    this.showSearch = true;
     this.messageControl.setValue('');
     this.searchControl.setValue('');
     this.searchMessages = [];
     this.showSearch = !this.showSearch;
     if (this.showSearch) {
+      this.searchController.resetSearch();
       setTimeout(() => {
         if (this.searchInput) {
           this.searchInput.nativeElement.focus();

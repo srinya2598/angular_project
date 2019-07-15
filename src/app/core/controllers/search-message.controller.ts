@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { getSearchKeyword, State } from '../../chat/reducers';
+import { getSearchKeyword, getSearchMessages, State } from '../../chat/reducers';
 import { Store } from '@ngrx/store';
 import { IMessage } from '@ec-shared/models/message';
-import { ConversationalController } from 'conversational.controller';
 import { switchMap } from 'rxjs/operators';
-import { SetSearchKeyword, SetSearchMessages, SetSelectedMessage } from '../../chat/actions/message';
+import { ResetSearchMessages, SetSearchKeyword, SetSearchMessages } from '../../chat/actions/message';
 import { Observable } from 'rxjs';
 import { MessageType } from '@ec-shared/utils/constants';
+import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +35,14 @@ export class SearchMessageController {
     return this.store.select(getSearchKeyword);
   }
 
+  getSearchMessages(): Observable<IMessage[]> {
+    return this.store.select(getSearchMessages);
+  }
+
+  resetSearch() {
+    this.store.dispatch(new ResetSearchMessages());
+  }
+
   private initilizeSearch() {
     this.getSearchKeyword().subscribe(keyword => {
       console.log('[Search keyword] ', keyword);
@@ -45,11 +53,11 @@ export class SearchMessageController {
       this.messages.forEach(message => {
         if (message.type === MessageType.TEXT) {
           if (message.text.indexOf(keyword) > -1) {
-            searchMessages.push(message);
+            searchMessages.push({ ...message });
           }
         } else {
           if (message.image.caption.indexOf(keyword) > -1) {
-            searchMessages.push(message);
+            searchMessages.push({ ...message, image: { ...message.image } });
           }
         }
       });
@@ -62,7 +70,6 @@ export class SearchMessageController {
       });
       console.log('[Search message] ', searchMessages);
       this.store.dispatch(new SetSearchMessages(searchMessages));
-
     });
   }
 }
