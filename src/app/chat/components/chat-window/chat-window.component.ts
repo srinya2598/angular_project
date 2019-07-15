@@ -10,7 +10,7 @@ import { CommonUtils } from '@ec-shared/utils/common.utils';
 import { NotificationService } from '@ec-core/services/notification.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ImageContainerComponent } from '../image-container/image-container.component';
-import { DomSanitizer } from '@angular/platform-browser';
+import { SearchMessageController } from '@ec-core/controllers/search-message.controller';
 
 @Component({
   selector: 'app-chat-window',
@@ -42,7 +42,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
               private router: Router,
               private notificationService: NotificationService,
               private dialog: MatDialog,
-              private sanitizer: DomSanitizer) {
+              private searchController: SearchMessageController) {
     this.messageControl = new FormControl(null);
     this.searchControl = new FormControl(null);
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
@@ -91,9 +91,9 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       distinctUntilChanged(),
       debounceTime(500),
       filter(r => {
-        return !!r && r.trim()
+        return !!r && r.trim();
       })
-    ).subscribe(keyword => this.conversationalController.setSearchKeyword(keyword));
+    ).subscribe(keyword => this.searchController.setSearchKeyword(keyword));
   }
 
   ngAfterViewChecked(): void {

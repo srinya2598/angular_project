@@ -195,10 +195,6 @@ export class ConversationalController {
     return this.chatStore.select(getRoomsList);
   }
 
-  setSearchKeyword(keyword: string) {
-    this.chatStore.dispatch(new SetSearchKeyword(keyword));
-  }
-
   fetchLastMessage(roomId: string) {
     let message;
     this.fetchRoomMessages(roomId).subscribe(res => {
