@@ -1,6 +1,6 @@
-import {Action} from '@ec-core/actions';
-import {IMessage} from '@ec-shared/models/message';
-import {IRoom} from '@ec-shared/models/room';
+import { Action } from '@ec-core/actions';
+import { IMessage } from '@ec-shared/models/message';
+import { IRoom } from '@ec-shared/models/room';
 
 export enum ChatActions {
 
@@ -15,7 +15,9 @@ export enum ChatActions {
   REMOVE_MESSAGE = '[chat] remove message',
   SET_SELECTED_MESSAGE = '[chat] set selected message',
   FORWARD_MESSAGE = '[chat] forward message',
-
+  SET_SEARCH_KEYWORD = '[chat] set search keyword',
+  SET_SEARCH_MESSAGES = '[chat] set search messages',
+  RESET_SEARCH_MESSAGES = '[chat] reset search messages'
 }
 
 export class SendMessage implements Action {
@@ -80,16 +82,35 @@ export class RemoveMessage implements Action {
 export class SetSelectedMessage implements Action {
   readonly type = ChatActions.SET_SELECTED_MESSAGE;
 
-  constructor( public payload: string ) {
+  constructor(public payload: string) {
 
   }
-
 }
 
 export class ForwardMessage implements Action {
   readonly type = ChatActions.FORWARD_MESSAGE;
 
-  constructor( public payload: IMessage ) {
+  constructor(public payload: IMessage) {
 
   }
+}
+
+export class SetSearchKeyword implements Action {
+  readonly type = ChatActions.SET_SEARCH_KEYWORD;
+
+  constructor(public payload: string) {
+
+  }
+}
+
+export class SetSearchMessages implements Action {
+  readonly type = ChatActions.SET_SEARCH_MESSAGES;
+
+  constructor(public payload: IMessage[]) {
+
+  }
+}
+
+export class ResetSearchMessages implements Action {
+  readonly type = ChatActions.RESET_SEARCH_MESSAGES;
 }

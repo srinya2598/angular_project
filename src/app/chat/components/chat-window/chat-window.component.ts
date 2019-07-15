@@ -2,7 +2,7 @@ import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@ang
 import { FormControl } from '@angular/forms';
 import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 import { IUser } from '@ec-shared/models/users';
-import { switchMap, take } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap, take } from 'rxjs/operators';
 import { ApiService } from '@ec-core/services/api.service';
 import { IMessage } from '@ec-shared/models/message';
 import { Router } from '@angular/router';
@@ -87,6 +87,13 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       }
     }, 0);
 
+    this.searchControl.valueChanges.pipe(
+      distinctUntilChanged(),
+      debounceTime(500),
+      filter(r => {
+        return !!r && r.trim()
+      })
+    ).subscribe(keyword => this.conversationalController.setSearchKeyword(keyword));
   }
 
   ngAfterViewChecked(): void {

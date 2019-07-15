@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {DbService, RxCollections} from '@ec-core/services/database.service';
+import { Injectable } from '@angular/core';
+import { DbService, RxCollections } from '@ec-core/services/database.service';
 import {
   CreateRoom,
   FetchMessage,
@@ -7,12 +7,12 @@ import {
   FetchRoomsFailed,
   FetchRoomSuccess,
   RemoveMessage,
-  SendMessage,
+  SendMessage, SetSearchKeyword,
   SetSelectedMessage,
   SetSelectedRoomId,
   SetSelectedUserId
 } from '../../chat/actions/message';
-import {Store} from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import {
   getIsMessagesLoaded,
   getIsRoomsLoaded,
@@ -25,17 +25,17 @@ import {
   State
 } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
-import {IMessage} from '@ec-shared/models/message';
-import {catchError, concatMap, filter, finalize, map, reduce, skip, switchMap, take, tap} from 'rxjs/operators';
-import {Constants, MessageType} from '@ec-shared/utils/constants';
-import {ApiService} from '@ec-core/services/api.service';
-import {BehaviorSubject, combineLatest, forkJoin, Observable, of} from 'rxjs';
-import {IRoom} from '@ec-shared/models/room';
-import {NotificationService} from '@ec-core/services/notification.service';
-import {getLoggedInUser} from '../../auth/reducer';
-import {State as AuthState} from '../../auth/reducer/';
-import {getSelectedMessage, getSelectedProductUserDetails, State as ProductState} from '../../dashboard/reducers/';
-import {IUser} from '@ec-shared/models/users';
+import { IMessage } from '@ec-shared/models/message';
+import { catchError, concatMap, filter, finalize, map, reduce, skip, switchMap, take, tap } from 'rxjs/operators';
+import { Constants, MessageType } from '@ec-shared/utils/constants';
+import { ApiService } from '@ec-core/services/api.service';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
+import { IRoom } from '@ec-shared/models/room';
+import { NotificationService } from '@ec-core/services/notification.service';
+import { getLoggedInUser } from '../../auth/reducer';
+import { State as AuthState } from '../../auth/reducer/';
+import { getSelectedMessage, getSelectedProductUserDetails, State as ProductState } from '../../dashboard/reducers/';
+import { IUser } from '@ec-shared/models/users';
 import { CommonUtils } from '@ec-shared/utils/common.utils';
 
 @Injectable({
@@ -195,6 +195,10 @@ export class ConversationalController {
     return this.chatStore.select(getRoomsList);
   }
 
+  setSearchKeyword(keyword: string) {
+    this.chatStore.dispatch(new SetSearchKeyword(keyword));
+  }
+
   fetchLastMessage(roomId: string) {
     let message;
     this.fetchRoomMessages(roomId).subscribe(res => {
@@ -238,7 +242,7 @@ export class ConversationalController {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
+          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -356,10 +360,9 @@ export class ConversationalController {
     this.getSelectedRoomId().subscribe(res => roomId = res);
     const ref = this.apiService.getAttachedFileRef(roomId, fileName);
     const task = this.apiService.uploadAttachedFile(fileName, file, ref);
-    task.percentageChanges().subscribe(percent =>
-    {
+    task.percentageChanges().subscribe(percent => {
       this.uploadPercent.next(percent);
-      });
+    });
     task.snapshotChanges().pipe(
       finalize(() => ref.getDownloadURL().subscribe(url => this.downloadUrlSubject.next(url)))
     ).subscribe(null, (error) => {
