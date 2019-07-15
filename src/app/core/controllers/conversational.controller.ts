@@ -36,6 +36,7 @@ import {getLoggedInUser} from '../../auth/reducer';
 import {State as AuthState} from '../../auth/reducer/';
 import {getSelectedMessage, getSelectedProductUserDetails, State as ProductState} from '../../dashboard/reducers/';
 import {IUser} from '@ec-shared/models/users';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -241,7 +242,8 @@ export class ConversationalController {
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
-            this.chatStore.dispatch(new FetchMessage(res));
+            const mappedMessages = CommonUtils.mapMessages(res);
+            this.chatStore.dispatch(new FetchMessage(mappedMessages));
           });
       }
     });

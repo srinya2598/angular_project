@@ -71,7 +71,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     ).subscribe((res: IMessage[]) => {
       this.isScrollUpdateNeeded = true;
       this.autoScrollDown = true;
-      this.messages = CommonUtils.mapMessages(res);
+      this.messages = res;
     });
 
     this.conversationalController.getSelectedMessage().pipe(take(1)).subscribe((selectedMessage) => {
