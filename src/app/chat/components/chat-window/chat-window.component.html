@@ -14,12 +14,12 @@
           Attach a File
           <input type="file" (change)="attachImage($event)" >
         </label>
-        <button (click)="searchMessage()" mat-menu-item>Search</button>
+        <button (click)="toggleSearch()" mat-menu-item>Search</button>
       </mat-menu>
     </div>
   </div>
   <div *ngIf="showSearch" class="chat-window__menu-bar" fxLayout="row">
-    <input fxFlex="1 1 auto" type="text" placeholder="Enter search text" class="form-control search-control" [formControl]="searchControl">
+    <input #searchInput fxFlex="1 1 auto" type="text" placeholder="Enter search text" class="form-control search-control" [formControl]="searchControl">
     <button mat-icon-button>
       <mat-icon>search</mat-icon>
     </button>
@@ -43,7 +43,7 @@
       </div>
     </div>
   <div class="chat-window__input-area" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-    <input fxFlex="1 1 auto" type="text" placeholder="Type a message..." class="form-control" [formControl]="message">
+    <input #messageInput fxFlex="1 1 auto" type="text" placeholder="Type a message..." class="form-control" [formControl]="messageControl">
     <button *ngIf="showSendMessageButton" mat-icon-button (click)="sendMessage()">
       <mat-icon>send</mat-icon>
     </button>

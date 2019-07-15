@@ -1,8 +1,8 @@
-import { AfterViewChecked, Component, ElementRef, Input, NgZone, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 import { IUser } from '@ec-shared/models/users';
-import { debounceTime, distinctUntilChanged, filter, switchMap, take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { ApiService } from '@ec-core/services/api.service';
 import { IMessage } from '@ec-shared/models/message';
 import { Router } from '@angular/router';
@@ -11,7 +11,6 @@ import { NotificationService } from '@ec-core/services/notification.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ImageContainerComponent } from '../image-container/image-container.component';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MessageType } from '@ec-shared/utils/constants';
 
 @Component({
   selector: 'app-chat-window',
@@ -19,7 +18,7 @@ import { MessageType } from '@ec-shared/utils/constants';
   styleUrls: ['./chat-window.component.scss']
 })
 export class ChatWindowComponent implements OnInit, AfterViewChecked {
-  message: FormControl;
+  messageControl: FormControl;
   searchControl: FormControl;
   showSendMessageButton = false;
   firstName: string;
@@ -33,6 +32,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   private scrollTop: number;
   private autoScrollDown = true;
   @ViewChild('chatContainer') chatContainer: ElementRef;
+  @ViewChild('messageInput') messageInput: ElementRef;
+  @ViewChild('searchInput') searchInput: ElementRef;
   showSpinner = false;
   dialogRef: MatDialogRef<ImageContainerComponent>;
 
@@ -42,7 +43,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
               private notificationService: NotificationService,
               private dialog: MatDialog,
               private sanitizer: DomSanitizer) {
-    this.message = new FormControl(null);
+    this.messageControl = new FormControl(null);
     this.searchControl = new FormControl(null);
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
       this.apiService.getUserDetails(id).pipe(take(1)).subscribe((res: IUser) => {
@@ -55,7 +56,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.message.valueChanges.subscribe((value) => {
+    this.messageControl.valueChanges.subscribe((value) => {
       if (value.length === 0) {
         this.showSendMessageButton = false;
         return;
@@ -80,6 +81,12 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       }
     });
 
+    setTimeout(() => {
+      if (this.messageInput) {
+        this.messageInput.nativeElement.focus();
+      }
+    }, 0);
+
   }
 
   ngAfterViewChecked(): void {
@@ -87,7 +94,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   }
 
   sendMessage() {
-    this.conversationalController.sendMessage(this.message.value);
+    this.conversationalController.sendMessage(this.messageControl.value);
   }
 
   removeMessage(message: IMessage) {
@@ -99,8 +106,19 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.router.navigate(['dashboard/chat/conversations']);
   }
 
-  searchMessage() {
+  toggleSearch() {
     this.showSearch = true;
+    this.messageControl.setValue('');
+    this.searchControl.setValue('');
+    this.searchMessages = [];
+    this.showSearch = !this.showSearch;
+    if (this.showSearch) {
+      setTimeout(() => {
+        if (this.searchInput) {
+          this.searchInput.nativeElement.focus();
+        }
+      }, 0);
+    }
   }
 
   attachImage(event) {
