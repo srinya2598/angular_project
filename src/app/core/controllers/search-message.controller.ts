@@ -4,8 +4,9 @@ import { Store } from '@ngrx/store';
 import { IMessage } from '@ec-shared/models/message';
 import { ConversationalController } from 'conversational.controller';
 import { switchMap } from 'rxjs/operators';
-import { SetSearchKeyword } from '../../chat/actions/message';
+import { SetSearchKeyword, SetSearchMessages, SetSelectedMessage } from '../../chat/actions/message';
 import { Observable } from 'rxjs';
+import { MessageType } from '@ec-shared/utils/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -36,10 +37,31 @@ export class SearchMessageController {
 
   private initilizeSearch() {
     this.getSearchKeyword().subscribe(keyword => {
+      console.log('[Search keyword] ', keyword);
       if (!keyword) {
         return;
       }
       let searchMessages: IMessage[] = [];
+      this.messages.forEach(message => {
+        if (message.type === MessageType.TEXT) {
+          if (message.text.indexOf(keyword) > -1) {
+            searchMessages.push(message);
+          }
+        } else {
+          if (message.image.caption.indexOf(keyword) > -1) {
+            searchMessages.push(message);
+          }
+        }
+      });
+      searchMessages.forEach(m => {
+        if (m.type === MessageType.TEXT) {
+          m.text = m.text.replace(keyword, '<span class="highlight">$&</span>');
+        } else {
+          m.image.caption = m.image.caption.replace(keyword, '<span class="highlight">$&</span>');
+        }
+      });
+      console.log('[Search message] ', searchMessages);
+      this.store.dispatch(new SetSearchMessages(searchMessages));
 
     });
   }
