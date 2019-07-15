@@ -104,6 +104,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
 
   sendMessage() {
     this.conversationalController.sendMessage(this.messageControl.value);
+    this.messageControl.setValue('');
   }
 
   removeMessage(message: IMessage) {
