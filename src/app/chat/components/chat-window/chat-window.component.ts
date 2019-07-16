@@ -1,16 +1,18 @@
-import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ConversationalController } from '@ec-core/controllers/conversational.controller';
-import { IUser } from '@ec-shared/models/users';
-import { debounceTime, distinctUntilChanged, filter, switchMap, take } from 'rxjs/operators';
-import { ApiService } from '@ec-core/services/api.service';
-import { IMessage } from '@ec-shared/models/message';
-import { Router } from '@angular/router';
-import { CommonUtils } from '@ec-shared/utils/common.utils';
-import { NotificationService } from '@ec-core/services/notification.service';
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { ImageContainerComponent } from '../image-container/image-container.component';
-import { SearchMessageController } from '@ec-core/controllers/search-message.controller';
+import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {ConversationalController} from '@ec-core/controllers/conversational.controller';
+import {IUser} from '@ec-shared/models/users';
+import {debounceTime, distinctUntilChanged, filter, switchMap, take} from 'rxjs/operators';
+import {ApiService} from '@ec-core/services/api.service';
+import {IMessage} from '@ec-shared/models/message';
+import {Router} from '@angular/router';
+import {CommonUtils} from '@ec-shared/utils/common.utils';
+import {NotificationService} from '@ec-core/services/notification.service';
+import {MatDialog, MatDialogRef} from '@angular/material';
+import {ImageContainerComponent} from '../image-container/image-container.component';
+import {SearchMessageController} from '@ec-core/controllers/search-message.controller';
+import {BroadcasterService} from '@ec-core/services/broadcaster.service';
+import {BroadcasterConstants} from '@ec-shared/utils/constants';
 
 @Component({
   selector: 'app-chat-window',
@@ -36,13 +38,15 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   @ViewChild('searchInput') searchInput: ElementRef;
   showSpinner = false;
   dialogRef: MatDialogRef<ImageContainerComponent>;
+  networkConnected = true;
 
   constructor(private conversationalController: ConversationalController,
               private apiService: ApiService,
               private router: Router,
               private notificationService: NotificationService,
               private dialog: MatDialog,
-              private searchController: SearchMessageController) {
+              private searchController: SearchMessageController,
+              private broadcasterService: BroadcasterService) {
     this.messageControl = new FormControl(null);
     this.searchControl = new FormControl(null);
     this.conversationalController.getSelectedUserId().pipe(take(1)).subscribe(id => {
@@ -56,6 +60,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
+    this.checkConnectivity();
     this.messageControl.valueChanges.subscribe((value) => {
       if (value.length === 0) {
         this.showSendMessageButton = false;
@@ -193,5 +198,16 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.isScrollUpdateNeeded = true;
   }
 
+  checkConnectivity() {
+    this.broadcasterService.listen(BroadcasterConstants.NETWORK_DISCONNECTED).subscribe(() => {
+        this.notificationService.error('You are disconnected from the netwrok!');
+        this.networkConnected = false;
+      }
+    );
+    this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(() => {
+      this.notificationService.success('You are connected to the network!');
+      this.networkConnected = true;
+    });
+  }
 }
 

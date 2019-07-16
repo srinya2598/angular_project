@@ -7,14 +7,13 @@ import {
   FetchRoomsFailed,
   FetchRoomSuccess,
   RemoveMessage,
-  SendMessage, SetFile, SetSearchKeyword,
+  SendMessage, SetSearchKeyword,
   SetSelectedMessage,
   SetSelectedRoomId,
   SetSelectedUserId
 } from '../../chat/actions/message';
 import {Store} from '@ngrx/store';
 import {
-  getFileUploaded,
   getIsMessagesLoaded,
   getIsRoomsLoaded,
   getIsRoomsLoading,
@@ -28,7 +27,7 @@ import {
 import * as uuid from 'uuid/v4';
 import {IMessage} from '@ec-shared/models/message';
 import {catchError, concatMap, filter, finalize, map, reduce, skip, switchMap, take, tap} from 'rxjs/operators';
-import {BroadcasterConstants, Constants, MessageType} from '@ec-shared/utils/constants';
+import {Constants, MessageType} from '@ec-shared/utils/constants';
 import {ApiService} from '@ec-core/services/api.service';
 import {BehaviorSubject, combineLatest, forkJoin, Observable, of} from 'rxjs';
 import {IRoom} from '@ec-shared/models/room';
@@ -38,7 +37,6 @@ import {State as AuthState} from '../../auth/reducer/';
 import {getSelectedMessage, getSelectedProductUserDetails, State as ProductState} from '../../dashboard/reducers/';
 import {IUser} from '@ec-shared/models/users';
 import {CommonUtils} from '@ec-shared/utils/common.utils';
-import {BroadcasterService} from '@ec-core/services/broadcaster.service';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +45,6 @@ export class ConversationalController {
   isChannelSetup = false;
   uploadPercent: BehaviorSubject<number>;
   downloadUrlSubject: BehaviorSubject<string>;
-  percentUpload: number;
 
   constructor(private dbService: DbService,
               private chatStore: Store<State>,
@@ -55,7 +52,7 @@ export class ConversationalController {
               private notificationService: NotificationService,
               private authStore: Store<AuthState>,
               private productState: Store<ProductState>,
-              private  broadcasterService: BroadcasterService) {
+  ) {
     this.setUpMessageChannel();
     this.fetchMessages();
     this.uploadPercent = new BehaviorSubject<number>(0);
@@ -362,8 +359,7 @@ export class ConversationalController {
     const task = this.apiService.uploadAttachedFile(fileName, file, ref);
     task.percentageChanges().subscribe(percent => {
       this.uploadPercent.next(percent);
-      this.percentUpload = percent;
-      this.checkConnectivity(file, this.percentUpload);
+      console.log(this.uploadPercent);
     });
     task.snapshotChanges().pipe(
       finalize(() => ref.getDownloadURL().subscribe(url => this.downloadUrlSubject.next(url)))
@@ -400,21 +396,4 @@ export class ConversationalController {
     });
   }
 
-  checkConnectivity(file: File, uploadPercent: number) {
-    this.broadcasterService.listen(BroadcasterConstants.NETWORK_DISCONNECTED).subscribe(() => {
-      this.notificationService.error('You are disconnected from the network!');
-      if (uploadPercent !== 100) {
-        this.chatStore.dispatch(new SetFile(file));
-      }
-    });
-    this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(() => {
-      this.notificationService.success('You are connected to the network!');
-      this.chatStore.select(getFileUploaded).subscribe((res: File) => {
-        if (res) {
-          this.attachImageFile(res);
-        }
-      });
-    });
-  }
 }
-

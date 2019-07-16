@@ -10,7 +10,6 @@ import {
   createSelector
 } from '@ngrx/store';
 import {
-  _getFileUploaded,
   _getRoomMessageIds,
   _getSelectedRoomId,
   _getSelectedUserId,
@@ -86,7 +85,6 @@ export const getSelectedRoomId = createSelector(
   getRoomMessageState,
   _getSelectedRoomId
 );
-export const getFileUploaded = createSelector(getRoomMessageState, _getFileUploaded);
 
 // Rooms Selectors
 
