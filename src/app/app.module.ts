@@ -16,6 +16,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import {AuthActions} from './auth/actions/auth';
 import { rootReducer } from '@ec-core/reducers';
 import { CoreModule } from '@ec-core/core.module';
+import { NgxEmojiPickerModule } from 'ngx-emoji-picker';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { CoreModule } from '@ec-core/core.module';
     SharedModule,
     CoreModule,
     AngularFireStorageModule,
+    NgxEmojiPickerModule.forRoot(),
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

@@ -39,6 +39,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   showSpinner = false;
   dialogRef: MatDialogRef<ImageContainerComponent>;
   networkConnected = true;
+  toggled: boolean = false;
 
   constructor(private conversationalController: ConversationalController,
               private apiService: ApiService,
@@ -208,6 +209,10 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
       this.notificationService.success('You are connected to the network!');
       this.networkConnected = true;
     });
+  }
+
+  handleSelection(event) {
+    console.log(event.char);
   }
 }
 

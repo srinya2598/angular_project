@@ -15,6 +15,7 @@ import { ProductComponent } from './components/product/product.component';
 import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 import { messageRootReducer} from '../chat/reducers';
 import { CartproductComponent } from './components/cartproduct/cartproduct.component';
+import { NgxEmojiPickerModule } from 'ngx-emoji-picker';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CartproductComponent } from './components/cartproduct/cartproduct.compo
     StoreModule.forFeature('product', productRootReducer),
     StoreModule.forFeature('message', messageRootReducer),
     NgxLoadingModule.forRoot({ backdropBorderRadius: '3px' }),
-    AvatarModule.forRoot()
+    AvatarModule.forRoot(),
+    NgxEmojiPickerModule,
   ],
   exports: [
     ReactiveFormsModule,
@@ -46,7 +48,8 @@ import { CartproductComponent } from './components/cartproduct/cartproduct.compo
     ButtonComponent,
     SingleproductComponent,
     ProductComponent,
-    CartproductComponent
+    CartproductComponent,
+    NgxEmojiPickerModule
   ],
   entryComponents: [NotificationComponent]
 })
