@@ -6,6 +6,7 @@ export interface RoomMessageState {
   selectedUserId: string;
   selectedRoomId: string;
   selectedMessage: string;
+  fileUploaded: File;
 }
 
 export const initialRoomMessagesState: RoomMessageState = {
@@ -13,6 +14,7 @@ export const initialRoomMessagesState: RoomMessageState = {
   selectedUserId: null,
   selectedRoomId: null,
   selectedMessage: null,
+  fileUploaded: null
 };
 
 export function roomMessagesReducer(state: RoomMessageState = initialRoomMessagesState, action: Action) {
@@ -95,6 +97,12 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
         }
       };
     }
+    case ChatActions.SET_FILE: {
+      return {
+        ...state,
+        fileUploaded: action.payload
+      };
+    }
 
   }
 }
@@ -104,3 +112,4 @@ export const _getRoomMessageIds = (state: RoomMessageState, convId: string) => s
 export const _getSelectedUserId = (state: RoomMessageState) => state.selectedUserId;
 export const _getSelectedRoomId = (state: RoomMessageState) => state.selectedRoomId;
 export const _getSelectedMessage = (state: RoomMessageState) => state.selectedMessage;
+export const _getFileUploaded = (state: RoomMessageState) => state.fileUploaded;

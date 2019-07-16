@@ -1,6 +1,6 @@
-import { Action } from '@ec-core/actions';
-import { IMessage } from '@ec-shared/models/message';
-import { IRoom } from '@ec-shared/models/room';
+import {Action} from '@ec-core/actions';
+import {IMessage} from '@ec-shared/models/message';
+import {IRoom} from '@ec-shared/models/room';
 
 export enum ChatActions {
 
@@ -17,7 +17,8 @@ export enum ChatActions {
   FORWARD_MESSAGE = '[chat] forward message',
   SET_SEARCH_KEYWORD = '[chat] set search keyword',
   SET_SEARCH_MESSAGES = '[chat] set search messages',
-  RESET_SEARCH_MESSAGES = '[chat] reset search messages'
+  RESET_SEARCH_MESSAGES = '[chat] reset search messages',
+  SET_FILE = '[chat] set file'
 }
 
 export class SendMessage implements Action {
@@ -113,4 +114,11 @@ export class SetSearchMessages implements Action {
 
 export class ResetSearchMessages implements Action {
   readonly type = ChatActions.RESET_SEARCH_MESSAGES;
+}
+
+export class SetFile implements Action {
+  readonly type = ChatActions.SET_FILE;
+
+  constructor(public payload: File) {
+  }
 }

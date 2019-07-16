@@ -4,12 +4,13 @@ import {
   messageReducer,
   MessageState
 } from './message';
-import { RootState } from '@ec-core/reducers';
+import {RootState} from '@ec-core/reducers';
 import {
   createFeatureSelector,
   createSelector
 } from '@ngrx/store';
 import {
+  _getFileUploaded,
   _getRoomMessageIds,
   _getSelectedRoomId,
   _getSelectedUserId,
@@ -85,6 +86,7 @@ export const getSelectedRoomId = createSelector(
   getRoomMessageState,
   _getSelectedRoomId
 );
+export const getFileUploaded = createSelector(getRoomMessageState, _getFileUploaded);
 
 // Rooms Selectors
 
