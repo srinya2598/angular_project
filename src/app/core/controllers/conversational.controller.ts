@@ -75,6 +75,7 @@ export class ConversationalController {
     };
     this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
       this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
+       console.log("Send message()");
         this.chatStore.dispatch(new SendMessage(message));
       });
     });
@@ -270,10 +271,12 @@ export class ConversationalController {
 
           })).subscribe(() => {
             this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+            console.log("Send channel 1()");
             this.chatStore.dispatch(new SendMessage(message));
           });
         } else {
           this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+          console.log("Send channel 2()");
           this.chatStore.dispatch(new SendMessage(message));
         }
       }
@@ -344,6 +347,7 @@ export class ConversationalController {
     };
     this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
       this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
+        console.log("Fwd message()");
         this.chatStore.dispatch(new SendMessage(message));
         this.chatStore.dispatch(new SetSelectedMessage(null));
         console.log(message.text);
@@ -390,8 +394,9 @@ export class ConversationalController {
         caption: caption || ''
       }
     };
-    this.apiService.sendMessage(userId, message).subscribe(() => {
+    this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
       this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
+      console.log("Send file()");
       this.chatStore.dispatch(new SendMessage(message));
     });
   }
