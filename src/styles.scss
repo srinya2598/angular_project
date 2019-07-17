@@ -2,7 +2,6 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "variables";
-@import "~@ctrl/ngx-emoji-mart/picker";
 
 @font-face {
   font-family: Poppins-Black;
@@ -134,4 +133,7 @@ mat-icon {
 
 .highlight {
   background-color: $color-F4C724;
+}
+[_nghost-c17] {
+  padding-right: 20px;
 }

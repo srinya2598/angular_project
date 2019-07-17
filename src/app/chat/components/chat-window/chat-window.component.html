@@ -44,18 +44,14 @@
     </div>
   <div class="chat-window__input-area" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
     <input #messageInput fxFlex="1 1 auto" type="text" placeholder="Type a message..." class="form-control" [formControl]="messageControl">
-  <!--  <i
+    <i
       (click)="toggled = !toggled"
       [(emojiPickerIf)]="toggled"
-      [emojiPickerDirection]="'bottom'"
+      [emojiPickerDirection]="'top'"
       (emojiPickerSelect)="handleSelection($event)"><button mat-icon-button>
       <mat-icon>insert_emoticon</mat-icon>
       </button>
-    </i>-->
-    <button mat-icon-button>
-      <mat-icon (click)="toggle()">insert_emoticon</mat-icon>
-    </button>
-    <emoji-mart *ngIf="toggled" (emojiClick)="handleSelection($event)"></emoji-mart>
+    </i>
     <button *ngIf="showSendMessageButton" mat-icon-button (click)="sendMessage()">
       <mat-icon>send</mat-icon>
     </button>

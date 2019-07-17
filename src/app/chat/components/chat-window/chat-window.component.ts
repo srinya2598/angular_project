@@ -214,10 +214,5 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   handleSelection(event) {
     console.log(event.char);
   }
-
-  toggle() {
-    this.toggled = true;
-
-  }
 }
 
