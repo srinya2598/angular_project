@@ -133,9 +133,5 @@ export class ApiService {
   getAttachedFileRef(roomId: string, fileName: string): AngularFireStorageReference {
     return this.storage.ref(`chat-images/${roomId + fileName}`);
   }
-
-  deleteAttachedFile(ref) {
-return    ref.delete();
-  }
 }
 

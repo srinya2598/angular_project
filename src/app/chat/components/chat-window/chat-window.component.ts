@@ -1,18 +1,18 @@
-import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {ConversationalController} from '@ec-core/controllers/conversational.controller';
-import {IUser} from '@ec-shared/models/users';
-import {debounceTime, distinctUntilChanged, filter, switchMap, take} from 'rxjs/operators';
-import {ApiService} from '@ec-core/services/api.service';
-import {IMessage} from '@ec-shared/models/message';
-import {Router} from '@angular/router';
-import {CommonUtils} from '@ec-shared/utils/common.utils';
-import {NotificationService} from '@ec-core/services/notification.service';
-import {MatDialog, MatDialogRef} from '@angular/material';
-import {ImageContainerComponent} from '../image-container/image-container.component';
-import {SearchMessageController} from '@ec-core/controllers/search-message.controller';
-import {BroadcasterService} from '@ec-core/services/broadcaster.service';
-import {BroadcasterConstants} from '@ec-shared/utils/constants';
+import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ConversationalController } from '@ec-core/controllers/conversational.controller';
+import { IUser } from '@ec-shared/models/users';
+import { debounceTime, distinctUntilChanged, filter, switchMap, take } from 'rxjs/operators';
+import { ApiService } from '@ec-core/services/api.service';
+import { IMessage } from '@ec-shared/models/message';
+import { Router } from '@angular/router';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
+import { NotificationService } from '@ec-core/services/notification.service';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ImageContainerComponent } from '../image-container/image-container.component';
+import { SearchMessageController } from '@ec-core/controllers/search-message.controller';
+import { BroadcasterService } from '@ec-core/services/broadcaster.service';
+import { BroadcasterConstants } from '@ec-shared/utils/constants';
 
 @Component({
   selector: 'app-chat-window',
@@ -211,8 +211,11 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     });
   }
 
-  handleSelection(event) {
-    console.log(event.char);
+  handleEmojiSelection(event) {
+    const messageInput = document.getElementById('message-input');
+    let index = messageInput['selectionStart'] - 1;
+    let controlValue: string = this.messageControl.value;
+    this.messageControl.setValue(controlValue.substring(0, index + 1) + event.char + controlValue.substring(index + 1));
   }
 }
 

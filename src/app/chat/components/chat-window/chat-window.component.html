@@ -43,12 +43,12 @@
       </div>
     </div>
   <div class="chat-window__input-area" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
-    <input #messageInput fxFlex="1 1 auto" type="text" placeholder="Type a message..." class="form-control" [formControl]="messageControl">
+    <input id="message-input" #messageInput fxFlex="1 1 auto" type="text" placeholder="Type a message..." class="form-control" [formControl]="messageControl">
     <i
       (click)="toggled = !toggled"
       [(emojiPickerIf)]="toggled"
       [emojiPickerDirection]="'top'"
-      (emojiPickerSelect)="handleSelection($event)"><button mat-icon-button>
+      (emojiPickerSelect)="handleEmojiSelection($event)"><button mat-icon-button>
       <mat-icon>insert_emoticon</mat-icon>
       </button>
     </i>
