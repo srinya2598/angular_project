@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
     "@babel/polyfill": "^7.4.4",
+    "@ctrl/ngx-emoji-mart": "^0.17.0",
     "@fortawesome/angular-fontawesome": "^0.3.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
