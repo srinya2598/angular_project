@@ -282,7 +282,8 @@ export class CommonUtils {
         sender: message.sender,
         receiver: message.receiver,
         type: message.type,
-        timestamp: message.timestamp
+        timestamp: message.timestamp,
+        isFav: message.isFav
       };
       if (message.type === MessageType.IMAGE) {
         sMessage = {

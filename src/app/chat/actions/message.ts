@@ -1,6 +1,7 @@
-import {Action} from '@ec-core/actions';
-import {IMessage} from '@ec-shared/models/message';
-import {IRoom} from '@ec-shared/models/room';
+import { Action } from '@ec-core/actions';
+import { IMessage } from '@ec-shared/models/message';
+import { IRoom } from '@ec-shared/models/room';
+
 
 export enum ChatActions {
 
@@ -17,8 +18,10 @@ export enum ChatActions {
   FORWARD_MESSAGE = '[chat] forward message',
   SET_SEARCH_KEYWORD = '[chat] set search keyword',
   SET_SEARCH_MESSAGES = '[chat] set search messages',
-  RESET_SEARCH_MESSAGES = '[chat] reset search messages'
-  }
+  RESET_SEARCH_MESSAGES = '[chat] reset search messages',
+  SET_FAV_MESSAGE = '[chat] set fav message',
+  FETCH_FAV_MESSAGES = '[chat] fetch fav messages'
+}
 
 export class SendMessage implements Action {
   readonly type = ChatActions.SEND_MESSAGE;
@@ -113,5 +116,16 @@ export class SetSearchMessages implements Action {
 
 export class ResetSearchMessages implements Action {
   readonly type = ChatActions.RESET_SEARCH_MESSAGES;
+}
+
+export class SetFavMessage implements Action {
+  readonly type = ChatActions.SET_FAV_MESSAGE;
+
+  constructor(public payload: IMessage) {
+  }
+}
+
+export class FetchFavMessages implements Action {
+  readonly type = ChatActions.FETCH_FAV_MESSAGES;
 }
 

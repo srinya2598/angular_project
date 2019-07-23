@@ -1,11 +1,14 @@
-import {Action} from '@ec-core/actions';
-import {ChatActions} from '../actions/message';
+import { Action } from '@ec-core/actions';
+import { ChatActions } from '../actions/message';
+import { IMessage } from '@ec-shared/models/message';
 
 export interface RoomMessageState {
   ids: { [convId: string]: string[] };
   selectedUserId: string;
   selectedRoomId: string;
   selectedMessage: string;
+  favMessagesIds: string[];
+  favMessages: IMessage[];
 }
 
 export const initialRoomMessagesState: RoomMessageState = {
@@ -13,6 +16,8 @@ export const initialRoomMessagesState: RoomMessageState = {
   selectedUserId: null,
   selectedRoomId: null,
   selectedMessage: null,
+  favMessagesIds: [],
+  favMessages: [],
 };
 
 export function roomMessagesReducer(state: RoomMessageState = initialRoomMessagesState, action: Action) {
@@ -95,6 +100,24 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
         }
       };
     }
+    case ChatActions.SET_FAV_MESSAGE: {
+      const message = action.payload;
+      message.isFav = true;
+      let oldIds = state.favMessages || [];
+      let newIds = [...oldIds, message.id];
+      return {
+        ...state,
+        favMessagesIds: newIds,
+      };
+
+
+    }
+    case ChatActions.FETCH_FAV_MESSAGES:
+      return {
+        ...state,
+        favMessages: action.payload || [],
+      };
+
 
   }
 }
@@ -104,3 +127,5 @@ export const _getRoomMessageIds = (state: RoomMessageState, convId: string) => s
 export const _getSelectedUserId = (state: RoomMessageState) => state.selectedUserId;
 export const _getSelectedRoomId = (state: RoomMessageState) => state.selectedRoomId;
 export const _getSelectedMessage = (state: RoomMessageState) => state.selectedMessage;
+export const _getFavMessagesIds = (state: RoomMessageState) => state.favMessagesIds;
+export const _getFavMessages = (state: RoomMessageState) => state.favMessages;

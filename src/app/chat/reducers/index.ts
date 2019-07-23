@@ -10,6 +10,7 @@ import {
   createSelector
 } from '@ngrx/store';
 import {
+  _getFavMessages, _getFavMessagesIds,
   _getRoomMessageIds,
   _getSelectedRoomId,
   _getSelectedUserId,
@@ -133,6 +134,12 @@ export const getRoomMessages = (state: State, convId: string) => {
   const entities = getMessageEntities(state);
   return messageIds.map(id => entities[id]);
 };
+export const getFavMessagesIds = createSelector(getRoomMessageState,
+  _getFavMessagesIds);
+
+export const getFavMessages = createSelector(getRoomMessageState,
+  _getFavMessages
+  );
 
 // Search-Message selectors
 
@@ -150,3 +157,4 @@ export const getSearchMessages = createSelector(
   getSearchMessageState,
   _getSearchMessages
 );
+

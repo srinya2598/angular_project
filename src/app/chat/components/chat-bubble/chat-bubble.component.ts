@@ -19,6 +19,7 @@ export class ChatBubbleComponent implements OnInit {
   messageBody: SafeHtml;
   imageCaption: SafeHtml;
   MessageType = MessageType;
+  @Output() favMessage: EventEmitter<IMessage>;
 
   @Input() set message(message: IMessage) {
     if (message.type === MessageType.TEXT) {
@@ -37,6 +38,7 @@ export class ChatBubbleComponent implements OnInit {
     this.userId = this.apiService.getItem(Constants.USER_UID);
     this.removeMessage = new EventEmitter();
     this.forwardMessage = new EventEmitter();
+    this.favMessage = new EventEmitter();
   }
 
 
@@ -52,5 +54,9 @@ export class ChatBubbleComponent implements OnInit {
 
   forward() {
     this.forwardMessage.emit(this.message.text);
+  }
+
+  setFav() {
+    this.favMessage.emit(this.message);
   }
 }

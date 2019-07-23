@@ -8,6 +8,7 @@ export interface IMessage {
   receiver: string;
   audio?: IAudio;
   image?: IImage;
+  isFav: boolean;
 }
 
  export interface IAudio {

@@ -8,6 +8,7 @@
     <mat-icon>keyboard_arrow_down</mat-icon>
    </button>
   </span>
+
   </div>
   <div *ngIf="userId!==message.sender" class="text_from-them" [innerHTML]="messageBody">
     <span class="stamp">
@@ -58,4 +59,11 @@
   <button mat-menu-item (click)="forward()">
     <span>Forward Message</span>
   </button>
+  <button *ngIf="!message.isFav" mat-menu-item (click)="setFav()">
+    <span>Favourite</span>
+  </button>
+  <button *ngIf="message.isFav" mat-menu-item>
+    <span>Unfavourite</span>
+  </button>
+
 </mat-menu>

@@ -1,19 +1,20 @@
-import {Injectable} from '@angular/core';
-import {DbService, RxCollections} from '@ec-core/services/database.service';
+import { Injectable } from '@angular/core';
+import { DbService, RxCollections } from '@ec-core/services/database.service';
 import {
-  CreateRoom,
+  CreateRoom, FetchFavMessages,
   FetchMessage,
   FetchRooms,
   FetchRoomsFailed,
   FetchRoomSuccess,
   RemoveMessage,
-  SendMessage, SetSearchKeyword,
+  SendMessage, SetFavMessage, SetSearchKeyword,
   SetSelectedMessage,
   SetSelectedRoomId,
   SetSelectedUserId
 } from '../../chat/actions/message';
-import {Store} from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import {
+  getFavMessages,
   getIsMessagesLoaded,
   getIsRoomsLoaded,
   getIsRoomsLoading,
@@ -25,18 +26,18 @@ import {
   State
 } from '../../chat/reducers';
 import * as uuid from 'uuid/v4';
-import {IMessage} from '@ec-shared/models/message';
-import {catchError, concatMap, filter, finalize, map, reduce, skip, switchMap, take, tap} from 'rxjs/operators';
-import {Constants, MessageType} from '@ec-shared/utils/constants';
-import {ApiService} from '@ec-core/services/api.service';
-import {BehaviorSubject, combineLatest, forkJoin, Observable, of} from 'rxjs';
-import {IRoom} from '@ec-shared/models/room';
-import {NotificationService} from '@ec-core/services/notification.service';
-import {getLoggedInUser} from '../../auth/reducer';
-import {State as AuthState} from '../../auth/reducer/';
-import {getSelectedMessage, getSelectedProductUserDetails, State as ProductState} from '../../dashboard/reducers/';
-import {IUser} from '@ec-shared/models/users';
-import {CommonUtils} from '@ec-shared/utils/common.utils';
+import { IMessage } from '@ec-shared/models/message';
+import { catchError, concatMap, filter, finalize, map, reduce, skip, switchMap, take, tap } from 'rxjs/operators';
+import { Constants, MessageType } from '@ec-shared/utils/constants';
+import { ApiService } from '@ec-core/services/api.service';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
+import { IRoom } from '@ec-shared/models/room';
+import { NotificationService } from '@ec-core/services/notification.service';
+import { getLoggedInUser } from '../../auth/reducer';
+import { State as AuthState } from '../../auth/reducer/';
+import { getSelectedMessage, getSelectedProductUserDetails, State as ProductState } from '../../dashboard/reducers/';
+import { IUser } from '@ec-shared/models/users';
+import { CommonUtils } from '@ec-shared/utils/common.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,7 @@ export class ConversationalController {
   isChannelSetup = false;
   uploadPercent: BehaviorSubject<number>;
   downloadUrlSubject: BehaviorSubject<string>;
+  favMessages: IMessage[];
 
   constructor(private dbService: DbService,
               private chatStore: Store<State>,
@@ -70,12 +72,13 @@ export class ConversationalController {
       roomId: selectedRoomId,
       sender: this.apiService.getItem(Constants.USER_UID),
       receiver: selectedUserId,
+      isFav: false,
       text: body || '',
       timestamp: new Date().getTime()
     };
     this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
       this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
-       console.log("Send message()");
+        console.log('Send message()');
         this.chatStore.dispatch(new SendMessage(message));
       });
     });
@@ -271,12 +274,12 @@ export class ConversationalController {
 
           })).subscribe(() => {
             this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
-            console.log("Send channel 1()");
+            console.log('Send channel 1()');
             this.chatStore.dispatch(new SendMessage(message));
           });
         } else {
           this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
-          console.log("Send channel 2()");
+          console.log('Send channel 2()');
           this.chatStore.dispatch(new SendMessage(message));
         }
       }
@@ -342,12 +345,13 @@ export class ConversationalController {
       roomId: selectedRoomId,
       sender: this.apiService.getItem(Constants.USER_UID),
       receiver: selectedUserId,
+      isFav: false,
       text: selectedMessage || '',
       timestamp: new Date().getTime()
     };
     this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
       this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
-        console.log("Fwd message()");
+        console.log('Fwd message()');
         this.chatStore.dispatch(new SendMessage(message));
         this.chatStore.dispatch(new SetSelectedMessage(null));
         console.log(message.text);
@@ -387,6 +391,7 @@ export class ConversationalController {
       type: MessageType.IMAGE,
       roomId: selectedRoomId,
       timestamp: new Date().getTime(),
+      isFav: false,
       sender: userId,
       receiver: selectedUserId,
       image: {
@@ -396,9 +401,16 @@ export class ConversationalController {
     };
     this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
       this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
-      console.log("Send file()");
+      console.log('Send file()');
       this.chatStore.dispatch(new SendMessage(message));
     });
   }
 
+  setFavMessage(message: IMessage) {
+    this.chatStore.dispatch(new SetFavMessage(message));
+  }
+   fetchFavMessages() {
+    this.chatStore.dispatch(new FetchFavMessages());
+  return  this.chatStore.select(getFavMessages);
+   }
 }

@@ -28,7 +28,9 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   profileUrl: string;
   messages: IMessage[];
   searchMessages: IMessage[];
+  favMessages: IMessage[];
   showSearch = false;
+  showFavMessages = false;
   private isScrollUpdateNeeded = true;
   private scrollHeight: number;
   private scrollTop: number;
@@ -102,6 +104,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     ).subscribe(keyword => this.searchController.setSearchKeyword(keyword));
 
     this.searchController.getSearchMessages().subscribe(messages => this.searchMessages = messages);
+
   }
 
   ngAfterViewChecked(): void {
@@ -216,6 +219,18 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     let index = messageInput['selectionStart'] - 1;
     let controlValue: string = this.messageControl.value;
     this.messageControl.setValue(controlValue.substring(0, index + 1) + event.char + controlValue.substring(index + 1));
+  }
+
+  toggleFavMessages() {
+    this.showFavMessages = !this.showFavMessages;
+    this.conversationalController.fetchFavMessages().subscribe(res => {
+      this.favMessages = res;
+    });
+
+  }
+
+  setFavMessage(message: IMessage) {
+    this.conversationalController.setFavMessage(message);
   }
 }
 
