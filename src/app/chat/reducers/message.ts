@@ -5,6 +5,8 @@ import { ChatActions } from '../actions/message';
 
 export interface MessageState extends EntityState<IMessage> {
   isLoaded: boolean;
+  favMessages: IMessage[];
+
 }
 
 export const message = (message: IMessage) => message.id;
@@ -16,7 +18,8 @@ export const messageAdapter: EntityAdapter<IMessage> = createEntityAdapter<IMess
 
 
 export const initialState = messageAdapter.getInitialState({
-  isLoaded: false
+  isLoaded: false,
+  favMessages: []
 });
 
 export function messageReducer(state: MessageState = initialState, action: Action) {
@@ -36,6 +39,20 @@ export function messageReducer(state: MessageState = initialState, action: Actio
       return messageAdapter.removeOne(action.payload, state);
     default:
       return state;
+    case ChatActions.SET_FAV_MESSAGE:
+      const favMessage = action.payload;
+      let oldMessages = state.favMessages || [];
+      let newMessages = [...oldMessages, favMessage];
+      return {
+        ...messageAdapter.updateOne(favMessage.isFav, state),
+        favMessages: newMessages
+      };
+
+
   }
+
+
 }
-export const _getIsMessagesLoaded = (state:MessageState) => state.isLoaded;
+
+export const _getIsMessagesLoaded = (state: MessageState) => state.isLoaded;
+export const _getFavMessages = (state: MessageState) => state.favMessages;

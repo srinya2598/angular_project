@@ -15,7 +15,8 @@
           <input type="file" (change)="attachImage($event)" >
         </label>
         <button (click)="toggleSearch()" mat-menu-item>Search</button>
-        <button (click)="toggleFavMessages()" mat-menu-item>Favourites </button>
+        <button (click)="toggleFavMessages()" *ngIf="!showFavMessages" mat-menu-item>Favourites </button>
+        <button (click)="toggleFavMessages()" mat-menu-item *ngIf="showFavMessages">Chat</button>
       </mat-menu>
     </div>
   </div>
@@ -32,7 +33,7 @@
           <div class="text">LOADING</div>
         </div>
       </div>
-      <div *ngIf="!showSearch">
+      <div *ngIf="!showSearch && !showFavMessages">
         <ng-container *ngFor="let msg of messages">
           <app-chat-bubble (favMessage)="setFavMessage($event)"(removeMessage)="removeMessage($event)" (forwardMessage)="forward($event)" [message]="msg"></app-chat-bubble>
         </ng-container>
@@ -42,12 +43,13 @@
           <app-chat-bubble (favMessage)="setFavMessage($event)"(removeMessage)="removeMessage($event)" (forwardMessage)="forward($event)" [message]="msg"></app-chat-bubble>
         </ng-container>
       </div>
-    </div>
+
   <div *ngIf="showFavMessages" >
     <ng-container *ngFor="let msg of favMessages">
       <app-chat-bubble  (removeMessage)="removeMessage($event)" (forwardMessage)="forward($event)" [message]= "msg"></app-chat-bubble>
     </ng-container>
   </div>
+    </div>
   <div class="chat-window__input-area" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
     <input id="message-input" #messageInput fxFlex="1 1 auto" type="text" placeholder="Type a message..." class="form-control" [formControl]="messageControl">
     <i

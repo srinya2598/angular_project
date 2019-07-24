@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DbService, RxCollections } from '@ec-core/services/database.service';
 import {
-  CreateRoom, FetchFavMessages,
+  CreateRoom,
   FetchMessage,
   FetchRooms,
   FetchRoomsFailed,
@@ -410,7 +410,7 @@ export class ConversationalController {
     this.chatStore.dispatch(new SetFavMessage(message));
   }
    fetchFavMessages() {
-    this.chatStore.dispatch(new FetchFavMessages());
+
   return  this.chatStore.select(getFavMessages);
    }
 }
