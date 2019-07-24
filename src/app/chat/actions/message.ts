@@ -19,7 +19,7 @@ export enum ChatActions {
   SET_SEARCH_KEYWORD = '[chat] set search keyword',
   SET_SEARCH_MESSAGES = '[chat] set search messages',
   RESET_SEARCH_MESSAGES = '[chat] reset search messages',
-  SET_FAV_MESSAGE = '[chat] set fav message',
+  TOGGLE_FAV_MESSAGE = '[chat] toggle fav message',
   }
 
 export class SendMessage implements Action {
@@ -117,8 +117,8 @@ export class ResetSearchMessages implements Action {
   readonly type = ChatActions.RESET_SEARCH_MESSAGES;
 }
 
-export class SetFavMessage implements Action {
-  readonly type = ChatActions.SET_FAV_MESSAGE;
+export class ToggleFavMessage implements Action {
+  readonly type = ChatActions.TOGGLE_FAV_MESSAGE;
 
   constructor(public payload: IMessage) {
   }

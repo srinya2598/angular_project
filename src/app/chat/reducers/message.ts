@@ -37,15 +37,15 @@ export function messageReducer(state: MessageState = initialState, action: Actio
       return messageAdapter.removeOne(action.payload, state);
     default:
       return state;
-    case ChatActions.SET_FAV_MESSAGE:
+    case ChatActions.TOGGLE_FAV_MESSAGE:
       const favMessage = action.payload;
       return {
         ...messageAdapter.updateOne({
           id: action.payload.id,
-          changes: {isFav: true}
+          changes: { isFav: !state.entities[action.payload.id].isFav }
 
         }, state),
-            };
+      };
 
   }
 

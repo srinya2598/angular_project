@@ -221,6 +221,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
 
 
   setFav(message: IMessage) {
+    console.log("[Set fav] chat window");
     this.conversationalController.setFavMessage(message);
   }
 }
