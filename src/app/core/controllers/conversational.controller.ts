@@ -7,14 +7,15 @@ import {
   FetchRoomsFailed,
   FetchRoomSuccess,
   RemoveMessage,
-  SendMessage, SetFavMessage, SetSearchKeyword,
+  SendMessage,
+  SetFavMessage,
   SetSelectedMessage,
   SetSelectedRoomId,
   SetSelectedUserId
 } from '../../chat/actions/message';
 import { Store } from '@ngrx/store';
 import {
-  getFavMessages,
+
   getIsMessagesLoaded,
   getIsRoomsLoaded,
   getIsRoomsLoading,
@@ -38,6 +39,7 @@ import { State as AuthState } from '../../auth/reducer/';
 import { getSelectedMessage, getSelectedProductUserDetails, State as ProductState } from '../../dashboard/reducers/';
 import { IUser } from '@ec-shared/models/users';
 import { CommonUtils } from '@ec-shared/utils/common.utils';
+import { throwErrorIfNoChangesMode } from '@angular/core/src/render3/errors';
 
 @Injectable({
   providedIn: 'root'
@@ -407,10 +409,13 @@ export class ConversationalController {
   }
 
   setFavMessage(message: IMessage) {
-    this.chatStore.dispatch(new SetFavMessage(message));
-  }
-   fetchFavMessages() {
+    const query = this.dbService.getCollection(RxCollections.MESSAGES).find().where('id').eq(message.id);
+    query.update({
+        isFav: true,
+      }
+    ).then(() => this.chatStore.dispatch(new SetFavMessage(message)));
 
-  return  this.chatStore.select(getFavMessages);
-   }
+  }
+
+
 }

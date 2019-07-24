@@ -4,9 +4,15 @@
     {{time | date: 'shortTime'}}
   </span>
     <span class="buttonx">
+
+    <span *ngIf="message.isFav"><mat-icon>star</mat-icon></span>
+
+
     <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>keyboard_arrow_down</mat-icon>
    </button>
+
+
   </span>
 
   </div>
@@ -15,6 +21,10 @@
       {{time | date: 'shortTime'}}
   </span>
     <span class="buttonx">
+
+    <span *ngIf="message.isFav"><mat-icon>star</mat-icon></span>
+
+
     <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>keyboard_arrow_down</mat-icon>
    </button>
@@ -31,6 +41,10 @@
     {{time | date: 'shortTime'}}
   </span>
     <span class="buttonx">
+
+    <span *ngIf="message.isFav" ><mat-icon>star</mat-icon></span>
+
+
     <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>keyboard_arrow_down</mat-icon>
    </button>
@@ -44,6 +58,9 @@
       {{time | date: 'shortTime'}}
   </span>
     <span class="buttonx">
+
+    <span *ngIf="message.isFav"><mat-icon>star</mat-icon></span>
+
     <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>keyboard_arrow_down</mat-icon>
    </button>
@@ -60,10 +77,7 @@
     <span>Forward Message</span>
   </button>
   <button *ngIf="!message.isFav" mat-menu-item (click)="setFav()">
-    <span>Favourite</span>
-  </button>
-  <button *ngIf="message.isFav" mat-menu-item>
-    <span>Unfavourite</span>
+    <span><mat-icon>star_border</mat-icon>Favourite</span>
   </button>
 
 </mat-menu>

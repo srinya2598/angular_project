@@ -18,7 +18,10 @@ export const MESSAGE_SCHEMA = {
     },
 
     isFav: {
+
       type: 'boolean',
+      final: false
+
     },
     text: {
       type: 'string',

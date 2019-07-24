@@ -28,9 +28,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   profileUrl: string;
   messages: IMessage[];
   searchMessages: IMessage[];
-  favMessages: IMessage[];
   showSearch = false;
-  showFavMessages = false;
   private isScrollUpdateNeeded = true;
   private scrollHeight: number;
   private scrollTop: number;
@@ -221,15 +219,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.messageControl.setValue(controlValue.substring(0, index + 1) + event.char + controlValue.substring(index + 1));
   }
 
-  toggleFavMessages() {
-    this.showFavMessages = !this.showFavMessages;
-    this.conversationalController.fetchFavMessages().subscribe(res => {
-      this.favMessages = res;
-    });
 
-  }
-
-  setFavMessage(message: IMessage) {
+  setFav(message: IMessage) {
     this.conversationalController.setFavMessage(message);
   }
 }

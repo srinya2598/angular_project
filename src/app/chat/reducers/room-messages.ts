@@ -1,6 +1,7 @@
 import { Action } from '@ec-core/actions';
 import { ChatActions } from '../actions/message';
 import { IMessage } from '@ec-shared/models/message';
+import { messageAdapter } from './message';
 
 export interface RoomMessageState {
   ids: { [convId: string]: string[] };

@@ -1,5 +1,5 @@
 import {
-  _getFavMessages,
+
   _getIsMessagesLoaded,
   messageAdapter,
   messageReducer,
@@ -31,6 +31,7 @@ import {
   searchMessageReducer,
   SearchMessageState
 } from './search-message';
+import { getEntities } from '../../dashboard/reducers';
 
 export interface State {
   message: MessageState,
@@ -72,10 +73,6 @@ export const getIsMessagesLoaded = createSelector(
   getMessageState,
   _getIsMessagesLoaded
 );
- export const getFavMessages = createSelector(
-   getMessageState,
-   _getFavMessages
- );
 
 // Room-Message Selectors
 export const getRoomMessageState = createSelector(
