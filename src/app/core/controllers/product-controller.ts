@@ -32,7 +32,7 @@ import {
 } from '../../dashboard/actions/product';
 import { ApiService } from '../services/api.service';
 import { NotificationService } from '../services/notification.service';
-import { BehaviorSubject, fromEvent, Observable, of } from 'rxjs';
+import { BehaviorSubject, fromEvent, interval, Observable, of, Subscription, timer } from 'rxjs';
 import { finalize, map, switchMap, take } from 'rxjs/operators';
 import { IProductCategory } from '@ec-shared/models/category';
 import { BroadcasterConstants, Constants } from '@ec-shared/utils/constants';
@@ -45,6 +45,8 @@ import { IUser } from '@ec-shared/models/users';
 export class ProductController {
   uploadPercent: BehaviorSubject<number>;
   downloadUrlSubject: BehaviorSubject<string>;
+  private pollingTimeInterval = 5000;
+  pollingSubscriber: Subscription;
 
   constructor(private  store: Store<State>,
               private apiService: ApiService,
@@ -61,6 +63,19 @@ export class ProductController {
     let offline$ = fromEvent(window, 'offline');
     online$.subscribe(() => this.broadcasterService.emit(BroadcasterConstants.NETWORK_CONNECTED));
     offline$.subscribe(() => this.broadcasterService.emit(BroadcasterConstants.NETWORK_DISCONNECTED));
+    this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(() => {
+      if (!this.pollingSubscriber) {
+        this.pollingSubscriber.subscribe();
+      }
+    });
+    this.broadcasterService.listen(BroadcasterConstants.NETWORK_DISCONNECTED).subscribe(() => {
+      if (this.pollingSubscriber) {
+        this.pollingSubscriber.unsubscribe();
+
+      }}
+    );
+
+
   }
 
   uploadProduct(product: IProduct) {
@@ -130,22 +145,13 @@ export class ProductController {
         return this.store.select(getOtherItems);
 
     }
-  }
+  };
 
   fetchProduct() {
     const userId = this.apiService.getItem(Constants.USER_UID);
     this.store.select(getIsProductLoaded).pipe(take(1)).subscribe(isLoaded => {
       if (!isLoaded) {
-        this.apiService.fetchProduct().pipe(take(1)).subscribe((res) => {
-            let products: IProduct[] = [];
-            if (res) {
-              Object.keys(res).forEach(key => products.push(res[key]));
-              this.store.dispatch(new FetchSuccess({ products, userId }));
-            }
-          },
-          (error) => {
-            this.notificationService.error(error);
-          });
+        this.getProducts(userId);
       }
     });
   }
@@ -230,6 +236,28 @@ export class ProductController {
     this.apiService.fetchCartProducts(userId).pipe(take(1)).subscribe((res: string[]) => {
       console.log(res);
       this.store.dispatch(new FetchCartProductSuccess(res));
+    });
+  }
+
+  getProducts(userId: string) {
+
+    this.apiService.fetchProduct().pipe(take(1)).subscribe((res) => {
+        let products: IProduct[] = [];
+        if (res) {
+          Object.keys(res).forEach(key => products.push(res[key]));
+          this.store.dispatch(new FetchSuccess({products, userId}));
+        }
+      },
+      (error) => {
+        this.notificationService.error(error);
+      });
+  }
+
+  pollingProducts() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    this.pollingSubscriber = interval(this.pollingTimeInterval).subscribe(() => {
+      this.getProducts(userId);
+
     });
   }
 }
