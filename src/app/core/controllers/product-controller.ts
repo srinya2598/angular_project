@@ -56,6 +56,7 @@ export class ProductController {
     this.uploadPercent = new BehaviorSubject<number>(0);
     this.downloadUrlSubject = new BehaviorSubject('null');
     this.checkConnectivity();
+
   }
 
   checkConnectivity() {
@@ -65,7 +66,7 @@ export class ProductController {
     offline$.subscribe(() => this.broadcasterService.emit(BroadcasterConstants.NETWORK_DISCONNECTED));
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(() => {
       if (!this.pollingSubscriber) {
-        this.pollingSubscriber.subscribe();
+        this.pollingProducts();
       }
     });
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_DISCONNECTED).subscribe(() => {
@@ -163,14 +164,14 @@ export class ProductController {
     return this.store.select((state) => getSelectedProduct(state, id)).pipe(
       switchMap((res) => {
         productId = res.id;
-        data = { ...res };
+        data = {...res};
         return this.apiService.getUserDetails(res.userId);
       }),
       map((res: IUser) => {
         this.store.dispatch(new SetSelectedProductUserDetails(res));
         // @ts-ignore
         userId = res.id;
-        data = { ...data, ...res, id: productId, userId: userId };
+        data = {...data, ...res, id: productId, userId: userId};
         return data;
       })
     );
