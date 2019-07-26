@@ -133,5 +133,13 @@ export class ApiService {
   getAttachedFileRef(roomId: string, fileName: string): AngularFireStorageReference {
     return this.storage.ref(`chat-images/${roomId + fileName}`);
   }
+
+  setUserStatus(userId: string, staus: string) {
+    return from(this.angularFireDb.database.ref(`user_status/${userId}`).set(staus));
+  }
+
+  getUserStatus(userId: string) {
+    return this.angularFireDb.object(`user_status/${userId}`).valueChanges();
+  }
 }
 

@@ -19,3 +19,8 @@ export enum MessageType {
   TEXT = 'text_message',
   IMAGE = 'image_message'
 }
+
+export enum StatusType {
+  ONLLNE = 'user_is_online',
+  OFFLINE = 'user_is_offline'
+}

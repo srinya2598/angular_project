@@ -4,6 +4,9 @@
       <avatar *ngIf="!profileUrl" size="50" [name]="firstName" [displayType]="'circle'"></avatar>
       <img *ngIf="profileUrl" [src] = "profileUrl">
       <h3>{{firstName}} {{lastName}}</h3>
+      <div class="status" fxLayout="row">
+        <p >{{userStatus}}</p>
+      </div>
     </div>
     <div>
       <button class="menu-button" mat-icon-button [matMenuTriggerFor]="menu">

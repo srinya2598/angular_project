@@ -12,7 +12,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { ImageContainerComponent } from '../image-container/image-container.component';
 import { SearchMessageController } from '@ec-core/controllers/search-message.controller';
 import { BroadcasterService } from '@ec-core/services/broadcaster.service';
-import { BroadcasterConstants } from '@ec-shared/utils/constants';
+import { BroadcasterConstants, StatusType } from '@ec-shared/utils/constants';
 
 @Component({
   selector: 'app-chat-window',
@@ -40,6 +40,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   dialogRef: MatDialogRef<ImageContainerComponent>;
   networkConnected = true;
   toggled: boolean = false;
+  userStatus: string;
 
   constructor(private conversationalController: ConversationalController,
               private apiService: ApiService,
@@ -56,6 +57,15 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
         this.firstName = res.firstName;
         this.lastName = res.lastName;
         this.profileUrl = res.profileUrl;
+        this.conversationalController.getSelectedUserStatus(id).subscribe((status) => {
+          if (status === StatusType.ONLLNE) {
+            this.userStatus = 'online';
+            console.log('the user is online');
+          } else {
+            console.log('the user is offline');
+            this.userStatus = '';
+          }
+        });
       });
     });
   }
@@ -219,9 +229,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.messageControl.setValue(controlValue.substring(0, index + 1) + event.char + controlValue.substring(index + 1));
   }
 
-
   setFav(message: IMessage) {
-    console.log("[Set fav] chat window");
+    console.log('[Set fav] chat window');
     this.conversationalController.setFavMessage(message);
   }
 }

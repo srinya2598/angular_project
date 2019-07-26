@@ -28,7 +28,7 @@ import {
 import * as uuid from 'uuid/v4';
 import { IMessage } from '@ec-shared/models/message';
 import { catchError, concatMap, filter, finalize, map, reduce, skip, switchMap, take, tap } from 'rxjs/operators';
-import { Constants, MessageType } from '@ec-shared/utils/constants';
+import { BroadcasterConstants, Constants, MessageType, StatusType } from '@ec-shared/utils/constants';
 import { ApiService } from '@ec-core/services/api.service';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
 import { IRoom } from '@ec-shared/models/room';
@@ -38,6 +38,7 @@ import { State as AuthState } from '../../auth/reducer/';
 import { getSelectedMessage, getSelectedProductUserDetails, State as ProductState } from '../../dashboard/reducers/';
 import { IUser } from '@ec-shared/models/users';
 import { CommonUtils } from '@ec-shared/utils/common.utils';
+import { BroadcasterService } from '@ec-core/services/broadcaster.service';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,7 @@ export class ConversationalController {
   isChannelSetup = false;
   uploadPercent: BehaviorSubject<number>;
   downloadUrlSubject: BehaviorSubject<string>;
-  favMessages: IMessage[];
+
 
   constructor(private dbService: DbService,
               private chatStore: Store<State>,
@@ -54,11 +55,13 @@ export class ConversationalController {
               private notificationService: NotificationService,
               private authStore: Store<AuthState>,
               private productState: Store<ProductState>,
+              private broadcasterService: BroadcasterService,
   ) {
     this.setUpMessageChannel();
     this.fetchMessages();
     this.uploadPercent = new BehaviorSubject<number>(0);
     this.downloadUrlSubject = new BehaviorSubject(null);
+    this.checkConnectivity();
   }
 
   sendMessage(body: string) {
@@ -243,7 +246,7 @@ export class ConversationalController {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
+          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -407,7 +410,7 @@ export class ConversationalController {
   }
 
   setFavMessage(message: IMessage) {
-    console.log("[Set fav] called");
+    console.log('[Set fav] called');
     const query = this.dbService.getCollection(RxCollections.MESSAGES).find().where('id').eq(message.id);
     query.update({
         $set: {
@@ -419,4 +422,34 @@ export class ConversationalController {
       this.chatStore.dispatch(new ToggleFavMessage(message));
     });
   }
+
+  checkConnectivity() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(() => {
+      this.setUserStatusOnline().subscribe(() => {
+        console.log('i am online');
+      });
+    });
+    this.broadcasterService.listen(BroadcasterConstants.NETWORK_DISCONNECTED).subscribe(() => {
+        this.setUserStatusOffline().subscribe(() => {
+          console.log('i am offline');
+        });
+      }
+    );
+  }
+
+  getSelectedUserStatus(selectedUserId: string) {
+    return this.apiService.getUserStatus(selectedUserId);
+  }
+
+  setUserStatusOnline() {
+   const userId = this.apiService.getItem(Constants.USER_UID);
+    return this.apiService.setUserStatus(userId, StatusType.ONLLNE);
+  }
+
+  setUserStatusOffline() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    return this.apiService.setUserStatus(userId, StatusType.OFFLINE);
+  }
+
 }

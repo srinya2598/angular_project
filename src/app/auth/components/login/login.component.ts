@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       'email': new FormControl(null, [Validators.email, Validators.required]),
       'password': new FormControl(null, [Validators.required])
     });
-
   }
 
   login() {

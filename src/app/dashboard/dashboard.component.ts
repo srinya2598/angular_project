@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { BroadcasterService } from '@ec-core/services/broadcaster.service';
 import { BroadcasterConstants } from '@ec-shared/utils/constants';
 import { NotificationService } from '@ec-core/services/notification.service';
+import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 
 
 @Component({
@@ -30,7 +31,8 @@ export class DashboardComponent implements OnInit {
               private productController: ProductController,
               private router: Router,
               private broadcasterService: BroadcasterService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private convController: ConversationalController, ) {
     this.controller.getUser().subscribe((res: IUser) => {
       if (res) {
         this.user = res;
@@ -39,6 +41,11 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.convController.setUserStatusOnline();
+    window.onunload = (event) => {
+      this.convController.setUserStatusOffline().subscribe();
+    };
+
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(_ => {
       this.notificationService.success(this.networkConnectedMessage, 2000);
     });
@@ -85,7 +92,8 @@ export class DashboardComponent implements OnInit {
     this.closeDrawer();
     this.router.navigate(['dashboard/products']);
   }
-  loadCartProducts(){
+
+  loadCartProducts() {
     this.closeDrawer();
     this.router.navigate(['dashboard/cart']);
   }
@@ -100,7 +108,6 @@ export class DashboardComponent implements OnInit {
       this.snav.close();
     }
   }
-
 }
 
 
