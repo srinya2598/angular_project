@@ -141,5 +141,18 @@ export class ApiService {
   getUserStatus(userId: string) {
     return this.angularFireDb.object(`user_status/${userId}`).valueChanges();
   }
+
+  setMessageOffline(userId: string, message: IMessage[]) {
+    return from(this.angularFireDb.database.ref(`user_offline_messages/${userId}`).set(message));
+  }
+
+  getMessageOffline(userId: string) {
+    return this.angularFireDb.object(`user_offline_message/${userId}`).valueChanges();
+  }
+
+  deleteMessageOffline(userId: string) {
+    return this.angularFireDb.object(`user_offline_message/${userId}`).remove();
+
+  }
 }
 

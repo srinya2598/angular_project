@@ -8,10 +8,10 @@ import {
   FetchRoomSuccess,
   RemoveMessage,
   SendMessage,
-  ToggleFavMessage,
   SetSelectedMessage,
   SetSelectedRoomId,
-  SetSelectedUserId
+  SetSelectedUserId,
+  ToggleFavMessage,
 } from '../../chat/actions/message';
 import { Store } from '@ngrx/store';
 import {
@@ -30,7 +30,7 @@ import { IMessage } from '@ec-shared/models/message';
 import { catchError, concatMap, filter, finalize, map, reduce, skip, switchMap, take, tap } from 'rxjs/operators';
 import { BroadcasterConstants, Constants, MessageType, StatusType } from '@ec-shared/utils/constants';
 import { ApiService } from '@ec-core/services/api.service';
-import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, of, Subscription } from 'rxjs';
 import { IRoom } from '@ec-shared/models/room';
 import { NotificationService } from '@ec-core/services/notification.service';
 import { getLoggedInUser } from '../../auth/reducer';
@@ -62,6 +62,7 @@ export class ConversationalController {
     this.uploadPercent = new BehaviorSubject<number>(0);
     this.downloadUrlSubject = new BehaviorSubject(null);
     this.checkConnectivity();
+    this.getOfflineMessages();
   }
 
   sendMessage(body: string) {
@@ -79,13 +80,7 @@ export class ConversationalController {
       text: body || '',
       timestamp: new Date().getTime()
     };
-    this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
-      this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
-        console.log('Send message()');
-        this.chatStore.dispatch(new SendMessage(message));
-      });
-    });
-
+    this.Message(message, selectedUserId);
   }
 
   fetchRooms() {
@@ -352,14 +347,8 @@ export class ConversationalController {
       text: selectedMessage || '',
       timestamp: new Date().getTime()
     };
-    this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
-      this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
-        console.log('Fwd message()');
-        this.chatStore.dispatch(new SendMessage(message));
-        this.chatStore.dispatch(new SetSelectedMessage(null));
-        console.log(message.text);
-      });
-    });
+    this.Message(message, selectedMessage);
+
   }
 
   attachImageFile(file: File): BehaviorSubject<any>[] {
@@ -402,11 +391,8 @@ export class ConversationalController {
         caption: caption || ''
       }
     };
-    this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
-      this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
-      console.log('Send file()');
-      this.chatStore.dispatch(new SendMessage(message));
-    });
+    this.Message(message, selectedUserId);
+
   }
 
   setFavMessage(message: IMessage) {
@@ -425,12 +411,16 @@ export class ConversationalController {
 
   checkConnectivity() {
     const userId = this.apiService.getItem(Constants.USER_UID);
+    let selectedUserId: string;
+    this.getSelectedUserId().subscribe(res => selectedUserId = res
+    );
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(() => {
       this.setUserStatusOnline().subscribe(() => {
         console.log('i am online');
       });
     });
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_DISCONNECTED).subscribe(() => {
+        console.log('f');
         this.setUserStatusOffline().subscribe(() => {
           console.log('i am offline');
         });
@@ -443,7 +433,7 @@ export class ConversationalController {
   }
 
   setUserStatusOnline() {
-   const userId = this.apiService.getItem(Constants.USER_UID);
+    const userId = this.apiService.getItem(Constants.USER_UID);
     return this.apiService.setUserStatus(userId, StatusType.ONLLNE);
   }
 
@@ -452,4 +442,51 @@ export class ConversationalController {
     return this.apiService.setUserStatus(userId, StatusType.OFFLINE);
   }
 
+  Message(message: IMessage, selectedUserId: string) {
+    this.apiService.getUserStatus(selectedUserId).subscribe((status) => {
+      if (status === StatusType.ONLLNE) {
+        console.log('a');
+        this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
+          this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
+            console.log('Send message()');
+            this.chatStore.dispatch(new SendMessage(message));
+          });
+        });
+
+      } else {
+        console.log('b');
+        let oldOfflineMessages: IMessage[];
+        this.apiService.getMessageOffline(selectedUserId).subscribe((messages: IMessage[]) => {
+          oldOfflineMessages = messages;
+          console.log('c');
+        });
+        let newOfflineMessages: IMessage[];
+        newOfflineMessages = [...oldOfflineMessages, message];
+        this.apiService.setMessageOffline(selectedUserId, newOfflineMessages).subscribe(() => {
+          this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
+            this.chatStore.dispatch(new SendMessage(message));
+            console.log('d');
+          });
+        });
+      }
+    });
+  }
+
+  getOfflineMessages() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    this.apiService.getMessageOffline(userId).subscribe((messages: IMessage[]) => {
+      messages.forEach(offlineMessage => {
+        console.log('e');
+        this.dbService.getCollection(RxCollections.MESSAGES).insert(offlineMessage).then(() => {
+        });
+        console.log('f');
+        this.chatStore.dispatch(new FetchMessage(messages));
+      });
+
+      this.apiService.deleteMessageOffline(userId).then(() => {
+        console.log('g');
+        console.log('no new messages');
+      });
+    });
+  }
 }
