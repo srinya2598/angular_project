@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 import { BroadcasterService } from '@ec-core/services/broadcaster.service';
 import { BroadcasterConstants } from '@ec-shared/utils/constants';
 import { NotificationService } from '@ec-core/services/notification.service';
-import { ConversationalController } from '@ec-core/controllers/conversational.controller';
 
 
 @Component({

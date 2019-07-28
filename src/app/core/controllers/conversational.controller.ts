@@ -82,7 +82,7 @@ export class ConversationalController {
       text: body || '',
       timestamp: new Date().getTime()
     };
-    this.Message(message, selectedUserId);
+    this.dispatchMessage(message, selectedUserId);
   }
 
   fetchRooms() {
@@ -349,7 +349,7 @@ export class ConversationalController {
       text: selectedMessage || '',
       timestamp: new Date().getTime()
     };
-    this.Message(message, selectedMessage);
+    this.dispatchMessage(message, selectedMessage);
 
   }
 
@@ -393,7 +393,7 @@ export class ConversationalController {
         caption: caption || ''
       }
     };
-    this.Message(message, selectedUserId);
+    this.dispatchMessage(message, selectedUserId);
 
   }
 
@@ -435,8 +435,8 @@ export class ConversationalController {
   }
 
 
-  Message(message: IMessage, selectedUserId: string) {
-    this.apiService.getUserStatus(selectedUserId).subscribe((status) => {
+  dispatchMessage(message: IMessage, selectedUserId: string) {
+    this.apiService.getUserStatus(selectedUserId).pipe(take(1)).subscribe((status) => {
       if (status === StatusType.ONLLNE) {
         console.log('a');
         this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
@@ -449,8 +449,8 @@ export class ConversationalController {
       } else {
         console.log('b');
         let oldOfflineMessages: IMessage[];
-        this.apiService.getMessageOffline(selectedUserId).subscribe((messages: IMessage[]) => {
-          oldOfflineMessages = messages;
+        this.apiService.getMessageOffline(selectedUserId).pipe(take(1)).subscribe((messages: IMessage[]) => {
+          oldOfflineMessages = messages || [];
           console.log('c');
         });
         let newOfflineMessages: IMessage[];
@@ -468,19 +468,21 @@ export class ConversationalController {
 
   getOfflineMessages() {
     const userId = this.apiService.getItem(Constants.USER_UID);
-    this.apiService.getMessageOffline(userId).subscribe((messages: IMessage[]) => {
-      messages.forEach(offlineMessage => {
-        console.log('e');
-        this.dbService.getCollection(RxCollections.MESSAGES).insert(offlineMessage).then(() => {
+    this.apiService.getMessageOffline(userId).pipe(take(1)).subscribe((messages: IMessage[]) => {
+      if(messages &&messages.length>0){
+        messages.forEach(offlineMessage => {
+          console.log('e');
+          this.dbService.getCollection(RxCollections.MESSAGES).insert(offlineMessage).then(() => {
+          });
+          console.log('f');
         });
-        console.log('f');
         this.chatStore.dispatch(new FetchMessage(messages));
-      });
 
-      this.apiService.deleteMessageOffline(userId).then(() => {
-        console.log('g');
-        console.log('no new messages');
-      });
+        this.apiService.deleteMessageOffline(userId).then(() => {
+          console.log('g');
+          console.log('no new messages');
+        });
+      }
     });
   }
 }
