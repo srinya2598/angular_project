@@ -147,11 +147,11 @@ export class ApiService {
   }
 
   getMessageOffline(userId: string) {
-    return this.angularFireDb.object(`user_offline_message/${userId}`).valueChanges();
+    return this.angularFireDb.object(`user_offline_messages/${userId}`).valueChanges();
   }
 
   deleteMessageOffline(userId: string) {
-    return this.angularFireDb.object(`user_offline_message/${userId}`).remove();
+    return this.angularFireDb.object(`user_offline_messages/${userId}`).remove();
 
   }
 }

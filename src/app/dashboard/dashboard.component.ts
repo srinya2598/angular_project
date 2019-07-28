@@ -99,7 +99,7 @@ export class DashboardComponent implements OnInit {
 
   openChatScreen() {
     this.closeDrawer();
-    this.router.navigate(['dashboard/chat/conversations']);
+    this.router.navigate(['dashboard/chat']);
   }
 
   closeDrawer() {

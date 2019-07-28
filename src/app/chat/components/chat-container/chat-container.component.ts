@@ -17,6 +17,9 @@ export class ChatContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.conversationController.fetchMessages();
+    this.conversationController.setUpMessageChannel();
+    this.conversationController.getOfflineMessages();
     this.activatedRoute.queryParams.subscribe(params => {
       console.log(params);
       this.userId = params['id'];
@@ -34,6 +37,8 @@ export class ChatContainerComponent implements OnInit {
       }
 
       this.router.navigate(['dashboard/chat', CommonUtils.getRoutePath(this.userId)]);
+    } else {
+      this.router.navigate(['dashboard/chat/conversations'])
     }
 
   }

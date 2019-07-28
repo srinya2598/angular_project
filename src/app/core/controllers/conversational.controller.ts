@@ -59,12 +59,9 @@ export class ConversationalController {
               private broadcasterService: BroadcasterService,
               private authController: AuthController,
   ) {
-    this.setUpMessageChannel();
-    this.fetchMessages();
     this.uploadPercent = new BehaviorSubject<number>(0);
     this.downloadUrlSubject = new BehaviorSubject(null);
     this.checkConnectivity();
-    this.getOfflineMessages();
   }
 
   sendMessage(body: string) {
@@ -143,7 +140,7 @@ export class ConversationalController {
     if (!id) {
       return false;
     }
-    this.chatStore.select(getRoomsList).subscribe((rooms: IRoom[]) => {
+    this.chatStore.select(getRoomsList).pipe(take(1)).subscribe((rooms: IRoom[]) => {
       if (rooms && rooms.length) {
         for (let iterator = 0; iterator < rooms.length; iterator++) {
           let participants = rooms[iterator].participants;
@@ -236,14 +233,14 @@ export class ConversationalController {
     return roomId;
   }
 
-  private fetchMessages() {
+  fetchMessages() {
     console.log('fetch msg');
     const userId = this.apiService.getItem(Constants.USER_UID);
     this.chatStore.select(getIsMessagesLoaded).pipe(take(1)).subscribe(isLoaded => {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
+          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -254,7 +251,7 @@ export class ConversationalController {
     });
   }
 
-  private setUpMessageChannel() {
+  setUpMessageChannel() {
     console.log('setup');
     if (this.isChannelSetup) {
       return;
@@ -268,11 +265,13 @@ export class ConversationalController {
     this.apiService.getMessageStream(userId).pipe(skip(1)).subscribe((message: IMessage) => {
       if (message) {
         let roomId = this.isRoomsExisting(userId);
+        console.log(roomId);
         if (!roomId) {
-          this.chatStore.select(getUserRoomIds).pipe(switchMap((ids: string[]) => {
-            return this.apiService.setUserRooms([...ids, message.roomId], userId);
-
-          })).subscribe(() => {
+          this.chatStore.select(getUserRoomIds).pipe(
+            take(1),
+            switchMap((ids: string[]) => {
+              return this.apiService.setUserRooms([...ids, message.roomId], userId);
+            })).subscribe(() => {
             this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
             console.log('Send channel 1()');
             this.chatStore.dispatch(new SendMessage(message));
@@ -412,11 +411,8 @@ export class ConversationalController {
   }
 
   checkConnectivity() {
-    const userId = this.apiService.getItem(Constants.USER_UID);
-    let selectedUserId: string;
-    this.getSelectedUserId().subscribe(res => selectedUserId = res
-    );
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(() => {
+      this.getOfflineMessages();
       this.authController.setUserStatusOnline().subscribe(() => {
         console.log('i am online');
       });
@@ -452,16 +448,17 @@ export class ConversationalController {
         this.apiService.getMessageOffline(selectedUserId).pipe(take(1)).subscribe((messages: IMessage[]) => {
           oldOfflineMessages = messages || [];
           console.log('c');
-        });
-        let newOfflineMessages: IMessage[];
-        console.log(oldOfflineMessages);
-        newOfflineMessages = [...oldOfflineMessages, message];
-        this.apiService.setMessageOffline(selectedUserId, newOfflineMessages).subscribe(() => {
-          this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
-            this.chatStore.dispatch(new SendMessage(message));
-            console.log('d');
+          let newOfflineMessages: IMessage[];
+          console.log(oldOfflineMessages);
+          newOfflineMessages = [...oldOfflineMessages, message];
+          this.apiService.setMessageOffline(selectedUserId, newOfflineMessages).subscribe(() => {
+            this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
+              this.chatStore.dispatch(new SendMessage(message));
+              console.log('d');
+            });
           });
         });
+
       }
     });
   }
@@ -469,7 +466,7 @@ export class ConversationalController {
   getOfflineMessages() {
     const userId = this.apiService.getItem(Constants.USER_UID);
     this.apiService.getMessageOffline(userId).pipe(take(1)).subscribe((messages: IMessage[]) => {
-      if(messages &&messages.length>0){
+      if (messages && messages.length > 0) {
         messages.forEach(offlineMessage => {
           console.log('e');
           this.dbService.getCollection(RxCollections.MESSAGES).insert(offlineMessage).then(() => {
