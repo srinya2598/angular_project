@@ -39,6 +39,7 @@ import { getSelectedMessage, getSelectedProductUserDetails, State as ProductStat
 import { IUser } from '@ec-shared/models/users';
 import { CommonUtils } from '@ec-shared/utils/common.utils';
 import { BroadcasterService } from '@ec-core/services/broadcaster.service';
+import { AuthController } from '@ec-core/controllers/auth-controller';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +57,7 @@ export class ConversationalController {
               private authStore: Store<AuthState>,
               private productState: Store<ProductState>,
               private broadcasterService: BroadcasterService,
+              private authController: AuthController,
   ) {
     this.setUpMessageChannel();
     this.fetchMessages();
@@ -415,13 +417,13 @@ export class ConversationalController {
     this.getSelectedUserId().subscribe(res => selectedUserId = res
     );
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(() => {
-      this.setUserStatusOnline().subscribe(() => {
+      this.authController.setUserStatusOnline().subscribe(() => {
         console.log('i am online');
       });
     });
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_DISCONNECTED).subscribe(() => {
         console.log('f');
-        this.setUserStatusOffline().subscribe(() => {
+        this.authController.setUserStatusOffline().subscribe(() => {
           console.log('i am offline');
         });
       }
@@ -432,15 +434,6 @@ export class ConversationalController {
     return this.apiService.getUserStatus(selectedUserId);
   }
 
-  setUserStatusOnline() {
-    const userId = this.apiService.getItem(Constants.USER_UID);
-    return this.apiService.setUserStatus(userId, StatusType.ONLLNE);
-  }
-
-  setUserStatusOffline() {
-    const userId = this.apiService.getItem(Constants.USER_UID);
-    return this.apiService.setUserStatus(userId, StatusType.OFFLINE);
-  }
 
   Message(message: IMessage, selectedUserId: string) {
     this.apiService.getUserStatus(selectedUserId).subscribe((status) => {
@@ -461,6 +454,7 @@ export class ConversationalController {
           console.log('c');
         });
         let newOfflineMessages: IMessage[];
+        console.log(oldOfflineMessages);
         newOfflineMessages = [...oldOfflineMessages, message];
         this.apiService.setMessageOffline(selectedUserId, newOfflineMessages).subscribe(() => {
           this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {

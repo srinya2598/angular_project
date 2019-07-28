@@ -18,8 +18,8 @@ import {
   UpdateSuccess
 } from '../../auth/actions/auth';
 import { BehaviorSubject, combineLatest, Observable, throwError } from 'rxjs';
-import { Constants } from '@ec-shared/utils/constants';
-import { ConversationalController } from '@ec-core/controllers/conversational.controller';
+import { Constants, StatusType } from '@ec-shared/utils/constants';
+
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +33,7 @@ export class AuthController {
               private router: Router,
               private zone: NgZone,
               private notificationService: NotificationService,
-              private convController: ConversationalController,) {
+              ) {
     this.downloadUrlProfile = new BehaviorSubject('null');
     this.uploadPercentage = new BehaviorSubject(0);
   }
@@ -64,7 +64,7 @@ export class AuthController {
         this.notificationService.success('You are logged in successfully!!');
         this.store.dispatch(new SignUpSuccess(user));
         this.apiService.setItem(Constants.USER_UID, user.id);
-        this.convController.setUserStatusOnline().subscribe(() => {
+        this.setUserStatusOnline().subscribe(() => {
         });
         this.zone.run(() => {
           this.router.navigate(['']);
@@ -98,7 +98,7 @@ export class AuthController {
         //  Load the data of the user form database in bootstrap component
         this.store.dispatch(new LoginSuccess());
         this.apiService.setItem(Constants.USER_UID, res.user.uid);
-        this.convController.setUserStatusOnline().subscribe(() => {
+        this.setUserStatusOnline().subscribe(() => {
         });
         this.zone.run(() => {
           this.router.navigate(['']);
@@ -126,7 +126,7 @@ export class AuthController {
         this.notificationService.success('You are logged in successfully!!');
         this.store.dispatch(new LoginSuccess());
         this.apiService.setItem(Constants.USER_UID, res.user.uid);
-        this.convController.setUserStatusOnline().subscribe(() => {
+        this.setUserStatusOnline().subscribe(() => {
         });
         this.zone.run(() => {
           this.router.navigate(['']);
@@ -209,10 +209,21 @@ export class AuthController {
   }
 
   logout() {
-    this.convController.setUserStatusOffline().subscribe(() => {
+    this.setUserStatusOffline().subscribe(() => {
     });
     this.apiService.removeItem(Constants.USER_UID);
     this.store.dispatch(new Logout());
     this.router.navigate(['login']);
   }
+
+  setUserStatusOnline() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    return this.apiService.setUserStatus(userId, StatusType.ONLLNE);
+  }
+
+  setUserStatusOffline() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    return this.apiService.setUserStatus(userId, StatusType.OFFLINE);
+  }
+
 }
