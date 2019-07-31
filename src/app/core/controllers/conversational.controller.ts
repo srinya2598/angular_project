@@ -268,7 +268,7 @@ export class ConversationalController {
         console.log(roomId);
         if (!roomId) {
           this.chatStore.select(getUserRoomIds).pipe(
-            take(1),
+            (take(1)),
             switchMap((ids: string[]) => {
               return this.apiService.setUserRooms([...ids, message.roomId], userId);
             })).subscribe(() => {
