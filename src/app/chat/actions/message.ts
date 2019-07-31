@@ -20,7 +20,8 @@ export enum ChatActions {
   SET_SEARCH_MESSAGES = '[chat] set search messages',
   RESET_SEARCH_MESSAGES = '[chat] reset search messages',
   TOGGLE_FAV_MESSAGE = '[chat] toggle fav message',
-  }
+  ADD_ROOM = '[chat] add room',
+}
 
 export class SendMessage implements Action {
   readonly type = ChatActions.SEND_MESSAGE;
@@ -123,6 +124,15 @@ export class ToggleFavMessage implements Action {
   constructor(public payload: IMessage) {
   }
 }
+
+export class AddRoom implements Action {
+  readonly type = ChatActions.ADD_ROOM;
+
+  constructor(public payloaed: IRoom) {
+  }
+
+}
+
 
 
 

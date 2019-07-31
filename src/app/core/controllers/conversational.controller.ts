@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DbService, RxCollections } from '@ec-core/services/database.service';
 import {
+  AddRoom,
   CreateRoom,
   FetchMessage,
   FetchRooms,
@@ -240,7 +241,7 @@ export class ConversationalController {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
+          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -274,8 +275,13 @@ export class ConversationalController {
             })).subscribe(() => {
             this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
             console.log('Send channel 1()');
-            this.chatStore.dispatch(new SendMessage(message));
-          });
+            this.apiService.fetchRoomDetails(message.roomId).subscribe((room: IRoom) => {
+              if (room) {
+                this.chatStore.dispatch(new AddRoom(room));
+                this.chatStore.dispatch(new SendMessage(message));
+              }
+            });
+            });
         } else {
           this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
           console.log('Send channel 2()');
