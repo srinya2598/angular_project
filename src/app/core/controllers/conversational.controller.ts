@@ -49,6 +49,7 @@ export class ConversationalController {
   isChannelSetup = false;
   uploadPercent: BehaviorSubject<number>;
   downloadUrlSubject: BehaviorSubject<string>;
+  messageChannelSubscription: Subscription;
 
 
   constructor(private dbService: DbService,
@@ -241,7 +242,7 @@ export class ConversationalController {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
+          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -263,7 +264,11 @@ export class ConversationalController {
       return;
     }
 
-    this.apiService.getMessageStream(userId).pipe(skip(1)).subscribe((message: IMessage) => {
+    if (this.messageChannelSubscription) {
+      return;
+    }
+
+    this.messageChannelSubscription = this.apiService.getMessageStream(userId).pipe(skip(1)).subscribe((message: IMessage) => {
       if (message) {
         let roomId = this.isRoomsExisting(userId);
         console.log(roomId);
@@ -281,7 +286,7 @@ export class ConversationalController {
                 this.chatStore.dispatch(new SendMessage(message));
               }
             });
-            });
+          });
         } else {
           this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
           console.log('Send channel 2()');
