@@ -112,11 +112,12 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
         ...state,
         unreadCount: {
           ...state.unreadCount,
-          [action.payload] : 0
-    }
-    }
+          [action.payload]: 0
+        }
+      };
     }
   }
+
 }
 
 

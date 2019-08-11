@@ -1,5 +1,6 @@
 @import "~src/variables";
-@import  url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+
 .chat-element {
   padding: 20px;
 
@@ -21,17 +22,20 @@ img {
   font-size: medium;
   margin-bottom: 8px;
 }
-.element-text{
+
+.element-text {
   color: slategray;
   font-size: small;
 }
-.element-time{
+
+.element-time {
   margin-top: 40px;
   margin-left: 900px;
   font-size: small;
   color: slategray;
 }
-.element-count{
+
+.element-count {
   margin-top: 50px;
   margin-left: 900px;
   font-size: small;
@@ -57,6 +61,7 @@ hr {
     color: white;
     font-family: Raleway;
   }
+
   &__content {
     padding: 0 20px;
     margin-top: 5px;
@@ -64,6 +69,7 @@ hr {
 
 
 }
+
 $width: 35px;
 $height: 35px;
 $bounce_height: 50px;
@@ -73,22 +79,26 @@ body {
   height: 100vh;
   font-family: Montserrat;
 }
+
 .wrap {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .text {
   color: #192A56;
   display: inline-block;
   margin-left: 5px;
 }
+
 .bounceball {
   position: relative;
   display: inline-block;
   height: 57px;
   width: $width;
+
   &:before {
     position: absolute;
     content: '';
@@ -102,6 +112,7 @@ body {
     animation: bounce 500ms alternate infinite ease;
   }
 }
+
 @keyframes bounce {
   0% {
     top: $bounce_height;

@@ -89,7 +89,7 @@ export const getSelectedRoomId = createSelector(
 );
 export const getUnreadCount = (state: State, roomId: string) => {
   return _getUnreadCount(getRoomMessageState(state), roomId);
-  }
+};
 
 // Rooms Selectors
 
