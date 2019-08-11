@@ -49,6 +49,7 @@ export class ConversationalController {
   uploadPercent: BehaviorSubject<number>;
   downloadUrlSubject: BehaviorSubject<string>;
   messageChannelSubscription: Subscription;
+  newRoomSubscription: Subscription;
 
 
   constructor(private dbService: DbService,
@@ -99,7 +100,7 @@ export class ConversationalController {
       })
     ).pipe(take(1)).subscribe((res: string[]) => {
       if (!res || res.length <= 0) {
-        this.chatStore.dispatch(new FetchRoomsFailed());
+        this.chatStore.dispatch(new FetchRoomSuccess([]));
         return;
       }
       let rooms = res;
@@ -154,7 +155,6 @@ export class ConversationalController {
     });
     return roomId ? roomId : false;
   }
-
 
   setSelectedUserId(userId: string) {
     if (!userId) {
@@ -241,7 +241,7 @@ export class ConversationalController {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
+          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -427,7 +427,6 @@ export class ConversationalController {
       });
     });
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_DISCONNECTED).subscribe(() => {
-        console.log('f');
         this.authController.setUserStatusOffline().subscribe(() => {
           console.log('i am offline');
         });
@@ -443,7 +442,6 @@ export class ConversationalController {
   dispatchMessage(message: IMessage, selectedUserId: string) {
     this.apiService.getUserStatus(selectedUserId).pipe(take(1)).subscribe((status) => {
       if (status === StatusType.ONLLNE) {
-        console.log('a');
         this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
           this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
             console.log('Send message()');
@@ -452,22 +450,18 @@ export class ConversationalController {
         });
 
       } else {
-        console.log('b');
         let oldOfflineMessages: IMessage[];
         this.apiService.getMessageOffline(selectedUserId).pipe(take(1)).subscribe((messages: IMessage[]) => {
           oldOfflineMessages = messages || [];
-          console.log('c');
           let newOfflineMessages: IMessage[];
           console.log(oldOfflineMessages);
           newOfflineMessages = [...oldOfflineMessages, message];
           this.apiService.setMessageOffline(selectedUserId, newOfflineMessages).subscribe(() => {
             this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
               this.chatStore.dispatch(new SendMessage(message));
-              console.log('d');
-            });
+             });
           });
         });
-
       }
     });
   }
@@ -477,18 +471,47 @@ export class ConversationalController {
     this.apiService.getMessageOffline(userId).pipe(take(1)).subscribe((messages: IMessage[]) => {
       if (messages && messages.length > 0) {
         messages.forEach(offlineMessage => {
-          console.log('e');
           this.dbService.getCollection(RxCollections.MESSAGES).insert(offlineMessage).then(() => {
           });
-          console.log('f');
         });
         this.chatStore.dispatch(new FetchMessage(messages));
-
         this.apiService.deleteMessageOffline(userId).then(() => {
-          console.log('g');
           console.log('no new messages');
         });
       }
     });
   }
+
+  getNewRoom() {
+    if (this.newRoomSubscription) {
+      return;
+    }
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    let rooms;
+    let newRoom;
+    this.chatStore.select(getUserRoomIds).subscribe(res => rooms = res);
+    this.newRoomSubscription = this.apiService.fetchUserRooms(userId).pipe(
+      filter((res: string[]) => res && res.length > 0),
+      switchMap((res: string[]) => {
+          res.forEach((element) => {
+              if (rooms.indexOf(element) < 0) {
+                newRoom = element;
+              }
+            }
+          );
+          if (newRoom) {
+            return this.apiService.fetchRoomDetails(newRoom);
+
+          } else {
+            return of(null);
+          }
+        }
+      )
+    ).subscribe((res: IRoom) => {
+      if (res) {
+        this.chatStore.dispatch(new CreateRoom(res));
+      }
+    });
+  }
+
 }
