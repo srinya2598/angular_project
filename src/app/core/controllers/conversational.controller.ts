@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DbService, RxCollections } from '@ec-core/services/database.service';
 import {
-  AddRoom,
   CreateRoom,
   FetchMessage,
   FetchRooms,
@@ -277,7 +276,6 @@ export class ConversationalController {
             console.log('Send channel 1()');
             this.apiService.fetchRoomDetails(message.roomId).subscribe((room: IRoom) => {
               if (room) {
-                this.chatStore.dispatch(new AddRoom(room));
                 this.chatStore.dispatch(new SendMessage(message));
               }
             });

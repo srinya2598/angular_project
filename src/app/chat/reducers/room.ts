@@ -42,8 +42,6 @@ export function roomReducer(state: RoomState = initialState, action: Action) {
     case ChatActions.CREATE_ROOM:
       return roomAdapter.addOne(action.payload, state);
 
-    case ChatActions.ADD_ROOM:
-      return roomAdapter.addOne(action.payload, state);
     default:
       return state;
   }
