@@ -14,7 +14,7 @@ import {
 
   _getRoomMessageIds,
   _getSelectedRoomId,
-  _getSelectedUserId,
+  _getSelectedUserId, _getUnreadCount,
   roomMessagesReducer,
   RoomMessageState
 } from './room-messages';
@@ -31,7 +31,6 @@ import {
   searchMessageReducer,
   SearchMessageState
 } from './search-message';
-import { getEntities } from '../../dashboard/reducers';
 
 export interface State {
   message: MessageState,
@@ -88,6 +87,9 @@ export const getSelectedRoomId = createSelector(
   getRoomMessageState,
   _getSelectedRoomId
 );
+export const getUnreadCount = (state: State, roomId: string) => {
+  return _getUnreadCount(getRoomMessageState(state), roomId);
+  }
 
 // Rooms Selectors
 

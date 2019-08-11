@@ -8,6 +8,7 @@ export interface RoomMessageState {
   selectedUserId: string;
   selectedRoomId: string;
   selectedMessage: string;
+  unreadCount: { [id: string]: number };
 }
 
 export const initialRoomMessagesState: RoomMessageState = {
@@ -15,7 +16,8 @@ export const initialRoomMessagesState: RoomMessageState = {
   selectedUserId: null,
   selectedRoomId: null,
   selectedMessage: null,
- };
+  unreadCount: {},
+};
 
 export function roomMessagesReducer(state: RoomMessageState = initialRoomMessagesState, action: Action) {
   switch (action.type) {
@@ -98,9 +100,22 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
       };
     }
 
+    case ChatActions.SET_UNREAD_COUNT: {
+      return {
+        ...state,
+        unreadCount: action.payload
 
-
-
+      };
+    }
+    case ChatActions.RESET_UNREAD_COUNT: {
+      return {
+        ...state,
+        unreadCount: {
+          ...state.unreadCount,
+          [action.payload] : 0
+    }
+    }
+    }
   }
 }
 
@@ -109,3 +124,4 @@ export const _getRoomMessageIds = (state: RoomMessageState, convId: string) => s
 export const _getSelectedUserId = (state: RoomMessageState) => state.selectedUserId;
 export const _getSelectedRoomId = (state: RoomMessageState) => state.selectedRoomId;
 export const _getSelectedMessage = (state: RoomMessageState) => state.selectedMessage;
+export const _getUnreadCount = (state: RoomMessageState, roomId: string) => state.unreadCount[roomId] || 0;

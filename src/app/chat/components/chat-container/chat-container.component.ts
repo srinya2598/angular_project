@@ -25,7 +25,7 @@ export class ChatContainerComponent implements OnInit {
       console.log(params);
       this.userId = params['id'];
     });
-    if(this.userId){
+    if (this.userId) {
       this.conversationController.setSelectedUserId(this.userId);
       let roomId = this.conversationController.isRoomsExisting(this.userId);
       if (roomId) {

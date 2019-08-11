@@ -6,11 +6,11 @@ import {
   FetchRooms,
   FetchRoomsFailed,
   FetchRoomSuccess,
-  RemoveMessage,
+  RemoveMessage, ResetUnreadCount,
   SendMessage,
   SetSelectedMessage,
   SetSelectedRoomId,
-  SetSelectedUserId,
+  SetSelectedUserId, SetUnreadCount,
   ToggleFavMessage,
 } from '../../chat/actions/message';
 import { Store } from '@ngrx/store';
@@ -21,7 +21,7 @@ import {
   getRoomMessages,
   getRoomsList,
   getSelectedRoomId,
-  getSelectedUserId,
+  getSelectedUserId, getUnreadCount,
   getUserRoomIds,
   State
 } from '../../chat/reducers';
@@ -459,7 +459,7 @@ export class ConversationalController {
           this.apiService.setMessageOffline(selectedUserId, newOfflineMessages).subscribe(() => {
             this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
               this.chatStore.dispatch(new SendMessage(message));
-             });
+            });
           });
         });
       }
@@ -467,12 +467,24 @@ export class ConversationalController {
   }
 
   getOfflineMessages() {
+    let unreadCount = {};
     const userId = this.apiService.getItem(Constants.USER_UID);
     this.apiService.getMessageOffline(userId).pipe(take(1)).subscribe((messages: IMessage[]) => {
       if (messages && messages.length > 0) {
         messages.forEach(offlineMessage => {
-          this.dbService.getCollection(RxCollections.MESSAGES).insert(offlineMessage).then(() => {
-          });
+          let previousUnreadCount;
+          {
+            if (unreadCount[offlineMessage.roomId]) {
+              previousUnreadCount = unreadCount[offlineMessage.roomId];
+              const newUnreadCount = previousUnreadCount + 1;
+              unreadCount[offlineMessage.roomId] = newUnreadCount;
+            } else {
+              unreadCount[offlineMessage.roomId] = 1;
+            }
+            this.dbService.getCollection(RxCollections.MESSAGES).insert(offlineMessage).then(() => {
+            });
+          }
+          this.chatStore.dispatch(new SetUnreadCount(unreadCount));
         });
         this.chatStore.dispatch(new FetchMessage(messages));
         this.apiService.deleteMessageOffline(userId).then(() => {
@@ -514,4 +526,11 @@ export class ConversationalController {
     });
   }
 
+  getUnreadCount(roomId: string) {
+    return this.chatStore.select(state => getUnreadCount(state, roomId));
+  }
+
+  resetUnreadCount(roomId: string) {
+    this.chatStore.dispatch(new ResetUnreadCount(roomId));
+  }
 }

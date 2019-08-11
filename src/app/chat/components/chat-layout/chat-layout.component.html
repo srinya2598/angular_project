@@ -9,6 +9,8 @@
       <div class="element-text">{{message}}</div>
     </div>
   </div>
-  <div class="element-time">{{time | date:'shortTime'}}</div>
+  <div class="element-time">{{time | date:'shortTime'}}
+    <div class="element-count" *ngIf="unreadCount"><button>{{unreadCount}}</button></div>
+  </div>
 </div>
 <hr>

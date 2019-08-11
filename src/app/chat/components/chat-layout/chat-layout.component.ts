@@ -21,7 +21,7 @@ export class ChatLayoutComponent implements OnInit {
   message: string;
   selectedUser: IUser;
   time: any;
-
+  unreadCount: number;
 
   constructor(private apiService: ApiService,
               private conversationalController: ConversationalController,
@@ -42,15 +42,18 @@ export class ChatLayoutComponent implements OnInit {
     this.firstName = this.selectedUser.firstName;
     this.profileUrl = this.selectedUser.profileUrl;
     const lastMessage = this.conversationalController.fetchLastMessage(this.userRoom.id);
-    if(lastMessage) {
-      this.message = lastMessage.text ;
+    if (lastMessage) {
+      this.message = lastMessage.text;
       this.time = new Date(lastMessage.timestamp);
     }
+    this.conversationalController.getUnreadCount(this.userRoom.id).subscribe(res => this.unreadCount = res);
+    console.log(this.unreadCount);
   }
 
   visitChat() {
     this.conversationalController.setSelectedUserId(this.selectedUser.id);
     this.conversationalController.setSelectedRoomId(this.userRoom.id);
     this.router.navigate(['dashboard/chat', CommonUtils.getRoutePath(this.userRoom.id)]);
+    this.conversationalController.resetUnreadCount(this.userRoom.id);
   }
 }
