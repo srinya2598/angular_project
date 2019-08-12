@@ -154,5 +154,18 @@ export class ApiService {
     return this.angularFireDb.object(`user_offline_messages/${userId}`).remove();
 
   }
+
+  setUnreadCount(userId: string, unreadCount: object) {
+    return from(this.angularFireDb.database.ref(`user_unread_count/${userId}`).set(unreadCount));
+  }
+
+  getUnreadCount(userId: string) {
+    return this.angularFireDb.object(`user_unread_count/${userId}`).valueChanges();
+  }
+  resetUnreadCount(userId: string){
+    return this.angularFireDb.object(`user_unread_count/${userId}`).remove();
+  }
+
+
 }
 

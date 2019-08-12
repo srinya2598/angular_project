@@ -23,7 +23,7 @@ import {
   getRoomsList,
   getSelectedRoomId,
   getSelectedUserId,
-  getUnreadCount,
+  getUnreadCount, getUnreadCountNumber,
   getUserRoomIds,
   State
 } from '../../chat/reducers';
@@ -243,7 +243,7 @@ export class ConversationalController {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
+          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -469,7 +469,10 @@ export class ConversationalController {
   }
 
   getOfflineMessages() {
-    let unreadCount = {};
+    let unreadCount;
+    this.chatStore.select(getUnreadCount).subscribe(res => {
+      unreadCount = res;
+    });
     const userId = this.apiService.getItem(Constants.USER_UID);
     this.apiService.getMessageOffline(userId).pipe(take(1)).subscribe((messages: IMessage[]) => {
       if (messages && messages.length > 0) {
@@ -527,11 +530,13 @@ export class ConversationalController {
     });
   }
 
-  getUnreadCount(roomId: string) {
-    return this.chatStore.select(state => getUnreadCount(state, roomId));
+  getUnreadCountNumber(roomId: string) {
+    return this.chatStore.select(state => getUnreadCountNumber(state, roomId));
   }
 
   resetUnreadCount(roomId: string) {
     this.chatStore.dispatch(new ResetUnreadCount(roomId));
   }
+
+
 }

@@ -19,6 +19,9 @@ import {
 } from '../../auth/actions/auth';
 import { BehaviorSubject, combineLatest, Observable, throwError } from 'rxjs';
 import { Constants, StatusType } from '@ec-shared/utils/constants';
+import { AuthState } from '../../auth/reducer/auth';
+import { getUnreadCount } from '../../chat/reducers';
+import { SetUnreadCount } from '../../chat/actions/message';
 
 
 @Injectable({
@@ -28,11 +31,12 @@ export class AuthController {
   downloadUrlProfile: BehaviorSubject<string>;
   uploadPercentage: BehaviorSubject<number>;
 
-  constructor(private store: Store<State>,
+  constructor(private authStore: Store<AuthState>,
               private apiService: ApiService,
               private router: Router,
               private zone: NgZone,
               private notificationService: NotificationService,
+              private chatStore: Store<State>
               ) {
     this.downloadUrlProfile = new BehaviorSubject('null');
     this.uploadPercentage = new BehaviorSubject(0);
@@ -43,12 +47,12 @@ export class AuthController {
       return;
     }
     let user: IUser;
-    this.store.dispatch(new SignUp());
+    this.authStore.dispatch(new SignUp());
     const email = userData.email;
     const password = userData.password;
     this.apiService.signup(email, password).pipe(
       switchMap((res) => {
-        this.store.dispatch(new SignUp());
+        this.authStore.dispatch(new SignUp());
         user = {
           id: res.user.uid,
           firstName: userData.firstName,
@@ -62,7 +66,7 @@ export class AuthController {
       catchError(error => throwError(error.message))
     ).subscribe(res => {
         this.notificationService.success('You are logged in successfully!!');
-        this.store.dispatch(new SignUpSuccess(user));
+        this.authStore.dispatch(new SignUpSuccess(user));
         this.apiService.setItem(Constants.USER_UID, user.id);
         this.setUserStatusOnline().subscribe(() => {
         });
@@ -72,7 +76,7 @@ export class AuthController {
       },
       (error) => {
         this.notificationService.error(error);
-        this.store.dispatch(new SignUpFailed());
+        this.authStore.dispatch(new SignUpFailed());
       }
     );
   }
@@ -81,14 +85,14 @@ export class AuthController {
     if (!userData) {
       return;
     }
-    const isLoggedIn$ = this.store.select(getIsLoggedIn);
-    const isLoading$ = this.store.select(getIsLoading);
+    const isLoggedIn$ = this.authStore.select(getIsLoggedIn);
+    const isLoading$ = this.authStore.select(getIsLoading);
     combineLatest(isLoggedIn$, isLoading$).pipe(
       take(1),
       map(([isLoggedIn, isLoading]) => isLoggedIn || isLoading),
       filter(res => !res),
       switchMap(() => {
-        this.store.dispatch(new Login());
+        this.authStore.dispatch(new Login());
         return this.apiService.login(userData);
       }),
       catchError((error) => throwError(error.message))
@@ -96,10 +100,11 @@ export class AuthController {
         console.log('[Auth Controller] Inside login');
         this.notificationService.success('You are logged in successfully!!');
         //  Load the data of the user form database in bootstrap component
-        this.store.dispatch(new LoginSuccess());
+        this.authStore.dispatch(new LoginSuccess());
         this.apiService.setItem(Constants.USER_UID, res.user.uid);
         this.setUserStatusOnline().subscribe(() => {
         });
+        this.getUnreadCount();
         this.zone.run(() => {
           this.router.navigate(['']);
         });
@@ -107,7 +112,7 @@ export class AuthController {
       (error) => {
         this.notificationService.error(error);
         console.log(error);
-        this.store.dispatch(new LoginFailed());
+        this.authStore.dispatch(new LoginFailed());
       });
 
   }
@@ -115,30 +120,31 @@ export class AuthController {
   googleLogin(action: string) {
     let user: IUser;
     if (action == Constants.LOGIN_WITH_GOOGLE) {
-      this.store.select(getIsLoggedIn).pipe(
+      this.authStore.select(getIsLoggedIn).pipe(
         take(1),
         filter(res => !res),
         switchMap(() => {
-          this.store.dispatch(new Login());
+          this.authStore.dispatch(new Login());
           return this.apiService.signInWithGoogle();
         })
       ).subscribe((res) => {
         this.notificationService.success('You are logged in successfully!!');
-        this.store.dispatch(new LoginSuccess());
+        this.authStore.dispatch(new LoginSuccess());
         this.apiService.setItem(Constants.USER_UID, res.user.uid);
         this.setUserStatusOnline().subscribe(() => {
         });
+        this.getUnreadCount();
         this.zone.run(() => {
           this.router.navigate(['']);
         });
       }, (error) => {
         this.notificationService.error(error);
-        this.store.dispatch(new LoginFailed());
+        this.authStore.dispatch(new LoginFailed());
       });
     } else {
       this.apiService.signInWithGoogle().pipe(
         switchMap(res => {
-          this.store.dispatch(new SignUp());
+          this.authStore.dispatch(new SignUp());
           user = {
             firstName: res.additionalUserInfo.profile['given_name'],
             lastName: res.additionalUserInfo.profile['family_name'],
@@ -152,7 +158,7 @@ export class AuthController {
         catchError((error) => throwError(error.message))
       ).subscribe(res => {
           this.notificationService.success('You are logged in successfully!!');
-          this.store.dispatch(new SignUpSuccess(user));
+          this.authStore.dispatch(new SignUpSuccess(user));
           this.apiService.setItem(Constants.USER_UID, user.id);
           this.zone.run(() => {
             this.router.navigate(['']);
@@ -161,27 +167,27 @@ export class AuthController {
         (error) => {
           console.log(error);
           this.notificationService.error('error');
-          this.store.dispatch(new SignUpFailed());
+          this.authStore.dispatch(new SignUpFailed());
         });
     }
   }
 
   updateUser(id: string, user: IUser) {
-    this.store.select(getIsLoading).pipe(
+    this.authStore.select(getIsLoading).pipe(
       take(1),
       filter(res => !res),
       switchMap(() => {
-        this.store.dispatch(new UpdateSent());
+        this.authStore.dispatch(new UpdateSent());
         return this.apiService.setUserDetails(id, user);
       }),
       catchError(error => throwError(error.message))
     ).subscribe(() => {
         this.notificationService.success('Profile updated successfully');
-        this.store.dispatch(new UpdateSuccess(user));
+        this.authStore.dispatch(new UpdateSuccess(user));
       },
       (error) => {
         this.notificationService.error(error);
-        this.store.dispatch(new UpdateFailed());
+        this.authStore.dispatch(new UpdateFailed());
       });
   }
 
@@ -201,18 +207,19 @@ export class AuthController {
 
 
   getIsLoading(): Observable<boolean> {
-    return this.store.select(getIsLoading);
+    return this.authStore.select(getIsLoading);
   }
 
   getUser() {
-    return this.store.select(getLoggedInUser);
+    return this.authStore.select(getLoggedInUser);
   }
 
   logout() {
     this.setUserStatusOffline().subscribe(() => {
     });
+    this.setUnreadCount();
     this.apiService.removeItem(Constants.USER_UID);
-    this.store.dispatch(new Logout());
+    this.authStore.dispatch(new Logout());
     this.router.navigate(['login']);
   }
 
@@ -225,5 +232,20 @@ export class AuthController {
     const userId = this.apiService.getItem(Constants.USER_UID);
     return this.apiService.setUserStatus(userId, StatusType.OFFLINE);
   }
+  setUnreadCount() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    let unreadCount;
+    this.chatStore.select(getUnreadCount).subscribe(res => unreadCount = res);
+    this.apiService.setUnreadCount(userId, unreadCount);
+  }
+
+  getUnreadCount() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    let unreadCount;
+    this.apiService.getUnreadCount(userId).subscribe(res => unreadCount = res);
+    this.chatStore.dispatch(new SetUnreadCount(unreadCount));
+    this.apiService.resetUnreadCount(userId);
+  }
+
 
 }

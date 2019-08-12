@@ -46,7 +46,7 @@ export class ChatLayoutComponent implements OnInit {
       this.message = lastMessage.text;
       this.time = new Date(lastMessage.timestamp);
     }
-    this.conversationalController.getUnreadCount(this.userRoom.id).subscribe(res => this.unreadCount = res);
+    this.conversationalController.getUnreadCountNumber(this.userRoom.id).subscribe(res => this.unreadCount = res);
     console.log(this.unreadCount);
   }
 

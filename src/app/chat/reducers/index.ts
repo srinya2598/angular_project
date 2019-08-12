@@ -5,7 +5,7 @@ import {
   messageReducer,
   MessageState
 } from './message';
-import {RootState} from '@ec-core/reducers';
+import { RootState } from '@ec-core/reducers';
 import {
   createFeatureSelector,
   createSelector
@@ -14,7 +14,7 @@ import {
 
   _getRoomMessageIds,
   _getSelectedRoomId,
-  _getSelectedUserId, _getUnreadCount,
+  _getSelectedUserId, _getUnreadCount, _getUnreadCountNumber,
   roomMessagesReducer,
   RoomMessageState
 } from './room-messages';
@@ -87,9 +87,13 @@ export const getSelectedRoomId = createSelector(
   getRoomMessageState,
   _getSelectedRoomId
 );
-export const getUnreadCount = (state: State, roomId: string) => {
-  return _getUnreadCount(getRoomMessageState(state), roomId);
+export const getUnreadCountNumber = (state: State, roomId: string) => {
+  return _getUnreadCountNumber(getRoomMessageState(state), roomId);
 };
+export const getUnreadCount = createSelector(
+  getRoomMessageState,
+  _getUnreadCount
+);
 
 // Rooms Selectors
 

@@ -41,8 +41,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.controller.setUserStatusOnline();
+    this.controller.getUnreadCount();
     window.onunload = (event) => {
       this.controller.setUserStatusOffline().subscribe();
+      this.controller.setUnreadCount();
     };
 
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(_ => {
