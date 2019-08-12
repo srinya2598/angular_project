@@ -4,13 +4,14 @@ import {
   CreateRoom,
   FetchMessage,
   FetchRooms,
-  FetchRoomsFailed,
   FetchRoomSuccess,
-  RemoveMessage, ResetUnreadCount,
+  RemoveMessage,
+  ResetUnreadCount,
   SendMessage,
   SetSelectedMessage,
   SetSelectedRoomId,
-  SetSelectedUserId, SetUnreadCount,
+  SetSelectedUserId,
+  SetUnreadCount,
   ToggleFavMessage,
 } from '../../chat/actions/message';
 import { Store } from '@ngrx/store';
@@ -21,7 +22,8 @@ import {
   getRoomMessages,
   getRoomsList,
   getSelectedRoomId,
-  getSelectedUserId, getUnreadCount,
+  getSelectedUserId,
+  getUnreadCount,
   getUserRoomIds,
   State
 } from '../../chat/reducers';
@@ -241,7 +243,7 @@ export class ConversationalController {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
+          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -476,8 +478,7 @@ export class ConversationalController {
           {
             if (unreadCount[offlineMessage.roomId]) {
               previousUnreadCount = unreadCount[offlineMessage.roomId];
-              const newUnreadCount = previousUnreadCount + 1;
-              unreadCount[offlineMessage.roomId] = newUnreadCount;
+              unreadCount[offlineMessage.roomId] = previousUnreadCount + 1;
             } else {
               unreadCount[offlineMessage.roomId] = 1;
             }
