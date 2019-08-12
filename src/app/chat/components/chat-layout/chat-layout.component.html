@@ -11,7 +11,7 @@
   </div>
   <div class="element-time">{{time | date:'shortTime'}}
     <div class="element-count" *ngIf="unreadCount">
-      <button>{{unreadCount}}</button>
+      <span matBadge="{{unreadCount}}" matBadgeColor="warn" matBadgePosition="below before" matBadgeOverlap="false">Text with a badge</span>
     </div>
   </div>
 </div>
