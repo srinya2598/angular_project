@@ -125,5 +125,5 @@ export const _getSelectedUserId = (state: RoomMessageState) => state.selectedUse
 export const _getSelectedRoomId = (state: RoomMessageState) => state.selectedRoomId;
 export const _getSelectedMessage = (state: RoomMessageState) => state.selectedMessage;
 export const _getUnreadCountNumber = (state: RoomMessageState, roomId: string) => state.unreadCount[roomId] || 0;
-export const _getUnreadCount = (state: RoomMessageState) => state.unreadCount;
+export const _getUnreadCount = (state: RoomMessageState) => state.unreadCount || {};
 

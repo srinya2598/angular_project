@@ -538,5 +538,13 @@ export class ConversationalController {
     this.chatStore.dispatch(new ResetUnreadCount(roomId));
   }
 
+  getUnreadCount() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    let unreadCount;
+    this.apiService.getUnreadCount(userId).subscribe(res => unreadCount = res);
+    this.chatStore.dispatch(new SetUnreadCount(unreadCount));
+    this.apiService.resetUnreadCount(userId);
+    console.log('[get unread count]');
+  }
 
 }

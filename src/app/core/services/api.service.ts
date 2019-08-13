@@ -134,8 +134,8 @@ export class ApiService {
     return this.storage.ref(`chat-images/${roomId + fileName}`);
   }
 
-  setUserStatus(userId: string, staus: string) {
-    return from(this.angularFireDb.database.ref(`user_status/${userId}`).set(staus));
+  setUserStatus(userId: string, status: string) {
+    return from(this.angularFireDb.database.ref(`user_status/${userId}`).set(status));
   }
 
   getUserStatus(userId: string) {
@@ -162,10 +162,9 @@ export class ApiService {
   getUnreadCount(userId: string) {
     return this.angularFireDb.object(`user_unread_count/${userId}`).valueChanges();
   }
-  resetUnreadCount(userId: string){
+
+  resetUnreadCount(userId: string) {
     return this.angularFireDb.object(`user_unread_count/${userId}`).remove();
   }
-
-
 }
 

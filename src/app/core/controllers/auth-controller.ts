@@ -37,7 +37,7 @@ export class AuthController {
               private zone: NgZone,
               private notificationService: NotificationService,
               private chatStore: Store<State>
-              ) {
+  ) {
     this.downloadUrlProfile = new BehaviorSubject('null');
     this.uploadPercentage = new BehaviorSubject(0);
   }
@@ -104,7 +104,6 @@ export class AuthController {
         this.apiService.setItem(Constants.USER_UID, res.user.uid);
         this.setUserStatusOnline().subscribe(() => {
         });
-        this.getUnreadCount();
         this.zone.run(() => {
           this.router.navigate(['']);
         });
@@ -133,7 +132,6 @@ export class AuthController {
         this.apiService.setItem(Constants.USER_UID, res.user.uid);
         this.setUserStatusOnline().subscribe(() => {
         });
-        this.getUnreadCount();
         this.zone.run(() => {
           this.router.navigate(['']);
         });
@@ -217,7 +215,9 @@ export class AuthController {
   logout() {
     this.setUserStatusOffline().subscribe(() => {
     });
-    this.setUnreadCount();
+    this.setUnreadCount().subscribe((res) => {
+     console.log('[set unread count]');
+    });
     this.apiService.removeItem(Constants.USER_UID);
     this.authStore.dispatch(new Logout());
     this.router.navigate(['login']);
@@ -232,19 +232,12 @@ export class AuthController {
     const userId = this.apiService.getItem(Constants.USER_UID);
     return this.apiService.setUserStatus(userId, StatusType.OFFLINE);
   }
+
   setUnreadCount() {
     const userId = this.apiService.getItem(Constants.USER_UID);
     let unreadCount;
     this.chatStore.select(getUnreadCount).subscribe(res => unreadCount = res);
-    this.apiService.setUnreadCount(userId, unreadCount);
-  }
-
-  getUnreadCount() {
-    const userId = this.apiService.getItem(Constants.USER_UID);
-    let unreadCount;
-    this.apiService.getUnreadCount(userId).subscribe(res => unreadCount = res);
-    this.chatStore.dispatch(new SetUnreadCount(unreadCount));
-    this.apiService.resetUnreadCount(userId);
+    return this.apiService.setUnreadCount(userId, unreadCount);
   }
 
 

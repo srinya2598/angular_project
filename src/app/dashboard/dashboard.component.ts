@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
               private router: Router,
               private broadcasterService: BroadcasterService,
               private notificationService: NotificationService,
-              ) {
+  ) {
     this.controller.getUser().subscribe((res: IUser) => {
       if (res) {
         this.user = res;
@@ -41,12 +41,14 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.controller.setUserStatusOnline();
-    this.controller.getUnreadCount();
     window.onunload = (event) => {
-      this.controller.setUserStatusOffline().subscribe();
-      this.controller.setUnreadCount();
+      this.controller.setUserStatusOffline().subscribe((res1) => {
+      });
+      this.controller.setUnreadCount().subscribe((res) => {
+        console.log('[set unread count]');
+        }
+      );
     };
-
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(_ => {
       this.notificationService.success(this.networkConnectedMessage, 2000);
     });
