@@ -58,7 +58,7 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
         this.lastName = res.lastName;
         this.profileUrl = res.profileUrl;
         this.conversationalController.getSelectedUserStatus(id).subscribe((status) => {
-          if (status === StatusType.ONLLNE) {
+          if (status === StatusType.ONLINE) {
             this.userStatus = 'online';
             console.log('the user is online');
           } else {

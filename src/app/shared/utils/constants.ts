@@ -21,6 +21,6 @@ export enum MessageType {
 }
 
 export enum StatusType {
-  ONLLNE = 'user_is_online',
+  ONLINE = 'user_is_online',
   OFFLINE = 'user_is_offline'
 }

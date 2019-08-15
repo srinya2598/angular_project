@@ -225,7 +225,7 @@ export class AuthController {
 
   setUserStatusOnline() {
     const userId = this.apiService.getItem(Constants.USER_UID);
-    return this.apiService.setUserStatus(userId, StatusType.ONLLNE);
+    return this.apiService.setUserStatus(userId, StatusType.ONLINE);
   }
 
   setUserStatusOffline() {

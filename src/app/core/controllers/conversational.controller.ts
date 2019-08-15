@@ -443,7 +443,7 @@ export class ConversationalController {
 
   dispatchMessage(message: IMessage, selectedUserId: string) {
     this.apiService.getUserStatus(selectedUserId).pipe(take(1)).subscribe((status) => {
-      if (status === StatusType.ONLLNE) {
+      if (status === StatusType.ONLINE) {
         this.apiService.sendMessage(selectedUserId, message).subscribe(() => {
           this.dbService.getCollection(RxCollections.MESSAGES).insert(message).then(() => {
             console.log('Send message()');
