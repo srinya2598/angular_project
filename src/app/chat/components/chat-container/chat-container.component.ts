@@ -19,9 +19,8 @@ export class ChatContainerComponent implements OnInit {
   ngOnInit(): void {
     this.conversationController.fetchMessages();
     this.conversationController.setUpMessageChannel();
-    this.conversationController.getOfflineMessages();
     this.conversationController.getNewRoom();
-    this.conversationController.getUnreadCount();
+    this.conversationController.loadUnreadCount();
     this.activatedRoute.queryParams.subscribe(params => {
       console.log(params);
       this.userId = params['id'];

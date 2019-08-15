@@ -20,7 +20,8 @@ export enum ChatActions {
   SET_SEARCH_MESSAGES = '[chat] set search messages',
   RESET_SEARCH_MESSAGES = '[chat] reset search messages',
   TOGGLE_FAV_MESSAGE = '[chat] toggle fav message',
-  SET_UNREAD_COUNT = '[chat] get unread count',
+  SET_UNREAD_COUNT = '[chat] set unread count',
+  UPDATE_UNREAD_COUNT = '[chat] update unread count',
   RESET_UNREAD_COUNT = '[chat] reset unread count'
 }
 
@@ -129,12 +130,21 @@ export class ToggleFavMessage implements Action {
 export class SetUnreadCount implements Action {
   readonly type = ChatActions.SET_UNREAD_COUNT;
 
-  constructor(public payload: any) {
+  constructor(public payload: { [id: string]: number }) {
   }
 }
 
 export class ResetUnreadCount implements Action {
   readonly type = ChatActions.RESET_UNREAD_COUNT;
+
+  constructor(public payload: string) {
+
+  }
+
+}
+
+export class UpdateUnreadCount implements Action {
+  readonly type = ChatActions.UPDATE_UNREAD_COUNT;
 
   constructor(public payload: string) {
 

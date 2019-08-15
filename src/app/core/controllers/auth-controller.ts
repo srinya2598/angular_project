@@ -35,8 +35,7 @@ export class AuthController {
               private apiService: ApiService,
               private router: Router,
               private zone: NgZone,
-              private notificationService: NotificationService,
-              private chatStore: Store<State>
+              private notificationService: NotificationService
   ) {
     this.downloadUrlProfile = new BehaviorSubject('null');
     this.uploadPercentage = new BehaviorSubject(0);
@@ -215,9 +214,6 @@ export class AuthController {
   logout() {
     this.setUserStatusOffline().subscribe(() => {
     });
-    this.setUnreadCount().subscribe((res) => {
-     console.log('[set unread count]');
-    });
     this.apiService.removeItem(Constants.USER_UID);
     this.authStore.dispatch(new Logout());
     this.router.navigate(['login']);
@@ -232,13 +228,5 @@ export class AuthController {
     const userId = this.apiService.getItem(Constants.USER_UID);
     return this.apiService.setUserStatus(userId, StatusType.OFFLINE);
   }
-
-  setUnreadCount() {
-    const userId = this.apiService.getItem(Constants.USER_UID);
-    let unreadCount;
-    this.chatStore.select(getUnreadCount).subscribe(res => unreadCount = res);
-    return this.apiService.setUnreadCount(userId, unreadCount);
-  }
-
 
 }

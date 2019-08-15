@@ -1,13 +1,12 @@
 import { Action } from '@ec-core/actions';
 import { ChatActions } from '../actions/message';
-import { IMessage } from '@ec-shared/models/message';
-import { messageAdapter } from './message';
 
 export interface RoomMessageState {
   ids: { [convId: string]: string[] };
   selectedUserId: string;
   selectedRoomId: string;
   selectedMessage: string;
+  isUnreadCountLoaded: boolean;
   unreadCount: { [id: string]: number };
 }
 
@@ -16,6 +15,7 @@ export const initialRoomMessagesState: RoomMessageState = {
   selectedUserId: null,
   selectedRoomId: null,
   selectedMessage: null,
+  isUnreadCountLoaded: false,
   unreadCount: {},
 };
 
@@ -50,7 +50,7 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
       };
     }
     case ChatActions.FETCH_MESSAGE : {
-      let tempState = {...state};
+      let tempState = { ...state };
       let messages = action.payload;
 
       console.log(messages);
@@ -61,7 +61,7 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
         let newIds = [...oldIds, id];
         tempState = {
           ...tempState,
-          ids: {...tempState.ids, [roomId]: newIds}
+          ids: { ...tempState.ids, [roomId]: newIds }
         };
       });
       return tempState;
@@ -103,7 +103,8 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
     case ChatActions.SET_UNREAD_COUNT: {
       return {
         ...state,
-        unreadCount: action.payload
+        unreadCount: action.payload,
+        isUnreadCountLoaded: true
       };
     }
     case ChatActions.RESET_UNREAD_COUNT: {
@@ -112,6 +113,17 @@ export function roomMessagesReducer(state: RoomMessageState = initialRoomMessage
         unreadCount: {
           ...state.unreadCount,
           [action.payload]: 0
+        }
+      };
+    }
+    case ChatActions.UPDATE_UNREAD_COUNT: {
+      const oldUnreadCount = state.unreadCount[action.payload] || 0;
+      const newUnreadCount = oldUnreadCount + 1;
+      return {
+        ...state,
+        unreadCount: {
+          ...state.unreadCount,
+          [action.payload]: newUnreadCount
         }
       };
     }
@@ -126,4 +138,5 @@ export const _getSelectedRoomId = (state: RoomMessageState) => state.selectedRoo
 export const _getSelectedMessage = (state: RoomMessageState) => state.selectedMessage;
 export const _getUnreadCountNumber = (state: RoomMessageState, roomId: string) => state.unreadCount[roomId] || 0;
 export const _getUnreadCount = (state: RoomMessageState) => state.unreadCount || {};
+export const _getIsUnreadCountLoaded = (state: RoomMessageState) => state.isUnreadCountLoaded;
 

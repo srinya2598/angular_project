@@ -159,12 +159,16 @@ export class ApiService {
     return from(this.angularFireDb.database.ref(`user_unread_count/${userId}`).set(unreadCount));
   }
 
+  updateUnreadCount(userId: string, roomId: string, value: number) {
+    return this.angularFireDb.object(`user_unread_count/${userId}/${roomId}`).set(value);
+  }
+
   getUnreadCount(userId: string) {
     return this.angularFireDb.object(`user_unread_count/${userId}`).valueChanges();
   }
 
-  resetUnreadCount(userId: string) {
-    return this.angularFireDb.object(`user_unread_count/${userId}`).remove();
+  resetUnreadCount(userId: string, roomId: string) {
+    return this.angularFireDb.object(`user_unread_count/${userId}/${roomId}`).remove();
   }
 }
 

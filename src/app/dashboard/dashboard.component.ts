@@ -44,10 +44,6 @@ export class DashboardComponent implements OnInit {
     window.onunload = (event) => {
       this.controller.setUserStatusOffline().subscribe((res1) => {
       });
-      this.controller.setUnreadCount().subscribe((res) => {
-        console.log('[set unread count]');
-        }
-      );
     };
     this.broadcasterService.listen(BroadcasterConstants.NETWORK_CONNECTED).subscribe(_ => {
       this.notificationService.success(this.networkConnectedMessage, 2000);

@@ -12,13 +12,13 @@ import {
   SetSelectedRoomId,
   SetSelectedUserId,
   SetUnreadCount,
-  ToggleFavMessage,
+  ToggleFavMessage, UpdateUnreadCount,
 } from '../../chat/actions/message';
 import { Store } from '@ngrx/store';
 import {
   getIsMessagesLoaded,
   getIsRoomsLoaded,
-  getIsRoomsLoading,
+  getIsRoomsLoading, getIsUnreadCountLoaded,
   getRoomMessages,
   getRoomsList,
   getSelectedRoomId,
@@ -243,7 +243,7 @@ export class ConversationalController {
       if (!isLoaded) {
 
         this.dbService.getCollection(RxCollections.MESSAGES)
-          .find({$or: [{sender: {$eq: userId}}, {receiver: {$eq: userId}}]})
+          .find({ $or: [{ sender: { $eq: userId } }, { receiver: { $eq: userId } }] })
           .$
           .pipe(take(1))
           .subscribe((res: IMessage[]) => {
@@ -269,6 +269,9 @@ export class ConversationalController {
       return;
     }
 
+    let selectedRoomId: string;
+    this.getSelectedRoomId().subscribe(id => selectedRoomId = id);
+
     this.messageChannelSubscription = this.apiService.getMessageStream(userId).pipe(skip(1)).subscribe((message: IMessage) => {
       if (message) {
         let roomId = this.isRoomsExisting(userId);
@@ -291,6 +294,14 @@ export class ConversationalController {
           this.dbService.getCollection(RxCollections.MESSAGES).insert(message);
           console.log('Send channel 2()');
           this.chatStore.dispatch(new SendMessage(message));
+        }
+        if (selectedRoomId != message.roomId) {
+          this.chatStore.dispatch(new UpdateUnreadCount(message.roomId));
+          this.getUnreadCountNumber(message.roomId)
+            .pipe(
+              take(1),
+              filter((res) => res && res > 0)
+            ).subscribe(res => this.apiService.updateUnreadCount(userId, message.roomId, res));
         }
       }
     });
@@ -489,6 +500,7 @@ export class ConversationalController {
             });
           }
           this.chatStore.dispatch(new SetUnreadCount(unreadCount));
+          this.apiService.setUnreadCount(userId, unreadCount);
         });
         this.chatStore.dispatch(new FetchMessage(messages));
         this.apiService.deleteMessageOffline(userId).then(() => {
@@ -535,16 +547,28 @@ export class ConversationalController {
   }
 
   resetUnreadCount(roomId: string) {
-    this.chatStore.dispatch(new ResetUnreadCount(roomId));
-  }
-
-  getUnreadCount() {
+    if (!roomId) {
+      return;
+    }
     const userId = this.apiService.getItem(Constants.USER_UID);
-    let unreadCount;
-    this.apiService.getUnreadCount(userId).subscribe(res => unreadCount = res);
-    this.chatStore.dispatch(new SetUnreadCount(unreadCount));
-    this.apiService.resetUnreadCount(userId);
-    console.log('[get unread count]');
+    this.apiService.resetUnreadCount(userId, roomId).then(() => {
+      this.chatStore.dispatch(new ResetUnreadCount(roomId));
+    });
   }
 
+  loadUnreadCount() {
+    const userId = this.apiService.getItem(Constants.USER_UID);
+    this.chatStore.select(getIsUnreadCountLoaded).pipe(
+      filter(r => !r),
+      switchMap((_) => {
+        return this.apiService.getUnreadCount(userId);
+      }),
+      take(1)
+    ).subscribe((res: { [id: string]: number }) => {
+      const unreadCount = res || {};
+      console.log('[Load unread count]', res);
+      this.chatStore.dispatch(new SetUnreadCount(unreadCount));
+      this.getOfflineMessages();
+    });
+  }
 }

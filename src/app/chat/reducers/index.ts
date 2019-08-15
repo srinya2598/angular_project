@@ -11,6 +11,7 @@ import {
   createSelector
 } from '@ngrx/store';
 import {
+  _getIsUnreadCountLoaded,
 
   _getRoomMessageIds,
   _getSelectedRoomId,
@@ -122,6 +123,11 @@ export const getUserRoomIds = (state: State) => getRoomIds(state) || [];
 export const getRoomMessageIds = (state: State, convId: string) => _getRoomMessageIds(
   getRoomMessageState(state),
   convId
+);
+
+export const getIsUnreadCountLoaded = createSelector(
+  getRoomMessageState,
+  _getIsUnreadCountLoaded
 );
 
 
