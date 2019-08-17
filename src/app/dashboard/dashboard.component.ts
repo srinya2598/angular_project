@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { BroadcasterService } from '@ec-core/services/broadcaster.service';
 import { BroadcasterConstants } from '@ec-shared/utils/constants';
 import { NotificationService } from '@ec-core/services/notification.service';
+import { PushNotificationsService } from 'ng-push';
 
 
 @Component({
@@ -31,12 +32,14 @@ export class DashboardComponent implements OnInit {
               private router: Router,
               private broadcasterService: BroadcasterService,
               private notificationService: NotificationService,
+              private pushNotification:PushNotificationsService
   ) {
     this.controller.getUser().subscribe((res: IUser) => {
       if (res) {
         this.user = res;
       }
     });
+    this.pushNotification.requestPermission();
   }
 
   ngOnInit(): void {

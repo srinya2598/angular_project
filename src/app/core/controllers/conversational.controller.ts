@@ -42,6 +42,7 @@ import { IUser } from '@ec-shared/models/users';
 import { CommonUtils } from '@ec-shared/utils/common.utils';
 import { BroadcasterService } from '@ec-core/services/broadcaster.service';
 import { AuthController } from '@ec-core/controllers/auth-controller';
+import { PushNotificationsService } from 'ng-push';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +63,7 @@ export class ConversationalController {
               private productState: Store<ProductState>,
               private broadcasterService: BroadcasterService,
               private authController: AuthController,
+              private pushNotification: PushNotificationsService
   ) {
     this.uploadPercent = new BehaviorSubject<number>(0);
     this.downloadUrlSubject = new BehaviorSubject(null);
@@ -302,6 +304,7 @@ export class ConversationalController {
               take(1),
               filter((res) => res && res > 0)
             ).subscribe(res => this.apiService.updateUnreadCount(userId, message.roomId, res));
+          this.pushNotification.create('New Message', { body: message.text });
         }
       }
     });
